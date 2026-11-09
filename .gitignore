@@ -5,6 +5,18 @@
 .DS_Store
 *.log
 
+# Herramientas locales de agentes y diseño
+/.agents/
+/.impeccable/
+/skills-lock.json
+AGENTS.md
+/impeccable/
+/Impeccable/
+
+# Documentación y scripts mantenidos solo en el entorno local
+/docs/
+/scripts/
+
 # Node.js / Next.js / TypeScript
 node_modules/
 .next/
