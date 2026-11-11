@@ -2,7 +2,7 @@ import { test, expect, type Page } from "@playwright/test";
 
 test.skip(({ isMobile }) => !!isMobile, "The landing storytelling is desktop only.");
 
-const ids = ["comienzos", "alemania-2006", "beijing-2008", "sudafrica-2010", "copa-2011", "brasil-2012", "maracana", "copa-2015", "volver", "rusia", "america", "wembley", "qatar", "bicampeones", "legado"];
+const ids = ["comienzos", "alemania-2006", "copa-2007", "beijing-2008", "sudafrica-2010", "copa-2011", "brasil-2012", "maracana", "copa-2015", "volver", "rusia", "america", "wembley", "qatar", "bicampeones", "legado"];
 const desktopViewports = [{ width: 1440, height: 800 }, { width: 1440, height: 1000 }, { width: 1920, height: 1080 }];
 
 async function moment(page: Page, id: string) {
@@ -29,15 +29,17 @@ test("the triangular brand stays on the cover and redundant navigation is absent
 });
 
 for (const viewport of desktopViewports) {
-test(`all fifteen captions keep the same slots and typography at ${viewport.width}×${viewport.height}`, async ({ page }) => {
+test(`all sixteen captions keep the same slots and typography at ${viewport.width}×${viewport.height}`, async ({ page }) => {
   await page.setViewportSize(viewport);
   const errors: string[] = [];
   page.on("pageerror", error => errors.push(error.message));
   await page.goto("/#comienzos");
   await expect(page.locator(".museum")).toHaveAttribute("data-enhanced", "true");
   await page.evaluate(() => document.fonts.ready);
-  await expect(page.locator(".memory-scene img")).toHaveCount(15);
-  await expect(page.locator(".match-score")).toHaveCount(15);
+  await expect(page.locator(".memory-scene img")).toHaveCount(ids.length);
+  await expect(page.locator(".match-score")).toHaveCount(ids.length);
+  await expect(page.locator("#copa-2007 .match-score")).toHaveAttribute("aria-label", "Final de la Copa América: Argentina 0, Brasil 3");
+  await expect(page.locator("#copa-2007 .score-location")).toHaveText("Maracaibo, Venezuela");
   await expect(page.locator("#comienzos .match-score")).toHaveAttribute("aria-label", "Amistoso internacional: Argentina 2, Hungría 1");
   await expect(page.locator("#comienzos .score-location")).toHaveText("Budapest, Hungría");
   await expect(page.locator("#comienzos .score-dismissal")).toHaveText("Messi 64′");
@@ -106,6 +108,8 @@ test("scrolling travels rightward through the story and keyboard navigation is r
   await expect(page.locator('.museum-coverflow')).not.toHaveClass(/loopem-moving/);
   await expect(page.locator(".museum")).toHaveAttribute("data-current-chapter","alemania-2006");
   await page.keyboard.press("ArrowRight");
+  await expect(page.locator(".museum")).toHaveAttribute("data-current-chapter","copa-2007");
+  await page.keyboard.press("ArrowRight");
   await expect(page.locator(".museum")).toHaveAttribute("data-current-chapter","beijing-2008");
   await page.keyboard.press("ArrowRight");
   await expect(page.locator(".museum")).toHaveAttribute("data-current-chapter","sudafrica-2010");
@@ -142,7 +146,7 @@ test("the story remains readable without JavaScript or photography", async ({ br
   const context = await browser.newContext({javaScriptEnabled:false,viewport:{width:1440,height:1000},baseURL:test.info().project.use.baseURL});
   const document = await context.newPage();
   await document.goto("/");
-  await expect(document.locator(".memory-scene")).toHaveCount(15);
+  await expect(document.locator(".memory-scene")).toHaveCount(ids.length);
   await expect(document.getByRole("heading",{name:"El peso de la gloria"})).toBeVisible();
   await context.close();
   await page.route("**/_next/image?*",route=>route.abort());

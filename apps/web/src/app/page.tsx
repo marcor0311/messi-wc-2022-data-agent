@@ -4,6 +4,7 @@ import MuseumExperience from "@/components/museum-experience";
 import MuseumPhoto from "@/components/museum-photo";
 import firstYears from "../../public/memoria/seleccion/debut-2005.jpg";
 import worldCup2006 from "../../public/memoria/seleccion/mundial-2006.webp";
+import copa2007 from "../../public/memoria/seleccion/copa-2007.jpg";
 import olympics2008 from "../../public/memoria/seleccion/olimpicos-2008.webp";
 import worldCup2010 from "../../public/memoria/seleccion/mundial-2010.webp";
 import brazil2012 from "../../public/memoria/seleccion/brasil-2012.jpeg";
@@ -39,6 +40,10 @@ const chapters = [
     body: "Con 18 años, debuta en un Mundial y marca en la goleada 6–0.",
     image: worldCup2006, alt: "Messi celebra su primer gol en un Mundial ante Serbia y Montenegro en 2006", layout: "debut", note: "El primero de muchos escenarios.",
     match: { opponent: "Serbia y Montenegro", goals: [6, 0], competition: "Mundial — fase de grupos", detail: "Messi 88′ — Su primer gol mundialista" } },
+  { id: "copa-2007", year: "2007", date: "15 de julio — Maracaibo", title: "La primera\ngran caída",
+    body: "Brasil gana 3–0 en la final de la Copa América. La primera final con la mayor termina en tristeza.",
+    image: copa2007, alt: "Messi sentado en el césped tras perder la final de la Copa América 2007 ante Brasil", layout: "copa-seven", note: "El sueño también conoce la derrota.",
+    match: { opponent: "Brasil", goals: [0, 3], competition: "Final de la Copa América", detail: "La primera final de Messi con la selección mayor" } },
   { id: "beijing-2008", year: "2008", date: "23 de agosto — Pekín", title: "Oro\ncon Argentina",
     body: "Messi y una generación dorada ganan los Juegos Olímpicos.",
     image: olympics2008, alt: "Messi celebra la medalla de oro olímpica con Argentina en Pekín 2008", layout: "olympic", note: "Una medalla para empezar a creer.",
@@ -96,6 +101,7 @@ const chapters = [
 const locations: Record<(typeof chapters)[number]["id"], string> = {
   comienzos: "Budapest, Hungría",
   "alemania-2006": "Gelsenkirchen, Alemania",
+  "copa-2007": "Maracaibo, Venezuela",
   "beijing-2008": "Pekín, China",
   "sudafrica-2010": "Ciudad del Cabo, Sudáfrica",
   "copa-2011": "Santa Fe, Argentina",
