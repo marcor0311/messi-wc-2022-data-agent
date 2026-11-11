@@ -49,6 +49,7 @@ html:has(.museum), body:has(.museum) { background: #0b203b; }
 .scene-visual { position: relative; width: min(90%,1200px); height: min(56vw,650px); margin: 0 auto; background: #142f4d; }
 .scene-image { position: absolute; inset: 0; }
 .scene-image img { object-fit: cover; }
+.museum img[src*="mundial-2022-carrusel"] { object-position: 20% center; }
 .scene-copy { width: min(85%,1000px); margin: 30px auto 0; }
 .scene-copy h2 { font-size: clamp(2.3rem,4vw,4.2rem); text-wrap: balance; line-height: 1.02; overflow-wrap: anywhere; }
 .scene-copy h2 > span { display: block; }

@@ -18,7 +18,7 @@ import russia from "../../public/memoria/seleccion/mundial-2018.jpg";
 import america from "../../public/memoria/seleccion/copa-2021.jpg";
 import wembley from "../../public/memoria/seleccion/finalissima-2022.jpeg";
 import qatar from "../../public/memoria/seleccion/mundial-2022.jpg";
-import worldChampions from "../../public/memoria/seleccion/mundial-2022.jpg";
+import worldChampions from "../../public/memoria/seleccion/mundial-2022-carrusel.jpg";
 import miami from "../../public/memoria/seleccion/copa-2024.jpg";
 import legacy from "../../public/memoria/seleccion/mundial-2026.jpg";
 import "./museum.css";
@@ -96,7 +96,7 @@ const chapters = [
     match: { opponent: "Italia", goals: [3, 0], competition: "Finalissima", detail: "Lautaro 28′ — Di María 45+1′ — Dybala 90+4′" } },
   { id: "qatar", year: "2022 / DIC", date: "18 de diciembre — Lusail", title: "El mundo cabe\nen sus manos",
     body: "3–3. Penales. Montiel convierte y Argentina vuelve a ser campeona del mundo.",
-    image: worldChampions, alt: "Messi celebra sobre los hombros de un compañero con la Copa del Mundo en Lusail", layout: "world", note: "Campeones del mundo. Para siempre.",
+    image: worldChampions, alt: "Messi sostiene la Copa del Mundo y saluda con el brazo derecho levantado", layout: "world", note: "Campeones del mundo. Para siempre.",
     match: { opponent: "Francia", goals: [3, 3], competition: "Final del Mundial", penalties: [4, 2], detail: "Messi 23′, 108′ — Di María 36′" } },
   { id: "bicampeones", year: "2024", date: "14 de julio — Miami", title: "La alegría\naprendió a quedarse",
     body: "Messi mira desde afuera. Lautaro marca en el alargue y Argentina retiene la Copa América.",

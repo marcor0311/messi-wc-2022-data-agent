@@ -325,6 +325,8 @@ Preserve all fifteen chapter photographs, dates, copy, match results, and penalt
 
 GSAP and ScrollTrigger load as an enhancement and scrub one continuous gallery position against native scroll (`ease: none`, `scrub: true`). Only photographs receive x/y/z and rotationY transforms. The desktop step uses x (67% of viewport width), receding z (320px per position, capped at three), y (20px per position, capped at two), and rotationY (20° per position, capped at ±30°); the narrow version uses x (86%), z (230px), and y (8px). Images beyond (2.5) positions are hidden; opacity falls by (.42) per position to a floor (.15). The cover has no GSAP transform. React does not rerender on animation frames. Reduced motion and expanded reading layout restore intrinsic vertical content, anchors, and every panel.
 
+The World Cup 2022 carousel chapter uses the user-selected 1472×828 AS photograph at `seleccion/mundial-2022-carrusel.jpg`. The full source URL is recorded separately in `selection.json`. Its alt text describes Messi holding the World Cup and raising his right arm, without asserting that this photograph shows the final's stadium or award ceremony. The image fills the existing frame without borders and uses a 20% horizontal focal position to keep the trophy visible in the taller desktop frame. The cover retains its original `mundial-2022.jpg` asset; the Finalissima chapter, scores and narrative remain unchanged. TypeScript and seven selected desktop gallery regressions pass, including every caption at 1440×800, 1440×1000 and 1920×1080, both 2022 chapters, direct navigation, reduced motion and reading without JavaScript. The final crop was visually reviewed at all three sizes.
+
 ## Do's and Don'ts
 
 ### Do:
