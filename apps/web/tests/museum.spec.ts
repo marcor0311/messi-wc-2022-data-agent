@@ -2,7 +2,7 @@ import { test, expect, type Page } from "@playwright/test";
 
 test.skip(({ isMobile }) => !!isMobile, "The landing storytelling is desktop only.");
 
-const ids = ["comienzos", "alemania-2006", "copa-2007", "beijing-2008", "sudafrica-2010", "copa-2011", "brasil-2012", "maracana", "copa-2015", "volver", "rusia", "america", "wembley", "qatar", "bicampeones", "legado"];
+const ids = ["comienzos", "alemania-2006", "copa-2007", "beijing-2008", "camiseta-10-2009", "sudafrica-2010", "copa-2011", "brasil-2012", "maracana", "copa-2015", "volver", "rusia", "america", "wembley", "qatar", "bicampeones", "legado"];
 const desktopViewports = [{ width: 1440, height: 800 }, { width: 1440, height: 1000 }, { width: 1920, height: 1080 }];
 
 async function moment(page: Page, id: string) {
@@ -29,7 +29,7 @@ test("the triangular brand stays on the cover and redundant navigation is absent
 });
 
 for (const viewport of desktopViewports) {
-test(`all sixteen captions keep the same slots and typography at ${viewport.width}×${viewport.height}`, async ({ page }) => {
+test(`all seventeen captions keep the same slots and typography at ${viewport.width}×${viewport.height}`, async ({ page }) => {
   await page.setViewportSize(viewport);
   const errors: string[] = [];
   page.on("pageerror", error => errors.push(error.message));
@@ -112,7 +112,11 @@ test("scrolling travels rightward through the story and keyboard navigation is r
   await page.keyboard.press("ArrowRight");
   await expect(page.locator(".museum")).toHaveAttribute("data-current-chapter","beijing-2008");
   await page.keyboard.press("ArrowRight");
+  await expect(page.locator(".museum")).toHaveAttribute("data-current-chapter","camiseta-10-2009");
+  await page.keyboard.press("ArrowRight");
   await expect(page.locator(".museum")).toHaveAttribute("data-current-chapter","sudafrica-2010");
+  await page.keyboard.press("ArrowLeft");
+  await expect(page.locator(".museum")).toHaveAttribute("data-current-chapter","camiseta-10-2009");
   await page.keyboard.press("ArrowLeft");
   await expect(page.locator(".museum")).toHaveAttribute("data-current-chapter","beijing-2008");
   await expect.poll(() => page.locator("#beijing-2008 .scene-copy").evaluate(el => Number(getComputedStyle(el).opacity))).toBeGreaterThan(.99);
