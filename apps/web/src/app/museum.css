@@ -87,7 +87,7 @@ html:has(.museum), body:has(.museum) { background: #0b203b; }
 .museum-coverflow .loopem-slot { --loopem-opacity: 1; }
 .coverflow-photo { position: relative; width: 62vw; height: min(60svh,calc(100svh - var(--gallery-copy-height) - 24px)); margin: 0; background: #142f4d; backface-visibility: hidden; }
 .coverflow-photo img { display: block; width: 100%; height: 100%; object-fit: cover; pointer-events: none; user-select: none; }
-.museum img[src*="quito-2017"] { object-position: center top; }
+.museum img[src*="quito-2017"], .museum img[src*="brasil-2013"] { object-position: center top; }
 .is-coverflow :is(.memory-scene,.museum-gallery-clip,.museum-perspective) { display: contents; }
 .is-coverflow .scene-stage { display: none; }
 /* Every caption contributes to the same tracks, including the hidden chapters.
