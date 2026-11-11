@@ -1,0 +1,310 @@
+[
+  {
+    "id": "comienzos",
+    "year": "2005",
+    "date": "El comienzo — Rosario",
+    "title": "Una camiseta\nToda una vida",
+    "body": "Del dieciocho al diez. El sueño apenas empezaba.",
+    "image": "/memoria/seleccion/debut-2005.jpg",
+    "alt": "El joven Messi durante su debut con Argentina ante Hungría en 2005",
+    "layout": "opening",
+    "note": "Todavía no pesaba la gloria. Solo el sueño.",
+    "match": null
+  },
+  {
+    "id": "alemania-2006",
+    "year": "2006",
+    "date": "16 de junio — Gelsenkirchen",
+    "title": "El mundo\nlo descubre",
+    "body": "Con 18 años, debuta en un Mundial y marca en la goleada 6–0.",
+    "image": "/memoria/seleccion/mundial-2006.webp",
+    "alt": "Messi celebra su primer gol en un Mundial ante Serbia y Montenegro en 2006",
+    "layout": "debut",
+    "note": "El primero de muchos escenarios.",
+    "match": {
+      "opponent": "Serbia y Montenegro",
+      "goals": [
+        6,
+        0
+      ],
+      "competition": "Mundial — fase de grupos",
+      "detail": "Messi 88′ — Su primer gol mundialista"
+    }
+  },
+  {
+    "id": "beijing-2008",
+    "year": "2008",
+    "date": "23 de agosto — Pekín",
+    "title": "Oro\ncon Argentina",
+    "body": "Messi y una generación dorada ganan los Juegos Olímpicos.",
+    "image": "/memoria/seleccion/olimpicos-2008.webp",
+    "alt": "Messi celebra la medalla de oro olímpica con Argentina en Pekín 2008",
+    "layout": "olympic",
+    "note": "Una medalla para empezar a creer.",
+    "match": {
+      "opponent": "Nigeria",
+      "goals": [
+        1,
+        0
+      ],
+      "competition": "Final olímpica",
+      "detail": "Di María 58′"
+    }
+  },
+  {
+    "id": "sudafrica-2010",
+    "year": "2010",
+    "date": "3 de julio — Ciudad del Cabo",
+    "title": "Un sueño\ninterrumpido",
+    "body": "Alemania gana 4–0. Argentina vuelve a quedarse en cuartos.",
+    "image": "/memoria/seleccion/mundial-2010.webp",
+    "alt": "Messi durante el Mundial de Sudáfrica 2010",
+    "layout": "setback",
+    "note": "La espera continúa.",
+    "match": {
+      "opponent": "Alemania",
+      "goals": [
+        0,
+        4
+      ],
+      "competition": "Cuartos del Mundial",
+      "detail": "El final de Sudáfrica"
+    }
+  },
+  {
+    "id": "copa-2011",
+    "year": "2011",
+    "date": "16 de julio — Santa Fe",
+    "title": "La Copa\nen casa",
+    "body": "Argentina cae en cuartos ante Uruguay, en los penales. La espera sigue.",
+    "image": "/memoria/seleccion/copa-2011.webp",
+    "alt": "Messi con Argentina durante la Copa América 2011",
+    "layout": "copa-eleven",
+    "note": "Otra ilusión que se escapa.",
+    "match": {
+      "opponent": "Uruguay",
+      "goals": [
+        1,
+        1
+      ],
+      "competition": "Cuartos de Copa América",
+      "penalties": [
+        4,
+        5
+      ],
+      "detail": "120 minutos sin ganador"
+    }
+  },
+  {
+    "id": "brasil-2012",
+    "year": "2012",
+    "date": "9 de junio — Nueva Jersey",
+    "title": "Una noche\npara recordar",
+    "body": "Hat-trick de Messi. Argentina vence a Brasil 4–3 en un amistoso inolvidable.",
+    "image": "/memoria/seleccion/brasil-2012.jpeg",
+    "alt": "Messi celebra su hat-trick ante Brasil en Nueva Jersey en 2012",
+    "layout": "brasil",
+    "note": "Tres goles. Una noche épica.",
+    "match": {
+      "opponent": "Brasil",
+      "goals": [
+        4,
+        3
+      ],
+      "competition": "Amistoso internacional",
+      "detail": "Messi 31′, 34′, 85′"
+    }
+  },
+  {
+    "id": "maracana",
+    "year": "2014",
+    "date": "13 de julio — Maracaná",
+    "title": "Tan cerca\nTan lejos",
+    "body": "A un partido de la copa. Götze marca en el 113. Otra vez, el sueño queda del otro lado.",
+    "image": "/memoria/seleccion/mundial-2014.jpg",
+    "alt": "Messi mira la Copa del Mundo durante la entrega de premios de la final de 2014",
+    "layout": "heartbreak",
+    "note": "A veces, un solo gol pesa una vida.",
+    "match": {
+      "opponent": "Alemania",
+      "goals": [
+        0,
+        1
+      ],
+      "competition": "Final del Mundial",
+      "detail": "Götze 113′ — Tiempo extra"
+    }
+  },
+  {
+    "id": "copa-2015",
+    "year": "2015",
+    "date": "4 de julio — Santiago",
+    "title": "Otra final\nque se escapa",
+    "body": "Chile gana por penales. Messi vuelve a quedarse a un paso.",
+    "image": "/memoria/seleccion/copa-2015.webp",
+    "alt": "Messi con Argentina durante la Copa América 2015",
+    "layout": "copa-fifteen",
+    "note": "La segunda final perdida en un año.",
+    "match": {
+      "opponent": "Chile",
+      "goals": [
+        0,
+        0
+      ],
+      "competition": "Final de Copa América",
+      "penalties": [
+        1,
+        4
+      ],
+      "detail": "120 minutos sin goles"
+    }
+  },
+  {
+    "id": "volver",
+    "year": "2016",
+    "date": "26 de junio — East Rutherford",
+    "title": "Hasta para volver\nhay que ser gigante",
+    "body": "Falla el penal y anuncia su retiro. Parece el final.",
+    "image": "/memoria/seleccion/copa-2016.jpg",
+    "alt": "Messi sentado en el césped después de la final de la Copa América 2016",
+    "layout": "farewell",
+    "note": "Se fue. Le dolió. Y volvió.",
+    "match": {
+      "opponent": "Chile",
+      "goals": [
+        0,
+        0
+      ],
+      "competition": "Final de la Copa América",
+      "penalties": [
+        2,
+        4
+      ],
+      "detail": "120 minutos sin goles"
+    }
+  },
+  {
+    "id": "rusia",
+    "year": "2018",
+    "date": "30 de junio — Kazán",
+    "title": "Todavía\nno era el final",
+    "body": "Un hat-trick en Quito salva la clasificación. En Rusia, Francia gana 4–3.",
+    "image": "/memoria/seleccion/mundial-2018.jpg",
+    "alt": "Messi se lleva la mano al rostro durante el Mundial de Rusia 2018",
+    "layout": "editorial",
+    "note": "Había que volver a empezar. Juntos.",
+    "match": {
+      "opponent": "Francia",
+      "goals": [
+        3,
+        4
+      ],
+      "competition": "Octavos del Mundial",
+      "detail": "La última caída antes de un nuevo equipo"
+    }
+  },
+  {
+    "id": "america",
+    "year": "2021",
+    "date": "10 de julio — Maracaná",
+    "title": "El abrazo que\ntardó una vida",
+    "body": "Di María marca. En el mismo estadio de la derrota, Messi por fin levanta una copa.",
+    "image": "/memoria/seleccion/copa-2021.jpg",
+    "alt": "Messi besa la Copa América 2021, rodeado de sus compañeros",
+    "layout": "celebration",
+    "note": "Esta vez, las lágrimas eran de alegría.",
+    "match": {
+      "opponent": "Brasil",
+      "goals": [
+        1,
+        0
+      ],
+      "competition": "Final de la Copa América",
+      "detail": "Di María 22′ — Se termina la espera"
+    }
+  },
+  {
+    "id": "wembley",
+    "year": "2022 / JUN",
+    "date": "1 de junio — Wembley",
+    "title": "Ya no era\nsolo un sueño",
+    "body": "Argentina gana 3–0. A Qatar ya no viaja un hombre solo: viaja un equipo.",
+    "image": "/memoria/seleccion/finalissima-2022.jpeg",
+    "alt": "Messi levanta el trofeo de la Finalissima 2022 con sus compañeros en Wembley",
+    "layout": "wembley",
+    "note": "La confianza también se aprende.",
+    "match": {
+      "opponent": "Italia",
+      "goals": [
+        3,
+        0
+      ],
+      "competition": "Finalissima",
+      "detail": "Lautaro 28′ — Di María 45+1′ — Dybala 90+4′"
+    }
+  },
+  {
+    "id": "qatar",
+    "year": "2022 / DIC",
+    "date": "18 de diciembre — Lusail",
+    "title": "El mundo cabe\nen sus manos",
+    "body": "3–3. Penales. Montiel convierte y Argentina vuelve a ser campeona del mundo.",
+    "image": "/memoria/seleccion/mundial-2022.jpg",
+    "alt": "Messi celebra sobre los hombros de un compañero con la Copa del Mundo en Lusail",
+    "layout": "world",
+    "note": "Campeones del mundo. Para siempre.",
+    "match": {
+      "opponent": "Francia",
+      "goals": [
+        3,
+        3
+      ],
+      "competition": "Final del Mundial",
+      "penalties": [
+        4,
+        2
+      ],
+      "detail": "Messi 23′, 108′ — Di María 36′"
+    }
+  },
+  {
+    "id": "bicampeones",
+    "year": "2024",
+    "date": "14 de julio — Miami",
+    "title": "La alegría\naprendió a quedarse",
+    "body": "Messi mira desde afuera. Lautaro marca en el alargue y Argentina retiene la Copa América.",
+    "image": "/memoria/seleccion/copa-2024.jpg",
+    "alt": "Messi, Di María y sus compañeros celebran con la Copa América 2024",
+    "layout": "encore",
+    "note": "El legado también es lo que sigue sin vos.",
+    "match": {
+      "opponent": "Colombia",
+      "goals": [
+        1,
+        0
+      ],
+      "competition": "Final de la Copa América",
+      "detail": "Lautaro Martínez 112′ — Tiempo extra"
+    }
+  },
+  {
+    "id": "legado",
+    "year": "2026",
+    "date": "19 de julio — Nueva Jersey",
+    "title": "El pasado\nfrente al futuro",
+    "body": "Messi y Yamal, el pasado frente al futuro. España gana 1–0; el legado sigue en quienes vienen.",
+    "image": "/memoria/seleccion/mundial-2026.jpg",
+    "alt": "Messi conduce el balón ante un jugador de España en la final del Mundial 2026",
+    "layout": "legacy",
+    "note": "El final duele. El camino queda.",
+    "match": {
+      "opponent": "España",
+      "goals": [
+        0,
+        1
+      ],
+      "competition": "Final del Mundial",
+      "detail": "Ferran Torres 104′ — Tiempo extra"
+    }
+  }
+]

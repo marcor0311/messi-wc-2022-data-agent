@@ -22,6 +22,9 @@ node_modules/
 .next/
 out/
 *.tsbuildinfo
+playwright-report/
+test-results/
+/artifacts/
 
 # Python
 __pycache__/
