@@ -23,7 +23,7 @@ test("WCAG contrast checks cover every photographic chapter and the analysis", a
   // Measure the readable final state, independently of an entrance's transient opacity.
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/");
-  for (const id of ["portada", "comienzos", "camiseta-10-2009", "maracana", "volver", "rusia", "america", "wembley", "qatar", "bicampeones", "legado"]) {
+  for (const id of ["portada", "comienzos", "camiseta-10-2009", "maracana", "volver", "quito-2017", "rusia", "america", "wembley", "qatar", "bicampeones", "legado"]) {
     await page.locator(`#${id}`).evaluate(element => element.scrollIntoView({ behavior: "instant" }));
     const results = await new AxeBuilder({ page }).include(`#${id}`).withRules(["color-contrast"]).analyze();
     expect(results.violations, `${id}: ${JSON.stringify(results.violations.map(v => v.nodes))}`).toEqual([]);
@@ -40,7 +40,7 @@ test("200% default text size and WCAG text spacing preserve the full story", asy
   await page.goto("/");
   await page.addStyleTag({ content: `html { font-size: 200% !important; } ${spacing}` });
   await expect(page.locator(".museum")).toHaveAttribute("data-reading", "true");
-  for (const id of ["portada", "comienzos", "camiseta-10-2009", "maracana", "volver", "rusia", "america", "wembley", "qatar", "bicampeones", "legado"]) {
+  for (const id of ["portada", "comienzos", "camiseta-10-2009", "maracana", "volver", "quito-2017", "rusia", "america", "wembley", "qatar", "bicampeones", "legado"]) {
     const bounds = await page.locator(`#${id}`).evaluate(section => {
       const stage = section;
       const copy = section.querySelector<HTMLElement>(".scene-copy,.hero-copy,.finale-text")!;

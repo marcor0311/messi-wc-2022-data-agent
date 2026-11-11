@@ -13,6 +13,7 @@ import copa2011 from "../../public/memoria/seleccion/copa-2011.webp";
 import copa2015 from "../../public/memoria/seleccion/copa-2015.webp";
 import rio from "../../public/memoria/seleccion/mundial-2014.jpg";
 import centenario from "../../public/memoria/seleccion/copa-2016.jpg";
+import quito2017 from "../../public/memoria/seleccion/quito-2017.jpg";
 import russia from "../../public/memoria/seleccion/mundial-2018.jpg";
 import america from "../../public/memoria/seleccion/copa-2021.jpg";
 import wembley from "../../public/memoria/seleccion/finalissima-2022.jpeg";
@@ -77,8 +78,12 @@ const chapters = [
     body: "Falla el penal y anuncia su retiro. Parece el final.",
     image: centenario, alt: "Messi sentado en el césped después de la final de la Copa América 2016", layout: "farewell", note: "Se fue. Le dolió. Y volvió.",
     match: { opponent: "Chile", goals: [0, 0], competition: "Final de la Copa América", penalties: [2, 4], detail: "120 minutos sin goles" } },
+  { id: "quito-2017", year: "2017", date: "10 de octubre — Quito", title: "El pase\nal Mundial",
+    body: "Tres goles de Messi en Quito. Argentina vence 3–1 a Ecuador y asegura su lugar en Rusia.",
+    image: quito2017, alt: "Messi conduce el balón con la camiseta de Argentina en 2017", layout: "qualification", note: "Cuando un país entero necesitaba creer.",
+    match: { opponent: "Ecuador", goals: [3, 1], competition: "Eliminatorias al Mundial", detail: "Hat-trick de Messi — Argentina clasifica a Rusia 2018" } },
   { id: "rusia", year: "2018", date: "30 de junio — Kazán", title: "Todavía\nno era el final",
-    body: "Un hat-trick en Quito salva la clasificación. En Rusia, Francia gana 4–3.",
+    body: "En Rusia, Francia gana 4–3. Argentina se despide en octavos.",
     image: russia, alt: "Messi se lleva la mano al rostro durante el Mundial de Rusia 2018", layout: "editorial", note: "Había que volver a empezar. Juntos.",
     match: { opponent: "Francia", goals: [3, 4], competition: "Octavos del Mundial", detail: "La última caída antes de un nuevo equipo" } },
   { id: "america", year: "2021", date: "10 de julio — Maracaná", title: "El abrazo que\ntardó una vida",
@@ -115,6 +120,7 @@ const locations: Record<(typeof chapters)[number]["id"], string> = {
   maracana: "Río de Janeiro, Brasil",
   "copa-2015": "Santiago, Chile",
   volver: "East Rutherford, Estados Unidos",
+  "quito-2017": "Quito, Ecuador",
   rusia: "Kazán, Rusia",
   america: "Río de Janeiro, Brasil",
   wembley: "Londres, Inglaterra",
