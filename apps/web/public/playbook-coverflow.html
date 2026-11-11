@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b203b">
+  <title>Propuesta desktop · Coverflow — La memoria albiceleste</title>
+  <link rel="stylesheet" href="/playbook-assets/coverflow.css">
+</head>
+<body>
+  <main class="proposal">
+    <header class="masthead">
+      <a class="brand" href="/" aria-label="Volver a La memoria albiceleste">
+        <svg viewBox="0 0 48 36" fill="currentColor" aria-hidden="true"><path d="m9 4 2 4 5 .7-3.5 3.4.8 4.9L9 14.7l-4.3 2.3.8-4.9L2 8.7l5-.7Zm15-4 2 4 5 .7-3.5 3.4.8 4.9-4.3-2.3-4.3 2.3.8-4.9L17 4.7l5-.7Zm15 4 2 4 5 .7-3.5 3.4.8 4.9-4.3-2.3-4.3 2.3.8-4.9L32 8.7l5-.7Z"/></svg>
+        <span>LA MEMORIA<br><strong>ALBICELESTE</strong></span>
+      </a>
+      <span class="proposal-label">Propuesta desktop <span aria-hidden="true">/</span> Coverflow</span>
+      <a class="back-link" href="/">Volver al sitio <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a>
+    </header>
+
+    <section class="gallery" aria-label="Propuesta coverflow con las quince fotografías">
+      <div id="coverflow" class="coverflow" aria-label="Recorrido fotográfico de Messi. Arrastra o usa las flechas para cambiar de momento." aria-describedby="instructions"></div>
+      <div class="gallery-meta"><span id="photo-position">07 <span>/ 15</span></span><p id="instructions">Arrastra las fotos <span aria-hidden="true">·</span> Usa la rueda o las flechas</p><button id="play" type="button" aria-pressed="false">Ver en movimiento <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 10 7-10 7Z"/></svg></button></div>
+      <p id="load-status" class="load-status" role="status">Cargando las fotografías…</p>
+    </section>
+
+    <section class="caption" aria-label="Momento seleccionado">
+      <p id="year" class="year">2014</p>
+      <div class="chapter-heading"><h1 id="chapter-title">Tan cerca<br>Tan lejos</h1><p id="place" class="place">13 de julio — Maracaná</p></div>
+      <div class="chapter-context"><p id="story" class="story">A un partido de la copa. Götze marca en el 113. Otra vez, el sueño queda del otro lado.</p><div id="score" class="score"></div></div>
+    </section>
+
+    <footer class="timeline-wrap">
+      <nav id="timeline" class="timeline" aria-label="Elegir un momento de la historia"></nav>
+      <div class="navigation"><button type="button" id="previous" aria-label="Foto anterior"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12H4m6-6-6 6 6 6"/></svg></button><button type="button" id="next" aria-label="Foto siguiente"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16m-6-6 6 6-6 6"/></svg></button></div>
+    </footer>
+    <div class="review-note"><p>Fotos opacas. Profundidad y giro. Texto fuera del recorrido.</p><a href="https://loopem.tahazsh.com/docs/layouts/coverflow/" target="_blank" rel="noreferrer">Referencia: Loopem Cover Flow</a></div>
+    <noscript><p class="noscript">Activa JavaScript para explorar esta propuesta. <a href="/">Volver al sitio</a>.</p></noscript>
+  </main>
+  <script src="/playbook-assets/gsap.min.js"></script>
+  <script type="module" src="/playbook-assets/coverflow.js"></script>
+</body>
+</html>
