@@ -54,7 +54,10 @@ html:has(.museum), body:has(.museum) { background: #0b203b; }
 .scene-copy h2 > span { display: block; }
 .scene-copy h2:focus { outline: none; }
 .scene-summary { margin-top: 16px; color: var(--memory-blue); font-size: 1.125rem; line-height: 1.5; }
-.match-score { margin-top: 28px; padding-top: 18px; border-top: 1px solid var(--memory-line); }
+:is(.match-score,.chapter-award) { margin-top: 28px; padding-top: 18px; border-top: 1px solid var(--memory-line); }
+.award-board { display: flex; align-items: center; gap: 20px; }
+.award-count { font: 700 clamp(3.5rem,5vw,5rem)/1 var(--museum-display),sans-serif; font-variant-numeric: tabular-nums; text-box-trim: trim-both; text-box-edge: cap alphabetic; }
+.award-label { max-width: 8ch; color: var(--memory-blue); font-size: 1rem; line-height: 1.5; }
 .score-location { margin-bottom: 16px; color: var(--memory-blue); font-size: 1.125rem; line-height: 1.5; }
 .score-board { display: grid; grid-template-columns: minmax(0,1fr) auto minmax(0,1fr); align-items: center; gap: 18px; }
 .score-team { font-size: .875rem; line-height: 1.5; overflow-wrap: anywhere; }
@@ -101,14 +104,15 @@ html:has(.museum), body:has(.museum) { background: #0b203b; }
 .is-coverflow .scene-copy h2 { grid-row: 1 / 3; font-size: clamp(3rem,4.55vw,6rem); line-height: 1; }
 .is-coverflow .scene-summary { grid-row: 3; margin: 0; font-size: clamp(1.125rem,1.25vw,1.375rem); }
 .is-coverflow .scene-heading { grid-column: 2; grid-row: 1 / -1; min-width: 0; display: grid; grid-template-rows: subgrid; }
-.is-coverflow .match-score { grid-column: 3; grid-row: 1 / -1; display: grid; grid-template-rows: subgrid; margin: 0; padding: 0; border: 0; }
+.is-coverflow :is(.match-score,.chapter-award) { grid-column: 3; grid-row: 1 / -1; display: grid; grid-template-rows: subgrid; margin: 0; padding: 0; border: 0; }
+.is-coverflow .award-board { grid-row: 2; }
 .is-coverflow .score-context { grid-row: 3; display: grid; grid-template-columns: minmax(0,1fr) 7rem; grid-template-rows: minmax(0,1fr); gap: 16px; margin: 0; }
 .is-coverflow .score-competition { grid-column: 1; }
 .is-coverflow :is(.score-penalties,.score-dismissal) { grid-column: 2; }
 .is-coverflow .score-penalties strong { white-space: nowrap; }
 .is-coverflow .score-dismissal { align-items: start; }
 .is-coverflow .score-location { grid-row: 1; margin-bottom: 0; font-size: clamp(1.125rem,1.25vw,1.375rem); }
-.is-coverflow .score-result { font-size: clamp(6rem,8vw,9rem); }
+.is-coverflow :is(.score-result,.award-count) { font-size: clamp(6rem,8vw,9rem); }
 .is-coverflow .score-board { grid-row: 2; grid-template-columns: minmax(0,1fr) auto minmax(0,1.25fr); align-items: stretch; gap: 6px; }
 .is-coverflow .score-team { display: flex; align-items: center; }
 .is-coverflow .score-team:last-child { justify-content: end; }

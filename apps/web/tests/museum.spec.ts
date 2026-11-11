@@ -2,7 +2,7 @@ import { test, expect, type Page } from "@playwright/test";
 
 test.skip(({ isMobile }) => !!isMobile, "The landing storytelling is desktop only.");
 
-const ids = ["comienzos", "alemania-2006", "copa-2007", "beijing-2008", "camiseta-10-2009", "sudafrica-2010", "copa-2011", "brasil-2012", "brasil-2013", "maracana", "copa-2015", "volver", "quito-2017", "rusia", "america", "wembley", "qatar", "bicampeones", "legado"];
+const ids = ["comienzos", "alemania-2006", "copa-2007", "beijing-2008", "camiseta-10-2009", "sudafrica-2010", "copa-2011", "brasil-2012", "brasil-2013", "maracana", "copa-2015", "volver", "quito-2017", "rusia", "america", "wembley", "qatar", "balon-oro-2023", "bicampeones", "legado"];
 const desktopViewports = [{ width: 1440, height: 800 }, { width: 1440, height: 1000 }, { width: 1920, height: 1080 }];
 
 async function moment(page: Page, id: string) {
@@ -29,7 +29,7 @@ test("the triangular brand stays on the cover and redundant navigation is absent
 });
 
 for (const viewport of desktopViewports) {
-test(`all nineteen captions keep the same slots and typography at ${viewport.width}×${viewport.height}`, async ({ page }) => {
+test(`all twenty captions keep the same slots and typography at ${viewport.width}×${viewport.height}`, async ({ page }) => {
   await page.setViewportSize(viewport);
   const errors: string[] = [];
   page.on("pageerror", error => errors.push(error.message));
@@ -37,7 +37,12 @@ test(`all nineteen captions keep the same slots and typography at ${viewport.wid
   await expect(page.locator(".museum")).toHaveAttribute("data-enhanced", "true");
   await page.evaluate(() => document.fonts.ready);
   await expect(page.locator(".memory-scene img")).toHaveCount(ids.length);
-  await expect(page.locator(".match-score")).toHaveCount(ids.length);
+  await expect(page.locator(".match-score")).toHaveCount(ids.length - 1);
+  await expect(page.locator(".chapter-award")).toHaveCount(1);
+  await expect(page.locator("#balon-oro-2023 .chapter-award")).toHaveAttribute("aria-label", "8 Balones de Oro de Lionel Messi");
+  await expect(page.locator("#balon-oro-2023 .award-count")).toHaveText("8");
+  await expect(page.locator("#balon-oro-2023 .award-label")).toHaveText("Balones de Oro");
+  await expect(page.locator("#balon-oro-2023 .score-board")).toHaveCount(0);
   await expect(page.locator("#copa-2007 .match-score")).toHaveAttribute("aria-label", "Final de la Copa América: Argentina 0, Brasil 3");
   await expect(page.locator("#copa-2007 .score-location")).toHaveText("Maracaibo, Venezuela");
   await expect(page.locator("#comienzos .match-score")).toHaveAttribute("aria-label", "Amistoso internacional: Argentina 2, Hungría 1");
@@ -45,22 +50,23 @@ test(`all nineteen captions keep the same slots and typography at ${viewport.wid
   await expect(page.locator("#comienzos .score-dismissal")).toHaveText("Messi 64′");
   await expect(page.locator("#comienzos .score-dismissal").getByRole("img", { name: "Tarjeta roja" })).toBeVisible();
   await expect(page.locator(".scene-story,.scene-date,.scene-note")).toHaveCount(0);
-  const slots = (id: string) => page.locator(`#${id}`).evaluate(panel =>
-    [...panel.querySelectorAll<HTMLElement>(".scene-copy,.scene-year,.scene-heading,h2,.scene-summary,.match-score,.score-location,.score-board,.score-team,.score-result,.score-result strong,.score-context,.score-competition")].map(element => {
+  const slots = (id: string, sharedOnly = false) => page.locator(`#${id}`).evaluate((panel, sharedOnly) =>
+    [...panel.querySelectorAll<HTMLElement>(sharedOnly ? ".scene-copy,.scene-year,.scene-heading,h2,.scene-summary,.match-score,.chapter-award,.score-location,.score-context,.score-competition" : ".scene-copy,.scene-year,.scene-heading,h2,.scene-summary,.match-score,.score-location,.score-board,.score-team,.score-result,.score-result strong,.score-context,.score-competition")].map(element => {
       const box = element.getBoundingClientRect();
       const style = getComputedStyle(element);
       return { x: box.x, y: box.y, width: box.width, height: box.height, fontSize: style.fontSize, transform: style.transform };
-    })
+    }), sharedOnly
   );
   const referenceSlots = await slots(ids[0]);
+  const referenceSharedSlots = await slots(ids[0], true);
   for (const id of ids) {
     await moment(page,id);
     await expect.poll(() => page.locator('.museum-coverflow [data-loopem-centered] img').evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0)).toBe(true);
     const bounds = await page.locator(`#${id}`).evaluate(panel => {
       const rect = (selector: string) => panel.querySelector(selector)!.getBoundingClientRect();
       const photo = document.querySelector('.museum-coverflow [data-loopem-centered]')!.getBoundingClientRect(), copy = rect(".scene-copy"), year = rect(".scene-year"), phrase = rect("h2"), summary = rect(".scene-summary"), location = rect(".score-location");
-      const score = panel.querySelector(".score-board")?.getBoundingClientRect();
-      const texts = [...panel.querySelectorAll(".scene-year,.scene-heading,.match-score,.score-location")].map(element => element.getBoundingClientRect());
+      const score = panel.querySelector(".score-board,.award-board")?.getBoundingClientRect();
+      const texts = [...panel.querySelectorAll(".scene-year,.scene-heading,.match-score,.chapter-award,.score-location")].map(element => element.getBoundingClientRect());
       return {
         overlap: photo.left < copy.right && photo.right > copy.left && photo.top < copy.bottom && photo.bottom > copy.top,
         clipped: copy.left < 0 || copy.right > innerWidth || copy.top < 0 || copy.bottom > innerHeight || texts.some(text => text.bottom > innerHeight || text.right > copy.right + 1),
@@ -80,7 +86,9 @@ test(`all nineteen captions keep the same slots and typography at ${viewport.wid
       };
     });
     expect(bounds,id).toEqual({overlap:false,clipped:false,ordered:true,topAligned:true,sharedFooter:true,nativeYear:true,wholeTeamNames:true});
-    expect(await slots(id), `${id}: no slot changes size or position between chapters`).toEqual(referenceSlots);
+    if (id === "balon-oro-2023") {
+      expect(await slots(id, true), "the award shares the year, narrative, location and footer tracks").toEqual(referenceSharedSlots);
+    } else expect(await slots(id), `${id}: no slot changes size or position between chapters`).toEqual(referenceSlots);
   }
   await moment(page,"qatar");
   await expect(page.locator("#qatar .match-score")).toHaveAttribute("aria-label","Final del Mundial: Argentina 3, Francia 3. Penales: Argentina 4, Francia 2");

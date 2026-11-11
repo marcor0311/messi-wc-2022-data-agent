@@ -20,6 +20,7 @@ import america from "../../public/memoria/seleccion/copa-2021.jpg";
 import wembley from "../../public/memoria/seleccion/finalissima-2022.jpeg";
 import qatar from "../../public/memoria/seleccion/mundial-2022.jpg";
 import worldChampions from "../../public/memoria/seleccion/mundial-2022.jpg";
+import ballonDor2023 from "../../public/memoria/seleccion/balon-oro-2023.jpg";
 import miami from "../../public/memoria/seleccion/copa-2024.jpg";
 import legacy from "../../public/memoria/seleccion/mundial-2026.jpg";
 import "./museum.css";
@@ -103,6 +104,10 @@ const chapters = [
     body: "3–3. Penales. Montiel convierte y Argentina vuelve a ser campeona del mundo.",
     image: worldChampions, alt: "Messi celebra sobre los hombros de un compañero con la Copa del Mundo en Lusail", layout: "world", note: "Campeones del mundo. Para siempre.",
     match: { opponent: "Francia", goals: [3, 3], competition: "Final del Mundial", penalties: [4, 2], detail: "Messi 23′, 108′ — Di María 36′" } },
+  { id: "balon-oro-2023", year: "2023", date: "30 de octubre — París", title: "No más\npresión",
+    body: "El octavo y último Balón de Oro. Después de ganar el Mundial, ya no queda nada por demostrar.",
+    image: ballonDor2023, alt: "Messi sonríe con su octavo Balón de Oro en la ceremonia de 2023", layout: "award", note: "La gloria ya no pesa.",
+    match: null, award: { total: 8, label: "Balones de Oro", organizer: "France Football" } },
   { id: "bicampeones", year: "2024", date: "14 de julio — Miami", title: "La alegría\naprendió a quedarse",
     body: "Messi mira desde afuera. Lautaro marca en el alargue y Argentina retiene la Copa América.",
     image: miami, alt: "Messi, Di María y sus compañeros celebran con la Copa América 2024", layout: "encore", note: "El legado también es lo que sigue sin vos.",
@@ -131,6 +136,7 @@ const locations: Record<(typeof chapters)[number]["id"], string> = {
   america: "Río de Janeiro, Brasil",
   wembley: "Londres, Inglaterra",
   qatar: "Lusail, Qatar",
+  "balon-oro-2023": "París, Francia",
   bicampeones: "Miami Gardens, Estados Unidos",
   legado: "East Rutherford, Estados Unidos",
 };
@@ -154,6 +160,14 @@ function Score({ match, location }: { match: Match; location: string }) {
       {match.penalties ? <span className="score-penalties">Penales <strong>{match.penalties[0]} — {match.penalties[1]}</strong></span> : null}
       {match.redCard ? <span className="score-dismissal"><svg viewBox="0 0 12 18" role="img" aria-label="Tarjeta roja"><rect x="1" y="1" width="10" height="16" rx="1" fill="currentColor" /></svg><span>{match.redCard.player} {match.redCard.minute}′</span></span> : null}
     </div>
+  </div>;
+}
+
+function Award({ award, location }: { award: { total: number; label: string; organizer: string }; location: string }) {
+  return <div className="chapter-award" role="group" aria-label={`${award.total} ${award.label} de Lionel Messi`}>
+    <p className="score-location">{location}</p>
+    <div className="award-board"><strong className="award-count">{award.total}</strong><span className="award-label">{award.label}</span></div>
+    <div className="score-context"><span className="score-competition">{award.organizer}</span></div>
   </div>;
 }
 
@@ -185,7 +199,7 @@ export default function Home() {
                 <div className="scene-copy">
                   <p className="scene-year"><span className="scene-year-label">{chapter.year.split(" / ")[0]}</span></p>
                   <div className="scene-heading"><h2 id={`title-${chapter.id}`} tabIndex={-1}>{chapter.title.split("\n").map(line => <span key={line}>{line}</span>)}</h2><p className="scene-summary">{chapter.body}</p></div>
-                  {chapter.match ? <Score match={chapter.match} location={locations[chapter.id]} /> : <p className="score-location">{locations[chapter.id]}</p>}
+                  {chapter.match ? <Score match={chapter.match} location={locations[chapter.id]} /> : <Award award={chapter.award} location={locations[chapter.id]} />}
                 </div>
             </section>)}
           </div></div></div>
