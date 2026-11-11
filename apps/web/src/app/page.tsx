@@ -9,6 +9,7 @@ import olympics2008 from "../../public/memoria/seleccion/olimpicos-2008.webp";
 import numberTen2009 from "../../public/memoria/seleccion/camiseta-10-2009.jpg";
 import worldCup2010 from "../../public/memoria/seleccion/mundial-2010.webp";
 import brazil2012 from "../../public/memoria/seleccion/brasil-2012.jpeg";
+import brazil2013 from "../../public/memoria/seleccion/brasil-2013.jpg";
 import copa2011 from "../../public/memoria/seleccion/copa-2011.webp";
 import copa2015 from "../../public/memoria/seleccion/copa-2015.webp";
 import rio from "../../public/memoria/seleccion/mundial-2014.jpg";
@@ -66,6 +67,10 @@ const chapters = [
     body: "Hat-trick de Messi. Argentina vence a Brasil 4–3 en un amistoso inolvidable.",
     image: brazil2012, alt: "Messi celebra su hat-trick ante Brasil en Nueva Jersey en 2012", layout: "brasil", note: "Tres goles. Una noche épica.",
     match: { opponent: "Brasil", goals: [4, 3], competition: "Amistoso internacional", detail: "Messi 31′, 34′, 85′" } },
+  { id: "brasil-2013", year: "2013", date: "10 de septiembre — Asunción", title: "El sueño\ntiene destino",
+    body: "Messi marca dos veces. Argentina vence 5–2 a Paraguay y sella su pasaje a Brasil 2014.",
+    image: brazil2013, alt: "Messi celebra con los brazos abiertos y la camiseta de Argentina", layout: "brazil-qualification", note: "Brasil ya estaba en el horizonte.",
+    match: { opponent: "Paraguay", goals: [5, 2], competition: "Eliminatorias al Mundial", detail: "Doblete de Messi de penal — Argentina clasifica a Brasil 2014" } },
   { id: "maracana", year: "2014", date: "13 de julio — Maracaná", title: "Tan cerca\nTan lejos",
     body: "A un partido de la copa. Götze marca en el 113. Otra vez, el sueño queda del otro lado.",
     image: rio, alt: "Messi mira la Copa del Mundo durante la entrega de premios de la final de 2014", layout: "heartbreak", note: "A veces, un solo gol pesa una vida.",
@@ -117,6 +122,7 @@ const locations: Record<(typeof chapters)[number]["id"], string> = {
   "sudafrica-2010": "Ciudad del Cabo, Sudáfrica",
   "copa-2011": "Santa Fe, Argentina",
   "brasil-2012": "East Rutherford, Estados Unidos",
+  "brasil-2013": "Asunción, Paraguay",
   maracana: "Río de Janeiro, Brasil",
   "copa-2015": "Santiago, Chile",
   volver: "East Rutherford, Estados Unidos",
