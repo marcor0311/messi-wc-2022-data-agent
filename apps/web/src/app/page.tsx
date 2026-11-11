@@ -6,6 +6,7 @@ import firstYears from "../../public/memoria/seleccion/debut-2005.jpg";
 import worldCup2006 from "../../public/memoria/seleccion/mundial-2006.webp";
 import copa2007 from "../../public/memoria/seleccion/copa-2007.jpg";
 import olympics2008 from "../../public/memoria/seleccion/olimpicos-2008.webp";
+import numberTen2009 from "../../public/memoria/seleccion/camiseta-10-2009.jpg";
 import worldCup2010 from "../../public/memoria/seleccion/mundial-2010.webp";
 import brazil2012 from "../../public/memoria/seleccion/brasil-2012.jpeg";
 import copa2011 from "../../public/memoria/seleccion/copa-2011.webp";
@@ -48,6 +49,10 @@ const chapters = [
     body: "Messi y una generación dorada ganan los Juegos Olímpicos.",
     image: olympics2008, alt: "Messi celebra la medalla de oro olímpica con Argentina en Pekín 2008", layout: "olympic", note: "Una medalla para empezar a creer.",
     match: { opponent: "Nigeria", goals: [1, 0], competition: "Final olímpica", detail: "Di María 58′" } },
+  { id: "camiseta-10-2009", year: "2009", date: "28 de marzo — Buenos Aires", title: "La 10\nya tiene dueño",
+    body: "Maradona le confía la 10. Messi marca en el 4–0 ante Venezuela, rumbo a Sudáfrica.",
+    image: numberTen2009, alt: "Messi con la camiseta número 10 de Argentina en 2009", layout: "number-ten", note: "Un número. Toda una historia por escribir.",
+    match: { opponent: "Venezuela", goals: [4, 0], competition: "Eliminatorias al Mundial", detail: "Debut de Messi con la 10 — Abre la goleada rumbo a Sudáfrica 2010" } },
   { id: "sudafrica-2010", year: "2010", date: "3 de julio — Ciudad del Cabo", title: "Un sueño\ninterrumpido",
     body: "Alemania gana 4–0. Argentina vuelve a quedarse en cuartos.",
     image: worldCup2010, alt: "Messi durante el Mundial de Sudáfrica 2010", layout: "setback", note: "La espera continúa.",
@@ -103,6 +108,7 @@ const locations: Record<(typeof chapters)[number]["id"], string> = {
   "alemania-2006": "Gelsenkirchen, Alemania",
   "copa-2007": "Maracaibo, Venezuela",
   "beijing-2008": "Pekín, China",
+  "camiseta-10-2009": "Buenos Aires, Argentina",
   "sudafrica-2010": "Ciudad del Cabo, Sudáfrica",
   "copa-2011": "Santa Fe, Argentina",
   "brasil-2012": "East Rutherford, Estados Unidos",
