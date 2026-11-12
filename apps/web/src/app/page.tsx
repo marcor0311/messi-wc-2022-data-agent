@@ -24,6 +24,7 @@ import ballonDor2023 from "../../public/memoria/seleccion/balon-oro-2023.jpg";
 import miami from "../../public/memoria/seleccion/copa-2024.jpg";
 import lastHomeQualifier from "../../public/memoria/seleccion/eliminatorias-2025.jpg";
 import legacy from "../../public/memoria/seleccion/mundial-2026.jpg";
+import farewell from "../../public/memoria/seleccion/fin-de-una-era.png";
 import "./museum.css";
 
 const display = localFont({ src: "./fonts/BarlowCondensed-Bold.ttf", variable: "--museum-display", weight: "700", style: "normal", display: "swap" });
@@ -120,6 +121,10 @@ const chapters = [
   { id: "legado", year: "2026", date: "19 de julio — Nueva Jersey", title: "El pasado\nfrente al futuro",
     body: "Messi y Yamal, el pasado frente al futuro. España gana 1–0; el legado sigue en quienes vienen.",
     image: legacy, alt: "Messi conduce el balón ante un jugador de España en la final del Mundial 2026", layout: "legacy", note: "El final duele. El camino queda.", match: { opponent: "España", goals: [0, 1], competition: "Final del Mundial", detail: "Ferran Torres 104′ — Tiempo extra" } },
+  { id: "fin-de-una-era", year: "2026", date: "6 de octubre — Monumental", title: "El fin de\nuna era",
+    body: "Messi marca en su despedida ante Benín. Argentina gana 3–0 y el Monumental se rinde a su capitán.",
+    image: farewell, alt: "Messi levanta la mano para saludar con la chaqueta de la selección argentina", layout: "farewell", note: "Gracias por todo, Leo.",
+    match: { opponent: "Benín", goals: [3, 0], competition: "Amistoso internacional", detail: "Otamendi, Nico Paz y Messi — Despedida en el Monumental" } },
 ] as const;
 
 // Cities are distinct from the stadium or regional names in the chapter dates.
@@ -145,6 +150,7 @@ const locations: Record<(typeof chapters)[number]["id"], string> = {
   bicampeones: "Miami Gardens, Estados Unidos",
   "eliminatorias-2025": "Buenos Aires, Argentina",
   legado: "East Rutherford, Estados Unidos",
+  "fin-de-una-era": "Buenos Aires, Argentina",
 };
 
 function Arrow({ down = false }: { down?: boolean }) {

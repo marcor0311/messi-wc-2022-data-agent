@@ -221,7 +221,9 @@ Las fotos del showcase son rectángulos sin bordes decorativos, radios ni sombra
 
 ### Fotografías y leyendas
 
-Los 21 capítulos se definen en `apps/web/src/app/page.tsx`. Las imágenes se alojan en `apps/web/public/memoria/`; `sources.json` y `seleccion/selection.json` conservan las URLs originales. Los prototipos `playbook-*.html` documentan exploraciones anteriores y no sustituyen la implementación actual.
+Los 22 capítulos se definen en `apps/web/src/app/page.tsx`. Las imágenes se alojan en `apps/web/public/memoria/`; `sources.json` y `seleccion/selection.json` conservan las URLs originales. Los prototipos `playbook-*.html` documentan exploraciones anteriores y no sustituyen la implementación actual.
+
+«El fin de una era» incluye Argentina 3–0 Benín, amistoso de despedida en el Monumental del 6 de octubre de 2026, con ubicación Buenos Aires, Argentina. Resultado y contexto verificados en la [crónica oficial de AFA](https://www.afa.com.ar/es/posts/la-seleccion-argentina-despidio-a-lionel-messi-con-una-goleada-ante-benin).
 
 MuseumPhoto usa `next/image`, importaciones estáticas y una reserva desenfocada; solo precarga la portada. Loopem crea sus imágenes desde el documento original. `object-fit: cover` llena el marco; las fotos de Quito 2017 y Brasil 2013 se alinean arriba para preservar el sujeto. Cuando falla una foto, aparece una reserva azul con el mensaje «La fotografía no está disponible. La historia continúa.» y el relato permanece legible.
 

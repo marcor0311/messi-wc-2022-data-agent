@@ -2,7 +2,7 @@ import { test, expect, type Page } from "@playwright/test";
 
 test.skip(({ isMobile }) => !!isMobile, "The landing storytelling is desktop only.");
 
-const ids = ["comienzos", "alemania-2006", "copa-2007", "beijing-2008", "camiseta-10-2009", "sudafrica-2010", "copa-2011", "brasil-2012", "brasil-2013", "maracana", "copa-2015", "volver", "quito-2017", "rusia", "america", "wembley", "qatar", "balon-oro-2023", "bicampeones", "eliminatorias-2025", "legado"];
+const ids = ["comienzos", "alemania-2006", "copa-2007", "beijing-2008", "camiseta-10-2009", "sudafrica-2010", "copa-2011", "brasil-2012", "brasil-2013", "maracana", "copa-2015", "volver", "quito-2017", "rusia", "america", "wembley", "qatar", "balon-oro-2023", "bicampeones", "eliminatorias-2025", "legado", "fin-de-una-era"];
 const desktopViewports = [{ width: 1440, height: 800 }, { width: 1440, height: 1000 }, { width: 1920, height: 1080 }];
 
 async function moment(page: Page, id: string) {
@@ -29,7 +29,7 @@ test("the triangular brand stays on the cover and redundant navigation is absent
 });
 
 for (const viewport of desktopViewports) {
-test(`all twenty-one captions keep the same slots and typography at ${viewport.width}×${viewport.height}`, async ({ page }) => {
+test(`all twenty-two captions keep the same slots and typography at ${viewport.width}×${viewport.height}`, async ({ page }) => {
   await page.setViewportSize(viewport);
   const errors: string[] = [];
   page.on("pageerror", error => errors.push(error.message));
@@ -49,6 +49,8 @@ test(`all twenty-one captions keep the same slots and typography at ${viewport.w
   await expect(page.locator("#comienzos .score-location")).toHaveText("Budapest, Hungría");
   await expect(page.locator("#comienzos .score-dismissal")).toHaveText("Messi 64′");
   await expect(page.locator("#comienzos .score-dismissal").getByRole("img", { name: "Tarjeta roja" })).toBeVisible();
+  await expect(page.locator("#fin-de-una-era .match-score")).toHaveAttribute("aria-label", "Amistoso internacional: Argentina 3, Benín 0");
+  await expect(page.locator("#fin-de-una-era .score-location")).toHaveText("Buenos Aires, Argentina");
   await expect(page.locator(".scene-story,.scene-date,.scene-note")).toHaveCount(0);
   const slots = (id: string, sharedOnly = false) => page.locator(`#${id}`).evaluate((panel, sharedOnly) =>
     [...panel.querySelectorAll<HTMLElement>(sharedOnly ? ".scene-copy,.scene-year,.scene-heading,h2,.scene-summary,.match-score,.chapter-award,.score-location,.score-context,.score-competition" : ".scene-copy,.scene-year,.scene-heading,h2,.scene-summary,.match-score,.score-location,.score-board,.score-team,.score-result,.score-result strong,.score-context,.score-competition")].map(element => {
@@ -220,11 +222,11 @@ for (const viewport of desktopViewports) {
     await expect(host).not.toHaveClass(/loopem-moving/);
     await page.keyboard.press("End");
     await page.keyboard.press("ArrowRight");
-    await expect(museum).toHaveAttribute("data-current-chapter", "legado");
+    await expect(museum).toHaveAttribute("data-current-chapter", "fin-de-una-era");
     await page.mouse.move(x, y);
     await page.mouse.down();
     await page.mouse.move(x - 650, y, { steps: 12 });
-    await expect(museum).toHaveAttribute("data-current-chapter", "legado");
+    await expect(museum).toHaveAttribute("data-current-chapter", "fin-de-una-era");
     await page.mouse.up();
     await expect(host).not.toHaveClass(/loopem-moving/);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
