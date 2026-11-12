@@ -59,24 +59,19 @@ typography:
     letterSpacing: "-.02em"
   memory-headline:
     fontFamily: '"Barlow Condensed", sans-serif'
-    fontSize: "clamp(2.3rem, 4vw, 4.2rem)"
+    fontSize: "clamp(3rem, 4.55vw, 6rem)"
     fontWeight: 700
-    lineHeight: 1.02
+    lineHeight: 1
     letterSpacing: "-.02em"
   memory-body:
     fontFamily: '"Manrope", sans-serif'
-    fontSize: "1rem"
+    fontSize: "clamp(1.125rem, 1.25vw, 1.375rem)"
     fontWeight: 400
-    lineHeight: 1.65
+    lineHeight: 1.5
   memory-label:
     fontFamily: '"Manrope", sans-serif'
     fontSize: "0.875rem"
     fontWeight: 400
-  memory-date:
-    fontFamily: '"Manrope", sans-serif'
-    fontSize: "0.875rem"
-    fontWeight: 400
-    lineHeight: 1.5
 rounded:
   chip: "4px"
   control: "5px"
@@ -132,24 +127,12 @@ components:
     backgroundColor: "{colors.pitch}"
     rounded: "{rounded.pitch}"
     padding: "17px 15px 10px"
-  memory-enter:
-    backgroundColor: "{colors.memory-blue}"
-    textColor: "{colors.memory-ink}"
-    rounded: "{rounded.memory-square}"
-    padding: "12px 18px"
-  memory-enter-hover:
-    backgroundColor: "{colors.memory-paper}"
   memory-start-circle:
     backgroundColor: "transparent"
     textColor: "{colors.memory-paper}"
     rounded: "{rounded.memory-circle}"
     width: "44px"
     height: "44px"
-  memory-timeline-link:
-    textColor: "{colors.memory-muted}"
-    height: "44px"
-  memory-timeline-link-current:
-    textColor: "{colors.memory-blue}"
 ---
 
 # Design System: Messi / Mundial 2022
@@ -158,201 +141,118 @@ components:
 
 **Creative North Star: "El juego en contexto"**
 
-The implemented workspace uses a sober Spanish analytical voice, light neutral surfaces, forest-green pitches, and restrained system typography. “El juego en contexto” is a descriptive working label drawn from the header copy, not a confirmed brand metaphor. The definitive audience and broader brand preferences remain undecided in PRODUCT.md; the museum entry now has its own approved photographic reference.
+Este documento describe el sistema implementado. «El juego en contexto» es una referencia de trabajo tomada de la interfaz, no una marca confirmada. [PRODUCT.md](PRODUCT.md) define alcance y capacidades; el historial de cambios pertenece a Git y a los PR.
 
-Flat borders and typographic hierarchy organize the conversation and its evidence. Color identifies actions and players; the pitches provide the strongest visual field. These decisions describe the current implementation and are the baseline for extending it.
-
-The `/` entry, “La memoria albiceleste”, follows the user-approved `playbook-memoria.html` gallery, including all fifteen existing chapter photographs and the final analysis card. It pairs midnight blue, pale Argentine blue, warm white type, and locally hosted Barlow Condensed Bold / Manrope. A vertical cover precedes a pinned photographic gallery with shared perspective and stable frontal captions. Desktop is the only required product target; narrow layouts preserve accessible reading as a fallback. This route-specific expression leads to `/analisis`, which retains the incumbent system above; the broader project identity remains open.
+La ruta `/` presenta «La memoria albiceleste»: fotografía protagonista, fondo azul noche, titulares condensados y una galería con profundidad. `/analisis` conserva superficies claras, tipografía del sistema y canchas verdes. Cada superficie mantiene su identidad.
 
 **Key Characteristics:**
 
-- Light neutral workspace with flat dividers.
-- System typography and compact analytical labels.
-- Forest-green full pitches with cyan and gold player markers.
-- Visible context, recoverable results, and inspectable event evidence.
-- Route-scoped photographic museum with condensed upright headlines, a perspective gallery driven by native scroll, and direct access to analysis.
+- Fotografías rectangulares, opacas y con perspectiva en el showcase.
+- Leyendas frontales con posiciones y tamaños estables entre capítulos.
+- Paneles planos y jerarquía tipográfica en el análisis.
+- Colores de jugador acompañados de nombres y evidencia inspeccionable.
+- Lectura completa con zoom, movimiento reducido o sin JavaScript.
 
 ## Colors
 
-The palette combines warm neutral surfaces with green controls and pitches; cyan and gold identify the compared players. The frontmatter preserves the source CSS custom-property names and values.
+El frontmatter reúne los valores de referencia; los estilos de cada ruta son la implementación comprobable.
 
-### Primary
+| Superficie | Tokens | Uso |
+| --- | --- | --- |
+| Showcase | `memory-ink`, `memory-paper` | Fondo continuo y texto principal |
+| Showcase | `memory-blue`, `memory-muted`, `memory-line` | Año, relato, ubicación, texto auxiliar y divisores |
+| Análisis | `paper`, `surface`, `ink`, `muted`, `line` | Lienzo, paneles, lectura y separación |
+| Análisis | `accent`, `accent-hover`, `focus`, `danger` | Acciones, foco y recuperación de errores |
+| Análisis | `pitch`, `pitch-line`, `player-one`, `player-two` | Campo y marcadores de Messi y Mbappé |
 
-- **Forest accent** (`accent`): send action, links, analysis labels, and contextual actions. `accent-hover` deepens interactive emphasis.
-- **Focus green** (`focus`): visible keyboard outlines.
+**The Route Scope Rule.** Aplicar los tokens `memory-*` solo al showcase; conservar el sistema analítico en `/analisis`.
 
-### Secondary
-
-- **Pitch forest** (`pitch`): full SVG field backgrounds and hollow shot interiors. **Pitch line sage** (`pitch-line`) draws field geometry.
-- **Player cyan** (`player-one`) and **Player gold** (`player-two`): pitch markers and caption dots. The table uses darker related dots for contrast on the light background.
-
-### Tertiary
-
-- **Error rust** (`danger`): recovery notices, on a pale warm error surface.
-
-### Neutral
-
-- **Warm paper** (`paper`): visual workspace and quiet action surfaces.
-- **White surface** (`surface`): header, conversation, composer.
-- **Deep green ink** (`ink`): primary text.
-- **Muted gray-green** (`muted`): context, labels, helper copy, evidence.
-- **Soft neutral line** (`line`): panel, table, and section dividers.
-
-### Museum entry (`/`)
-
-`memory-*` tokens apply only to the museum. Midnight ink supplies the continuous canvas; pale blue marks headline emphasis, dates, the current chapter, focus, and the main analysis link. Warm white is reading text and the analysis link’s hover surface. Muted blue-gray supports copy and navigation; the transparent white line divides scores, timeline, and controls. The cover uses directional blue gradients; gallery captions sit directly on the midnight canvas without local text backplates.
-
-**The Route Scope Rule.** Keep museum colors and typography within `/`; retain the incumbent green analytical workspace at `/analisis`.
+La selección de texto y las barras de scroll siguen la paleta de su superficie. El análisis usa el acento para el cursor de escritura. Mantener contraste mínimo de 4.5:1 en texto normal y 3:1 en texto grande.
 
 ## Typography
 
-For `/analisis`, use the system sans-serif stack in the frontmatter; event identifiers use the separate monospace role. That route has no external font dependency or promotional display face. The hierarchy uses observed sizes rather than a regular ratio.
+El showcase carga Barlow Condensed Bold para titulares, años y resultados, y Manrope para lectura. El análisis usa la pila del sistema; los identificadores de evidencia usan monoespaciada. Conservar texto erguido, títulos sin punto final y cifras tabulares.
 
-- **Display:** empty-state heading; reduced to (1.625rem) in the narrow layout.
-- **Headline:** active visualization title; reduced to (1.5625rem) in the narrow layout.
-- **Title:** conversation heading. Detail headings use (0.9375rem), medium weight (550).
-- **Body:** scalable base reading style. User messages use medium weight (550); analysis copy, reading paragraphs, and the composer keep the body size with generous leading.
-- **Label:** supporting controls, captions, context, and evidence use the label role as the minimum HTML text size, with regular weight and sentence case.
-- **Mono:** event identifiers and provenance hashes. Long identifiers wrap instead of widening the workspace.
+La portada usa `memory-display`; las leyendas mejoradas usan `memory-headline` y `memory-body`. El año conserva texto HTML con cifras alineadas y tamaño compartido (`clamp(9rem,15.5vw,19rem)`); los resultados usan `clamp(6rem,8vw,9rem)`. Las ubicaciones comparten la escala del relato y los equipos y competiciones usan 1rem. Marca y enlace de entrada usan `memory-label`.
 
-Table numbers use tabular figures. Evidence paragraphs have a readable maximum width (70ch).
+En lectura vertical, los títulos vuelven a `clamp(2.3rem,4vw,4.2rem)` y el relato a 1.125rem. El análisis usa las escalas `display`, `headline`, `title`, `body`, `label` y `mono`; la lectura y el compositor usan 1rem y el texto auxiliar parte de .875rem.
 
-### Museum entry (`/`)
-
-Barlow Condensed Bold is the locally hosted display face (TTF, weight 700); Manrope is the locally hosted interface and reading face (WOFF2, weights 300–700). Both use sans-serif fallbacks. All museum type is upright, with no letter shadows. The uppercase cover uses the `memory-display` ramp with leading (.92); its narrow layout uses `clamp(4rem,16vw,6.4rem)`. Chapter headlines use the `memory-headline` ramp with leading (1.02), changing to `clamp(2.3rem,8vw,3.6rem)` at (760px) and `clamp(2rem,7.2vw,3rem)` in the narrow enhanced gallery. Blue supplies headline emphasis on the cover. Narrative copy uses the `memory-body` role; the narrow enhanced gallery reduces leading to (1.5). Dates, scores, index links, and controls use the (.875rem) supporting role. Results use tabular numerals. Reading mode lets headings wrap and raises cover leading to (1.1). The frontmatter records the desktop hierarchy; these responsive overrides are part of the same route-specific system.
-
-### Typography accessibility (both routes)
-
-All live HTML type uses scalable `rem` sizes. Reading copy and input text use the body role; auxiliary and control text never falls below the label role. Preserve upright text and headings without final periods. Contrast must remain at least (4.5:1) for normal text and (3:1) for large text under WCAG 2.2 AA. A font family alone does not establish accessibility; the rendered size, weight, color, spacing, and surrounding layout determine the result.
-
-The typography checks cover WCAG 2.2 AA contrast (1.4.3), text resizing (1.4.4), reflow (1.4.10), and text spacing (1.4.12). They exercise every museum section and populated analysis, doubled default text size, custom line/letter/word/paragraph spacing, and both routes at (320 CSS px). This describes the tested typography criteria, not whole-site WCAG certification or certified fonts.
-
-**The Scalable Reading Rule.** Preserve readable text and access to every action when default text size doubles or user spacing expands. Let content reflow instead of clipping text to preserve a composition.
+**The Scalable Reading Rule.** Conservar lectura y acciones al duplicar el texto o personalizar su espaciado. Permitir redistribución antes que recortar contenido para mantener una composición.
 
 ## Layout
 
-The `/analisis` desktop shell fills the viewport (100dvh), with a minimum height (560px) and a header (76px). The workspace uses a conversation column ranging from (320px) to (390px) and a flexible analysis column. Conversation and analysis scroll independently. Header insets are (32px); the conversation uses (26px) horizontal message insets; the visual panel uses fluid horizontal insets (`clamp(24px, 3vw, 56px)`).
+La entrega cubre escritorio y laptop a 1440×800, 1440×1000 y 1920×1080. Los modos estrechos conservan lectura y accesibilidad; no constituyen una variante de producto móvil.
 
-Comparison uses two equal-width full pitches with a gap (18px), the same SVG viewBox, and the same rendering constraints. At widths up to (1050px), the conversation is (330px) and the comparison pitches stack, each capped at (240px) high. At widths up to (720px), conversation precedes analysis in a single document flow; message history is bounded (130–380px), visual insets are (20px), the composer retains the body text size, and comparison pitch height is uncapped. At widths from (1700px), the conversation is (430px), visual insets are (70px), and pitches cap at (430px) rather than the default (340px).
+### Showcase
 
-The analytical header wraps and its text actions allow long labels. Captions and heading groups can wrap, event controls break long text, and the summary table scrolls horizontally within its own region when needed. Spacing is compact within controls and increases between analytical groups. Filter rows and legends wrap. The desktop left/right relationship follows the user's brief. Equal comparison scale and the responsive expression above describe the current implementation.
+La portada llena la primera vista (`100svh`, mínimo 680px). La marca de tres estrellas en disposición triangular queda arriba a la izquierda; el título de dos líneas y «Recorrer la historia» quedan abajo a la izquierda. La portada sale con el scroll vertical antes de entrar en la galería.
 
-### Museum entry (`/`)
+La galería mejorada ocupa una vista (`100svh`, mínimo 740px). Las fotografías usan el 62% del ancho y una altura limitada por la banda de leyendas (`min(60svh,calc(100svh - var(--gallery-copy-height) - 24px))`). La banda inferior reserva `clamp(19rem,38svh,27rem)`, con márgenes laterales del 5% y relleno vertical de 24px.
 
-Desktop is the only required gallery delivery target. Narrow layout behavior is a reading and reflow fallback. The cover is outside the pinned stage and scrolls vertically out of view. It fills (100svh), with a minimum height (680px; 650px at widths up to 760px). The title sits lower left; brand, full chapter index, and analysis access frame the top. Shared gutters are (5%), changing to (6%) at (760px).
+Una retícula compartida distribuye año, relato y resultado en tres columnas (`max-content minmax(0,1.4fr) minmax(0,1fr)`). Todas las leyendas, incluidas las inactivas, contribuyen a las mismas tres filas mediante `subgrid`. Año, título y ubicación se alinean por la parte superior visible; relato y competición comparten la fila inferior. Cambiar de capítulo modifica la visibilidad y el estado accesible, no la geometría ni el tamaño del texto.
 
-Only the gallery pins. Its shared perspective is (1200px), with origin (50% 41%); the narrow version uses (900px) and (50% 31%). Centered photographs are (53vw) wide, or (76vw) at (760px). Each caption occupies a stable frontal plane below the photographs: a two-column grid (1.15fr / 1fr, gap 48px) between (12%) insets and (108px) from the bottom. Narrow captions stack between (8%) insets, (152px) from the bottom. The largest caption height is measured once per ScrollTrigger refresh, reserving space for one common photo frame throughout the journey. Captions never move or rotate with their photographs.
+La portada y la galería incluyen marca, enlace de entrada, enlace de salto y un recorrido enfocable. Los fragmentos de URL, el historial, las flechas, Home/End y PageUp/PageDown complementan scroll y arrastre. El índice, la línea de tiempo, los botones anterior/siguiente y la invitación final al análisis fueron retirados. `/analisis` sigue disponible por su ruta.
 
-The timeline shows five contextual chapter links around the current position, followed by a (1 / 16) position counter and previous/next controls. The upper-right disclosure provides the complete index, including the cover and final card. The header becomes fixed only when the gallery enhancement is enabled; in reading mode it joins document flow. Analysis remains accessible from the header, Qatar caption, and final card.
+### Lectura accesible
 
-The current `.is-coverflow` composition follows the enlarged photo and caption proportions approved on 9 November 2026. Photographs are (62vw) wide and up to (60svh) high, with height bounded by the space reserved for captions, controls and bottom margin. The Loopem perspective geometry scales from the rendered photo width; step (100), spread (80), depth (86) and perspective (900) share a width/220 scale. Neighboring photos remain opaque and visible at the edges. Image `sizes` matches the larger frame (62vw).
+El documento servido desde el servidor contiene todos los capítulos en vertical. La mejora se desactiva con movimiento reducido, ancho menor de 1000px, altura menor de 740px, raíz tipográfica mayor de 20px, interlineado del título mayor de 1.35 o tracking mayor de .08em. ResizeObserver y los cambios de preferencia permiten restaurarla cuando vuelve a haber espacio.
 
-The caption refinement of 11 November 2026 follows the user's corrected direction: the year itself grows to end at the narrative's last line; the title and narrative retain their natural grouping; the scoreboard moves down to use the remaining space. The band and its divider use (5%) side insets, a height of `clamp(19rem,38svh,27rem)`, and (32px)/(24px) top/bottom padding. The columns use `minmax(0,1.24fr) minmax(0,1.4fr) minmax(0,1fr)`, with `clamp(24px,2vw,36px)` gaps, preserving the former year/title/score widths while allowing the year height to change independently. Photographs retain their existing geometry.
+En lectura vertical, las fotos quedan centradas, con ancho del 90% y máximo de 1200px; el texto fluye debajo. Conservar las reglas estrechas existentes, el foco visible y los anclajes. Sin JavaScript o si falla la mejora, la historia sigue disponible.
 
-The year is a live Barlow Condensed SVG text treatment fitted to the visible numeral outlines. Canvas text metrics define its ink bounds; its height follows the actual heading-plus-narrative height through a ResizeObserver and after local fonts load. The original HTML year remains available to assistive technology and returns as ordinary text in reading/no-JavaScript mode. This avoids using the font's extra line-box space as an alignment reference. The year has no added day/month footer. A resized or enlarged reading layout clears the enhancement's year height.
+### Análisis
 
-Chapter headings retain `clamp(3rem,4.55vw,6rem)` and narratives stay (16px) below them, using `clamp(1.125rem,1.25vw,1.375rem)`. Location remains aligned with the top of the year and heading. The score column stretches across the caption content area with `auto minmax(0,1fr) auto` rows and (16px) gaps. Its scoreboard aligns at the bottom of the flexible middle row; competition, penalties and any dismissal sit at the bottom, (24px) from the viewport edge. Result size remains `clamp(6rem,8vw,9rem)`, with (12px) board gaps and (14px) numeral gaps. The correction intentionally does not spread the narrative away from its heading or force three equal-width columns.
+El espacio analítico ocupa `100dvh` con mínimo de 560px y cabecera de 76px. La conversación usa una columna entre 320px y 390px; la visualización ocupa el ancho restante. Ambos paneles desplazan su contenido de forma independiente. Las comparaciones muestran dos canchas de igual escala con separación de 18px.
 
-The opening chapter includes the senior debut: Argentina 2–1 Hungary, Budapest, 17 August 2005, with an accessible red-card SVG and “Messi 64′” beside the competition. The result, city and dismissal minute follow the [AFA match summary](https://www.afa.com.ar/es122/posts/hace-18-anos-debutaba-leo-messi-en-la-seleccion-argentina); its subtitle explains the immediate dismissal. All fifteen chapters have a scoreboard.
-
-The user requested removing the gallery previous/next buttons on 11 November 2026. Their markup, CSS and event handlers are removed. The shared caption inset is reduced from (64px) to (32px), raising year, heading and location together by (32px) while retaining the divider and photographic geometry. The gallery remains focusable with its accessible label and keyboard shortcut metadata; Loopem supplies the enhanced listbox role. Arrow keys, Home/End, PageUp/PageDown, wheel, drag, direct chapter URLs and browser history remain available.
-
-Caption refinement verification: all fifteen captions fit without text overflow or photo overlap at (1440×800), (1440×1000) and (1920×1080). All 45 measured states align year/title/location at the top, match the year bottom to the narrative bottom within one CSS pixel, and place the competition row at the caption's lower inset. Chromium captures are in `artifacts/landing-review/year-fit-*.png`. All 12 selected desktop gallery and typography tests pass, including the new year/narrative and lower-score alignment assertions, navigation, reduced motion, no JavaScript, image failure and 200% text enlargement. The optional Playwright WebKit browser is not installed, so no WebKit validation is claimed.
-
-The server-rendered baseline is the full intrinsic vertical document: centered photographs (90%, capped at 1200px; 92% on narrow screens), reading copy beneath, and ordinary chapter anchors. GSAP enhances it only with no reduced-motion preference and sufficient reading space. Intrinsic reading mode applies below (360px) width or (740px) height, above (20px) root text size, or when heading line-height exceeds (1.35) or letter-spacing exceeds (.08em). It removes the pin, exposes every chapter, and allows copy and header actions to reflow. Resize and preference changes can re-enable the gallery. Without JavaScript or if the enhancement fails, all chapters remain readable vertically.
-
-The final caption direction on 11 November 2026 prioritizes a stable composition between chapters. The user rejected changing the year's dimensions to fit each narrative. The year returns to ordinary HTML at `clamp(9rem,15.5vw,19rem)`, with lining tabular numerals. There is no SVG fitting, glyph deformation, per-chapter scaling or JavaScript text measurement.
-
-One shared CSS grid in `.museum-world` reserves the largest content requirements of all fifteen chapters, including the invisible ones. Each overlapping caption uses `subgrid` in both dimensions, and its narrative and score use the same three row tracks. A chapter change affects visibility and accessibility state only. Year, title and location occupy the same upper positions; subtitle and competition start in a shared footer track. Short content leaves its reserved space available rather than moving other elements. This supersedes forcing the visible year to end at every subtitle's last line. The (5%) side insets, equal (24px) vertical padding and photograph geometry remain in place.
-
-Scoreboard numerals retain a constant font and tabular widths. Team slots stretch to a common row height; the opponent slot receives slightly more width and (6px) board gaps so that “Serbia y Montenegro” wraps between words at the supported desktop sizes. The footer always reserves a (7rem) slot for penalties or a dismissal, including when neither is present. These shared tracks adapt to the viewport and to font loading, not to the active chapter. This implementation follows [CSS Grid Level 2 subgrids](https://www.w3.org/TR/css-grid-2/#subgrids) and [tabular numeric typography](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/font-variant-numeric).
-
-Verification covers all fifteen captions at (1440×800), (1440×1000) and (1920×1080). The regression compares every main text and score slot's x/y coordinates, width, height, font size and transform across chapters and requires exact equality. All 45 states retain the same geometry without clipping. The desktop gallery and typography checks also cover navigation, reduced motion, no JavaScript, image failure and 200% text enlargement with custom spacing. Intrinsic reading mode retains natural content flow.
-
-**The Native Narrative Rule.** Keep native document scrolling and chapter anchors usable before hydration. Only the gallery pins; downward scroll drives its reversible horizontal journey without intercepting the wheel.
+Hasta 1050px, la conversación usa 330px y las canchas se apilan. Desde 1700px, la conversación crece a 430px y las canchas admiten hasta 430px de alto. Conservar la redistribución de lectura existente y el scroll interno de tablas cuando su contenido lo requiera.
 
 ## Elevation & Depth
 
-The analytical workspace has no box shadows. White and paper surfaces, thin borders, spacing, and the green field background establish hierarchy. Selected historical results use a pale green fill and a stronger green border. Focus uses an outline (2px) with offset (4px); the composer uses a border color change on focus within.
+El análisis separa grupos con superficies, bordes y espacio, sin sombras. La portada usa un sombreado lateral y un desvanecido inferior que termina en el fondo continuo; conservar el borde inferior sin costuras.
 
-The museum also avoids box shadows and letter shadows. The cover uses photographic light and directional gradients. Its lower fade sits above the lateral shade, progresses from transparent at 58% to solid `memory-ink` at 92%, and keeps the last 8% identical to the gallery canvas to avoid a visible seam. The shorter fade concentrates opacity near the bottom, preserving more of the photograph above. Gallery photographs share a single 3D space: the current photograph is frontal while neighbors recede, rotate slightly, and fade with distance. Captions remain on the front plane against the continuous midnight canvas, without text backplates. Inactive panels are inert and hidden from assistive technology in the enhanced gallery; every panel returns to the reading order in vertical mode.
+Loopem controla la perspectiva de la galería: foto central frontal, vecinas giradas, imágenes opacas y extremos acotados. La geometría escala con el ancho de la foto: step 100, spread 80, depth 86 y perspective 900, multiplicados por ancho/220; angle 56 y reach 5. Las leyendas permanecen en un plano frontal.
+
+El scroll vertical dentro de la galería actualiza la posición horizontal, con ajuste al capítulo más cercano tras 120 ms; en los extremos permite salir verticalmente. El arrastre y el scroll horizontal usan Loopem. GSAP queda disponible para navegación programática de 280 ms con `power3.out`; el teclado y los fragmentos actuales cambian de posición sin animación. Conservar la interrupción del movimiento y evitar renderizados React por fotograma.
 
 ## Shapes
 
-Controls have gently rounded corners, with compact chips, field containers, and the composer using the distinct radii in the frontmatter. Structural panels remain flat rectangular regions divided by single-pixel borders. Player keys and shot markers are circular. The pitch preserves its full rectangular geometry and (120 × 80) coordinate scale inside the SVG viewBox (`-5 -5 130 90`).
-
-The museum uses square rectangular photographs, outlined controls, and analysis links. The circular start affordance is its recurring curved form; a short blue rule marks the active timeline link. Do not transfer the analytical composer or chip radii to editorial photographs.
+Las fotos del showcase son rectángulos sin bordes decorativos, radios ni sombras. El círculo de entrada contiene una flecha SVG. El análisis conserva esquinas discretas: chips de 4px, controles de 5px, cancha de 6px y compositor de 8px. Marcadores, leyendas de jugador y estados de selección mantienen su forma circular.
 
 ## Components
 
-### Buttons
+### Fotografías y leyendas
 
-The send action is a compact green square with an inline arrow; its hover uses the deeper accent. Text actions use green type without a filled surface and underline on hover. The suggested prompt is a full-width bordered quiet button. Result recovery uses a similar full-width control with a supporting context line; `aria-pressed` adds pale green selection. Buttons transition background and text color (150ms); disabled buttons have opacity (.5) and a blocked cursor. Reduced-motion preferences remove transitions.
+Los 21 capítulos se definen en `apps/web/src/app/page.tsx`. Las imágenes se alojan en `apps/web/public/memoria/`; `sources.json` y `seleccion/selection.json` conservan las URLs originales. Los prototipos `playbook-*.html` documentan exploraciones anteriores y no sustituyen la implementación actual.
 
-### Composer
+MuseumPhoto usa `next/image`, importaciones estáticas y una reserva desenfocada; solo precarga la portada. Loopem crea sus imágenes desde el documento original. `object-fit: cover` llena el marco; las fotos de Quito 2017 y Brasil 2013 se alinean arriba para preservar el sujeto. Cuando falla una foto, aparece una reserva azul con el mensaje «La fotografía no está disponible. La historia continúa.» y el relato permanece legible.
 
-A bordered white group contains the textarea and send button, with a gap (8px). The group changes border color on focus within. The textarea has an accessible label and a muted placeholder; the wrapper supplies the visible focus treatment. Enter submits; Shift+Enter inserts a line break. Input text uses the scalable body role at all widths.
+Cada resultado expone competición, equipos y goles mediante un grupo accesible. Las tandas se muestran separadas. El debut de 2005 incluye la tarjeta roja y el minuto 64; el capítulo de 2023 presenta ocho Balones de Oro y France Football en lugar de un resultado. El capítulo de 2025 registra Argentina 3–0 Venezuela en Buenos Aires, el 4 de septiembre, rumbo al Mundial 2026. Su foto elegida tiene un nombre de origen fechado en 2024: el texto alternativo describe la celebración sin atribuirla al partido de 2025.
 
-### Context chips
+Las fuentes de los capítulos añadidos se conservan como referencia factual: [debut de 2005, AFA](https://www.afa.com.ar/es122/posts/hace-18-anos-debutaba-leo-messi-en-la-seleccion-argentina), [camiseta 10 en 2009, FIFA](https://www.fifa.com/es/articles/messi-a-20-anos-de-un-debut-muy-especial), [clasificación de 2013, AFA](https://www.afa.com.ar/Sitio/posts/quiero-vale-cuatro), [Quito 2017, AFA](https://www.afa.com.ar/Sitio/posts/un-poco-de-historia-historial-ante-ecuador), [Balón de Oro de 2023, AFA](https://www.afa.com.ar/A/posts/messi-emblema-del-futbol-argentino-y-simbolo-mundial-se-adjudico-su-octavo-balon-de-oro) y [Argentina–Venezuela de 2025, APF](https://www.apf.org.py/partidos/qualifying-world-cup-2026-conmebol-world-cup-qualifiers-17-argentina-vs-venezuela).
 
-Small outlined, minimally rounded labels show the match and penalty scope. These are static context labels, not interactive filters. The shootout exclusion remains supporting text beside them.
+### Conversación y evidencia
 
-### Header and result history
+El compositor agrupa textarea y acción de envío, cambia el borde al enfocar y permite Enter para enviar y Shift+Enter para nueva línea. Los mensajes se separan con bordes; cada resultado recuperable muestra contexto y `aria-pressed`. Mantener visibles los resultados previos durante consultas pendientes o errores.
 
-The header combines a compact inline pitch symbol, product name, contextual note, and a text action. No separate navigation component exists within `/analisis`. Conversation turns are separated by borders rather than chat bubbles; result controls recover prior context and visibly mark the active result.
+Las canchas conservan la geometría completa y la misma escala en comparación. Los goles usan marcadores rellenos; otros resultados, huecos. La cancha, el arco y la lista de eventos comparten el tiro seleccionado; la tabla comparte sus filtros. Las alturas faltantes quedan identificadas. Los identificadores largos se redistribuyen y los desplegables permiten inspeccionar la evidencia.
 
-### Pitch
+### Verificación
 
-A dark green figure contains a player caption, circular color key, attack direction, and a full SVG field. Goals use filled player-colored markers; other outcomes use hollow markers. Selection adds a white ring, and pointer hover or keyboard focus strengthens the marker stroke. Markers are buttons with keyboard activation and accessible descriptions. Equivalent event-list buttons provide a text route to selection.
-
-### Summary and evidence
-
-The flat table right-aligns tabular numbers, left-aligns player names, and separates rows with thin borders. Event detail follows the summary. Native disclosures expose the event list and provenance; identifiers wrap. These surfaces preserve the existing analytical result while pending or recovery information appears nearby.
-
-### Museum navigation and analysis links
-
-The brand, complete chapter disclosure, and analysis link frame the route. The contextual timeline uses muted text, pale-blue current text, and a short blue rule with `aria-current="location"`; only five links are visible at a time. Previous/next controls disable at the gallery boundaries. The start link pairs a (44px) outlined circular arrow with text. The final analysis link is square and pale-blue filled, with (12px 18px) padding, (48px) minimum height, (1rem) type, and warm-white hover. Museum actions use a blue focus outline (3px, offset 5px). Inline arrows are SVG. The chapter disclosure closes after navigation or Escape; Escape restores focus to its summary. Direct hashes, browser history, and keyboard-activated chapter links map to the same gallery position; keyboard links focus the destination heading.
-
-### Museum scenes and photography
-
-The 2023 chapter, “No más / presión”, sits between Qatar 2022 and the 2024 Copa América, bringing the gallery to twenty chapters. It records Messi's eighth Ballon d'Or, awarded in Paris on 30 October 2023, as confirmed by the [AFA ceremony report](https://www.afa.com.ar/A/posts/messi-emblema-del-futbol-argentino-y-simbolo-mundial-se-adjudico-su-octavo-balon-de-oro). The user's “octavo y último” wording reflects the latest Messi win in the [UEFA winners list](https://www.uefa.com/ballondor/news/0287-195e642735da-0594342b9554-1000--history-of-the-ball-on-d-or-all-the-winners/), verified through 2026. The user-selected 1200×675 TNT Sports photograph is local at `seleccion/balon-oro-2023.jpg`, with its source URL recorded in `selection.json`, and fills the existing frame without borders. Its right column presents a labeled total of eight Ballons d'Or and France Football in place of a match result. The award shares the existing caption grid, location and footer tracks, with scalable typography and an accessible group label. No opponent, match score or penalty result is invented for the ceremony. TypeScript and fourteen selected desktop gallery/typography regressions pass, covering all twenty captions at 1440×800, 1440×1000 and 1920×1080, the award layout, navigation, reduced motion, missing images, no JavaScript and enlarged text. The photo and keyboard navigation through 2022 → 2023 → 2024 were checked at all three sizes; the award's contrast check and the mechanical detector report no findings. This twenty-chapter count supersedes earlier counts.
-
-The 2013 chapter, “El sueño / tiene destino”, sits between 2012 and 2014, bringing the gallery to nineteen chapters. It records Messi's two penalty goals and Argentina's 5–2 victory over Paraguay in Asunción on 10 September, securing qualification for Brazil 2014. The [AFA retrospective](https://www.afa.com.ar/Sitio/posts/quiero-vale-cuatro) supports the date, city, score and Messi's goals. The user-selected 1200×900 photograph from The Independent is local at `seleccion/brasil-2013.jpg`, with its original URL recorded in `selection.json`. Its source URL dates from October 2012; it illustrates the chapter without an assertion in the alt text that it depicts the September 2013 match. It fills the shared frame without borders and aligns to the top to preserve Messi's head and outstretched arms. TypeScript and fourteen selected desktop gallery/typography regressions pass, including all nineteen captions at 1440×800, 1440×1000 and 1920×1080. The final photograph and keyboard travel through 2012 → 2013 → 2014 were checked at all three sizes; the mechanical detector reports no findings. This nineteen-chapter count supersedes earlier counts.
-
-The 2017 chapter, “El pase / al Mundial”, sits between 2016 and 2018, bringing the gallery to eighteen chapters. It records Messi's hat-trick and Argentina's 3–1 victory over Ecuador in Quito on 10 October, securing qualification for Russia 2018; the [AFA match history](https://www.afa.com.ar/Sitio/posts/un-poco-de-historia-historial-ante-ecuador) confirms the date, city and result. The user-selected 2400×1594 photograph from Barça Blaugranes is local at `seleccion/quito-2017.jpg`, with its full source URL recorded in `selection.json`. It fills the existing frame without borders and aligns to the top to keep Messi's head visible. The 2018 narrative now describes the World Cup exit, with qualification told in its own chapter. TypeScript and fourteen selected desktop gallery/typography regressions pass, including all eighteen captions at 1440×800, 1440×1000 and 1920×1080. Keyboard travel through 2016 → 2017 → 2018 and the final photograph were checked at all three sizes. This eighteen-chapter count supersedes earlier counts.
-
-The 2009 chapter, “La 10 / ya tiene dueño”, sits between Beijing 2008 and South Africa 2010, bringing the gallery to seventeen chapters. It records Maradona entrusting Messi with Argentina's number 10 and the 4–0 victory over Venezuela in Buenos Aires on 28 March, in qualifying for South Africa 2010. The [FIFA career retrospective](https://www.fifa.com/es/articles/messi-a-20-anos-de-un-debut-muy-especial) supports the handover and match context. The user-selected landscape photograph from TN (Enrique Marcarian / Reuters) is local at `seleccion/camiseta-10-2009.jpg`; its 1023×575 source URL is recorded in `selection.json`. It fills the shared frame with the standard centered `object-fit: cover`, without chapter-specific image styling or added borders. The seventeen-chapter count supersedes earlier counts. TypeScript and fourteen selected desktop gallery/typography regressions pass, covering 1440×800, 1440×1000 and 1920×1080, keyboard navigation, reduced motion, missing images, no JavaScript and enlarged text. The TN photograph was visually reviewed at all three desktop sizes; the mechanical detector reports no findings.
-
-On 11 November 2026, the user added the 2007 Copa América final between the 2006 and 2008 chapters, bringing the gallery to sixteen chapters. Its caption records Argentina 0–3 Brasil in Maracaibo on 15 July, with the user-supplied photograph hosted locally as `seleccion/copa-2007.jpg`. The 2014 photograph is replaced with the user's supplied Google thumbnail, retaining the existing chapter and gallery framing. Both source URLs are recorded in `public/memoria/seleccion/selection.json`. TypeScript and all twelve desktop gallery regressions pass, including all sixteen captions at 1440×800, 1440×1000 and 1920×1080; rendered 2007 and 2014 scenes were visually checked at 1440×1000. The mechanical detector reports no findings. The sixteen-chapter count supersedes earlier fifteen-chapter references in this document.
-
-Preserve all fifteen chapter photographs, dates, copy, match results, and penalty distinctions, followed by the final analysis card. The original assets and provenance remain in `public/memoria/sources.json` and `public/memoria/seleccion/selection.json`. An unavailable photograph becomes a labeled blue fallback while its chapter remains readable. Only the cover photo is preloaded; gallery images within two positions of the current chapter become eager as they approach.
-
-GSAP and ScrollTrigger load as an enhancement and scrub one continuous gallery position against native scroll (`ease: none`, `scrub: true`). Only photographs receive x/y/z and rotationY transforms. The desktop step uses x (67% of viewport width), receding z (320px per position, capped at three), y (20px per position, capped at two), and rotationY (20° per position, capped at ±30°); the narrow version uses x (86%), z (230px), and y (8px). Images beyond (2.5) positions are hidden; opacity falls by (.42) per position to a floor (.15). The cover has no GSAP transform. React does not rerender on animation frames. Reduced motion and expanded reading layout restore intrinsic vertical content, anchors, and every panel.
+`apps/web/tests/museum.spec.ts` comprueba las posiciones y tamaños de todos los capítulos en las tres resoluciones, navegación, extremos, opacidad, movimiento reducido, fallos de imagen y lectura sin JavaScript. `typography.spec.ts` cubre contraste, texto duplicado y espaciado personalizado. Su comprobación conjunta de contraste de ambas rutas requiere la API local para poblar el análisis. Los resultados de cada ejecución deben registrarse en el PR; estas pruebas no equivalen a una certificación integral de accesibilidad.
 
 ## Do's and Don'ts
 
 ### Do:
 
-- **Do** preserve conversation on the left and visual analysis on the right at desktop widths.
-- **Do** render both comparison pitches at the same scale, including when stacked.
-- **Do** retain visible match and penalty context alongside the active result.
-- **Do** pair player colors with names and distinguish goals with filled markers.
-- **Do** preserve keyboard access, visible focus, and reduced-motion behavior.
-
-- **Do** keep museum photography, editorial type, and `memory-*` tokens scoped to `/`.
-- **Do** preserve photographic subjects, all fifteen chapters, and the existing provenance files.
-- **Do** keep direct access to `/analisis` available from the museum header, Qatar scene, and finale.
-- **Do** retain native scroll, chapter anchors, visible focus, and the full intrinsic vertical fallback.
-- **Do** keep headings free of final periods and all typography upright, using blue for museum emphasis.
-- **Do** preserve scalable body and label roles, AA text contrast, and unclipped reading flow under zoom and user text spacing.
+- Do conservar los sistemas visuales de cada ruta.
+- Do mantener las posiciones y tamaños compartidos de las leyendas al añadir capítulos.
+- Do preservar sujetos fotográficos, procedencia, anclajes, historial y lectura accesible.
+- Do distinguir goles, tandas, premios y alturas desconocidas con texto y estructura.
+- Do comprobar el contenido real en las tres resoluciones de escritorio.
 
 ### Don't:
 
-- **Don’t** use shadows to separate the existing flat panels.
-- **Don’t** crop the pitch or change scale between compared players.
-- **Don’t** rely on color alone for player identity or selected events.
-- **Don’t** treat the provisional audience or descriptive working label as a confirmed brand preference.
-
-- **Don’t** replace the analytical palette or typography with the museum’s editorial system.
-- **Don’t** intercept wheel scrolling or require animation for reading the museum.
-- **Don’t** rotate captions, pin the cover, or add text backplates or letter shadows.
+- Don't deformar el año ni medirlo por capítulo para ajustarlo al relato.
+- Don't girar las leyendas ni añadirles fondos, sombras de texto o decoración.
+- Don't introducir controles retirados desde los prototipos históricos.
+- Don't recortar la cancha ni alterar la escala entre jugadores.
+- Don't atribuir a una fotografía un partido o una fecha que su fuente no confirma.

@@ -22,6 +22,7 @@ import qatar from "../../public/memoria/seleccion/mundial-2022.jpg";
 import worldChampions from "../../public/memoria/seleccion/mundial-2022.jpg";
 import ballonDor2023 from "../../public/memoria/seleccion/balon-oro-2023.jpg";
 import miami from "../../public/memoria/seleccion/copa-2024.jpg";
+import lastHomeQualifier from "../../public/memoria/seleccion/eliminatorias-2025.jpg";
 import legacy from "../../public/memoria/seleccion/mundial-2026.jpg";
 import "./museum.css";
 
@@ -112,6 +113,10 @@ const chapters = [
     body: "Messi mira desde afuera. Lautaro marca en el alargue y Argentina retiene la Copa América.",
     image: miami, alt: "Messi, Di María y sus compañeros celebran con la Copa América 2024", layout: "encore", note: "El legado también es lo que sigue sin vos.",
     match: { opponent: "Colombia", goals: [1, 0], competition: "Final de la Copa América", detail: "Lautaro Martínez 112′ — Tiempo extra" } },
+  { id: "eliminatorias-2025", year: "2025", date: "4 de septiembre — Buenos Aires", title: "El último\nbaile en casa",
+    body: "Messi marca dos goles en el 3–0 a Venezuela. Su última eliminatoria en Argentina, rumbo al Mundial 2026.",
+    image: lastHomeQualifier, alt: "Messi celebra con los brazos abiertos y el brazalete de capitán de Argentina", layout: "home-qualifier", note: "El Monumental le devuelve todo el cariño.",
+    match: { opponent: "Venezuela", goals: [3, 0], competition: "Eliminatorias al Mundial", detail: "Doblete de Messi — Última eliminatoria como local en el Monumental" } },
   { id: "legado", year: "2026", date: "19 de julio — Nueva Jersey", title: "El pasado\nfrente al futuro",
     body: "Messi y Yamal, el pasado frente al futuro. España gana 1–0; el legado sigue en quienes vienen.",
     image: legacy, alt: "Messi conduce el balón ante un jugador de España en la final del Mundial 2026", layout: "legacy", note: "El final duele. El camino queda.", match: { opponent: "España", goals: [0, 1], competition: "Final del Mundial", detail: "Ferran Torres 104′ — Tiempo extra" } },
@@ -138,6 +143,7 @@ const locations: Record<(typeof chapters)[number]["id"], string> = {
   qatar: "Lusail, Qatar",
   "balon-oro-2023": "París, Francia",
   bicampeones: "Miami Gardens, Estados Unidos",
+  "eliminatorias-2025": "Buenos Aires, Argentina",
   legado: "East Rutherford, Estados Unidos",
 };
 
