@@ -8,73 +8,41 @@ web
 
 ## Product Purpose
 
-Explorar datos de Messi en el Mundial 2022 mediante una conversación que transforma
-un espacio visual y conserva el contexto entre turnos. La entrada `/` presenta
-un recorrido fotográfico de Messi con Argentina y conduce al análisis de la
-final de Qatar 2022 en `/analisis`.
+Explorar la historia de Messi con Argentina y los datos de la final del Mundial 2022. El showcase fotográfico «La memoria albiceleste» ocupa `/`; la conversación con visualizaciones y evidencia vive en `/analisis`. La interfaz y sus contenidos están en español.
 
 ## Operating Context
 
-Primera entrega local: «Muéstrame los tiros de Messi en la final», «Quita los
-penales», «Compáralo con Mbappé». La comparación conserva el partido y los filtros.
-En `/analisis`, conversación en el panel izquierdo, espacio visual en el derecho. Recuperar un
-turno recupera tanto su resultado como su contexto.
+La galería recorre 21 capítulos de 2005 a 2026 mediante fotografías, relatos breves y resultados. La portada precede al recorrido horizontal con profundidad. Scroll, arrastre, teclado y enlaces con fragmento permiten explorar la historia y recuperar una posición.
+
+En `/analisis`, la conversación está a la izquierda y el espacio visual a la derecha. Las consultas implementadas son «Muéstrame los tiros de Messi en la final», «Quita los penales» y «Compáralo con Mbappé». Cada turno conserva partido, filtros y resultado; recuperar un turno restaura ese contexto.
 
 ## Capabilities and Constraints
 
-Alcance persistente confirmado por el usuario el 9 de noviembre de 2026:
-solo desktop. Todas las propuestas visuales, implementaciones y validaciones
-de interfaz deben centrarse en navegadores de escritorio y laptop. No ofrecer
-variantes móviles ni ejecutar pruebas móviles salvo petición explícita del usuario.
-Conservar los respaldos existentes de lectura accesible, zoom y movimiento reducido.
-Las propuestas visuales se presentan separadas de la página principal hasta aprobarlas.
+El alcance confirmado es solo escritorio y laptop. Validar a 1440×800, 1440×1000 y 1920×1080. Mantener lectura accesible, zoom, espaciado personalizado y movimiento reducido; los respaldos de redistribución no amplían el alcance a móvil. Presentar las propuestas visuales separadas de la página principal hasta que el usuario apruebe integrarlas.
 
-Next.js y TypeScript, FastAPI y Python, LangGraph. Gold contiene datos reales
-StatsBomb con manifiestos y evidencia por evento. Los puntos y las cifras deben
-derivarse de una selección común. Las tandas se excluyen de las métricas de partido.
-Creación, recepciones, conexiones y alineaciones quedan para entregas posteriores.
-Los tiros deben mostrar tanto origen como destino. Debajo de la cancha, una
-vista frontal del arco muestra los destinos con altura conocida. Ambas vistas
-comparten filtros y selección de eventos; las alturas faltantes no se estiman.
-Toda la tipografía debe permitir lectura accesible: tamaños escalables, contraste,
-ampliación, espaciado personalizable y redistribución del contenido. La validación
-tipográfica de ambas rutas cubre WCAG 2.2 AA 1.4.3, 1.4.4, 1.4.10 y 1.4.12;
-no constituye una certificación integral del sitio ni de las fuentes.
+Next.js y TypeScript sirven la interfaz; FastAPI, Python y LangGraph resuelven el análisis. La conversación actual usa los datos locales validados y requiere la API. La conexión con un modelo de IA queda pendiente.
+
+Las cifras, la cancha, el arco y el detalle de eventos deben partir de una selección común. Excluir las tandas de penales de las métricas de partido. Mostrar origen y destino de los tiros; representar en el arco solo las alturas conocidas, sin estimarlas. Creación, recepciones, conexiones y alineaciones quedan para entregas posteriores.
 
 ## Evidence on Hand
 
-Artefactos Gold locales en `data/gold/statsbomb/wc2022/`. Las migraciones existentes
-también definen Gold en PostgreSQL. La primera conversación lee el artefacto
-inmutable y validado, sin requerir una base PostgreSQL activa.
+Los artefactos Gold de StatsBomb están en `data/gold/statsbomb/wc2022/`, con manifiestos y evidencia por evento. La conversación lee estos artefactos inmutables sin requerir PostgreSQL activo; las migraciones conservan el modelo de base de datos.
+
+Los capítulos y sus resultados están en `apps/web/src/app/page.tsx`. Las fotos se alojan en `apps/web/public/memoria/`; `sources.json` y `seleccion/selection.json` registran su procedencia. Una fotografía elegida puede ilustrar un capítulo sin pertenecer a ese partido: el texto alternativo debe describir lo visible sin atribuirle una fecha no verificada.
 
 ## Product Principles
 
-- Conservar el contexto explícitamente.
-- Una selección de eventos alimenta cifras, mapa y evidencia.
-- Conservar resultados anteriores al consultar o recuperarse de un error.
-- Pedir aclaración cuando la petición excede el alcance implementado.
+- Conservar el contexto y los resultados anteriores durante nuevas consultas o errores.
+- Derivar cifras y visualizaciones de la misma selección de eventos.
+- Mantener cada capítulo legible cuando fallen la imagen o la mejora visual.
+- Pedir aclaración cuando una consulta exceda las capacidades implementadas.
 
 ## Confirmed Direction
 
-El usuario confirmó una herramienta de análisis en español, sobria y centrada
-en la cancha, con conversación a la izquierda y recuperación de cada resultado
-desde el historial. También aprobó implementar la entrada fotográfica inmersiva
-«La memoria albiceleste» y, el 9 de noviembre de 2026, aprobó trasladar la
-galería de `apps/web/public/playbook-memoria.html` a la página oficial incluyendo
-todas las fotos. El objetivo de esta galería y su criterio de entrega son solo
-escritorio; las redistribuciones estrechas son respaldo de lectura accesible.
-La portada sale verticalmente antes de una galería fotográfica
-con profundidad y desplazamiento horizontal ligado al scroll nativo. Se conservan
-los quince capítulos, sus textos y resultados, y la invitación final al análisis.
-El índice completo, la línea de tiempo contextual y los controles anterior/siguiente
-permiten recorrerlos. El contenido permanece en un documento vertical con
-movimiento reducido, tipografía ampliada, pantallas muy estrechas o bajas, o sin
-JavaScript. Esta ampliación visual pertenece a `/`; el espacio analítico conserva
-su sistema.
+El showcase usa fotografías con profundidad, tipografía frontal y leyendas que conservan posición y tamaño al cambiar de capítulo. Los 21 capítulos incluyen el Balón de Oro de 2023 y la última eliminatoria de Messi como local en 2025. El teclado y los fragmentos de URL complementan el scroll y el arrastre. Con movimiento reducido, texto ampliado, espacio insuficiente o sin JavaScript, el recorrido conserva el documento vertical completo.
+
+El análisis mantiene una presentación sobria centrada en la cancha, con comparación a igual escala, historial recuperable y evidencia inspeccionable. [DESIGN.md](DESIGN.md) define las reglas visuales vigentes de ambas rutas.
 
 ## Open Decisions
 
-Se contemplan analistas y aficionados. La dirección de la galería de entrada
-está aprobada; la identidad general y las preferencias visuales más allá de
-estas dos superficies siguen abiertas. El usuario decidió dejar la conexión con
-un modelo de IA para después.
+La audiencia contempla analistas y aficionados, pero su prioridad sigue abierta. La dirección del showcase está aprobada; la identidad general fuera de estas dos superficies y la integración con un modelo de IA siguen pendientes.
