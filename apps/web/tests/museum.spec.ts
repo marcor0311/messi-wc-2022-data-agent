@@ -2,7 +2,7 @@ import { test, expect, type Page } from "@playwright/test";
 
 test.skip(({ isMobile }) => !!isMobile, "The landing storytelling is desktop only.");
 
-const ids = ["comienzos", "alemania-2006", "copa-2007", "beijing-2008", "camiseta-10-2009", "sudafrica-2010", "copa-2011", "brasil-2012", "brasil-2013", "maracana", "copa-2015", "volver", "quito-2017", "rusia", "america", "wembley", "qatar", "balon-oro-2023", "bicampeones", "eliminatorias-2025", "legado", "fin-de-una-era"];
+const ids = ["comienzos", "alemania-2006", "copa-2007", "beijing-2008", "camiseta-10-2009", "sudafrica-2010", "copa-2011", "brasil-2012", "brasil-2013", "maracana", "copa-2015", "volver", "quito-2017", "rusia", "copa-2019", "america", "wembley", "qatar", "balon-oro-2023", "bicampeones", "eliminatorias-2025", "legado", "fin-de-una-era"];
 const desktopViewports = [{ width: 1440, height: 800 }, { width: 1440, height: 1000 }, { width: 1920, height: 1080 }];
 
 async function moment(page: Page, id: string) {
@@ -29,7 +29,7 @@ test("the triangular brand stays on the cover and redundant navigation is absent
 });
 
 for (const viewport of desktopViewports) {
-test(`all twenty-two captions keep the same slots and typography at ${viewport.width}×${viewport.height}`, async ({ page }) => {
+test(`all twenty-three captions keep the same slots and typography at ${viewport.width}×${viewport.height}`, async ({ page }) => {
   await page.setViewportSize(viewport);
   const errors: string[] = [];
   page.on("pageerror", error => errors.push(error.message));
@@ -149,11 +149,14 @@ test("reduced motion preserves the entire narrative and can change at runtime", 
   await page.goto("/#qatar");
   await expect(page.locator("#qatar h2")).toBeInViewport();
   await expect(page.locator(".horizontal-story")).not.toHaveClass(/is-coverflow/);
+  await expect(page.locator(".museum-caption-motion")).toHaveCount(0);
   await page.emulateMedia({reducedMotion:"no-preference"});
   await expect(page.locator(".museum")).toHaveAttribute("data-enhanced","true");
+  await expect(page.locator(".museum-caption-motion")).toHaveCount(1);
   await expect(page.locator("#qatar h2")).toBeInViewport();
   await page.emulateMedia({reducedMotion:"reduce"});
   await expect(page.locator('[data-gallery-panel][inert]')).toHaveCount(0);
+  await expect(page.locator(".museum-caption-motion")).toHaveCount(0);
 });
 
 test("the story remains readable without JavaScript or photography", async ({ browser, page }) => {
