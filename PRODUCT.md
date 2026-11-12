@@ -12,7 +12,7 @@ Explorar la historia de Messi con Argentina y los datos de la final del Mundial 
 
 ## Operating Context
 
-La galería recorre 21 capítulos de 2005 a 2026 mediante fotografías, relatos breves y resultados. La portada precede al recorrido horizontal con profundidad. Scroll, arrastre, teclado y enlaces con fragmento permiten explorar la historia y recuperar una posición.
+La galería recorre 22 capítulos de 2005 a 2026 mediante fotografías, relatos breves y resultados. La portada precede al recorrido horizontal con profundidad. Scroll, arrastre, teclado y enlaces con fragmento permiten explorar la historia y recuperar una posición.
 
 En `/analisis`, la conversación está a la izquierda y el espacio visual a la derecha. Las consultas implementadas son «Muéstrame los tiros de Messi en la final», «Quita los penales» y «Compáralo con Mbappé». Cada turno conserva partido, filtros y resultado; recuperar un turno restaura ese contexto.
 
@@ -39,7 +39,7 @@ Los capítulos y sus resultados están en `apps/web/src/app/page.tsx`. Las fotos
 
 ## Confirmed Direction
 
-El showcase usa fotografías con profundidad, tipografía frontal y leyendas que conservan posición y tamaño al cambiar de capítulo. Los 21 capítulos incluyen el Balón de Oro de 2023 y la última eliminatoria de Messi como local en 2025. El teclado y los fragmentos de URL complementan el scroll y el arrastre. Con movimiento reducido, texto ampliado, espacio insuficiente o sin JavaScript, el recorrido conserva el documento vertical completo.
+El showcase usa fotografías con profundidad, tipografía frontal y leyendas que conservan posición y tamaño al cambiar de capítulo. Los 22 capítulos incluyen el Balón de Oro de 2023 y la última eliminatoria de Messi como local en 2025. «El fin de una era» cierra el recorrido con Messi saludando y el marcador Argentina 3–0 Benín del amistoso de despedida, disputado el 6 de octubre de 2026 en el Monumental. El teclado y los fragmentos de URL complementan el scroll y el arrastre. Con movimiento reducido, texto ampliado, espacio insuficiente o sin JavaScript, el recorrido conserva el documento vertical completo.
 
 El análisis mantiene una presentación sobria centrada en la cancha, con comparación a igual escala, historial recuperable y evidencia inspeccionable. [DESIGN.md](DESIGN.md) define las reglas visuales vigentes de ambas rutas.
 
