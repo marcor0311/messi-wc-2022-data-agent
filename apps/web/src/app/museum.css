@@ -97,7 +97,16 @@ html:has(.museum), body:has(.museum) { background: #0b203b; }
    Changing the active chapter changes visibility only, never the layout. */
 .is-coverflow .museum-world { position: absolute; left: 5%; right: 5%; bottom: 0; height: var(--gallery-copy-height); padding: 24px 0; display: grid; grid-template-columns: max-content minmax(0,1.4fr) minmax(0,1fr); grid-template-rows: auto auto auto; column-gap: clamp(24px,2vw,36px); row-gap: 16px; align-content: center; }
 .is-coverflow .scene-copy { grid-area: 1 / 1 / -1 / -1; display: grid; grid-template-columns: subgrid; grid-template-rows: subgrid; width: auto; margin: 0; visibility: hidden; pointer-events: none; }
-.is-coverflow [data-active="true"] .scene-copy { visibility: visible; pointer-events: auto; }
+.is-coverflow :is([data-active="true"],[data-exiting="true"]) .scene-copy { visibility: visible; }
+.is-coverflow [data-active="true"] .scene-copy { pointer-events: auto; }
+/* Only year and goal digits roll. Text remains in place and dissolves once,
+   after navigation settles; additive blending avoids a dark dip between states. */
+.is-coverflow .museum-world { isolation: isolate; }
+.is-coverflow [data-number-motion] [data-gallery-panel] :is(.scene-year,.score-result strong) { clip-path: inset(50%); }
+.is-coverflow [data-number-motion] :is(.score-location,.score-team,.score-context,.award-board) { mix-blend-mode: plus-lighter; }
+.museum-caption-motion { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+.caption-window { position: absolute; overflow: clip; }
+.caption-cell { position: absolute; inset: 0; }
 .is-coverflow .scene-year { grid-column: 1; grid-row: 1 / -1; align-self: start; font-size: clamp(9rem,15.5vw,19rem); line-height: .9; margin: 0; color: var(--memory-blue); font-variant-numeric: lining-nums tabular-nums; }
 /* Align visible capitals as well as boxes across the three different type sizes. */
 .is-coverflow :is(.scene-year,.scene-copy h2 > span:first-child,.score-location) { text-box-trim: trim-start; text-box-edge: cap alphabetic; }

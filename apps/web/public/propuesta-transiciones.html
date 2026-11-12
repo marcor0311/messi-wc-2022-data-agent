@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="es">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Dos transiciones para el museo</title>
+<style>
+#stage{min-height:310px}
+@font-face{font-family:Display;src:url('/playbook-assets/BarlowCondensed-Bold.ttf')}@font-face{font-family:Sans;src:url('/playbook-assets/Manrope.woff2')}
+*{box-sizing:border-box}body{margin:0;background:#0b203b;color:#f2eee3;font:16px/1.6 Sans,sans-serif}main{width:90%;max-width:1680px;margin:42px auto}a{color:#b8e4ed;text-underline-offset:4px}button,input{font:inherit}button{color:inherit;border:1px solid #ffffff35;background:transparent;padding:10px 18px;min-height:44px;cursor:pointer}button:disabled{opacity:.4;cursor:default}button[aria-pressed=true]{background:#b8e4ed;color:#0b203b;border-color:#b8e4ed}:focus-visible{outline:3px solid #b8e4ed;outline-offset:4px}.eyebrow{color:#b8e4ed;font-size:12px;letter-spacing:.12em;margin:0}h1{font-size:32px;font-weight:500;margin:8px 0}.intro{max-width:80ch;color:#c2cfdc;margin:0 0 24px}.options{display:flex;gap:12px;flex-wrap:wrap}.description{color:#c2cfdc;max-width:95ch;min-height:3.2em;margin:18px 0 28px}.exhibit{position:relative;border-block:1px solid #ffffff35;min-height:340px;padding:42px 0;overflow:clip}.caption{display:grid;grid-template-columns:max-content minmax(0,1.4fr) minmax(0,1fr);gap:32px;align-items:start}.year{display:flex;font:700 clamp(8rem,15.5vw,19rem)/1 Display,sans-serif;letter-spacing:-.025em;color:#b8e4ed;font-variant-numeric:lining-nums tabular-nums}.digit{width:.48em;height:1em}.clip{position:relative;overflow:clip}.cell{position:absolute;inset:0;display:block}.title{font:700 clamp(2.5rem,4.55vw,6rem)/1.08 Display,sans-serif;letter-spacing:-.02em}.title .clip{height:1.08em}.summary{height:5em;margin-top:18px;color:#b8e4ed;font-size:18px;line-height:1.6}.location{height:3.2em;color:#b8e4ed;font-size:18px}.score{height:1em;font:700 clamp(5rem,8vw,9rem)/1 Display,sans-serif;letter-spacing:.03em;margin:8px 0 18px}.competition{height:3.2em;color:#c2cfdc}.team{height:1.6em;font-size:14px;color:#c2cfdc}.lateral{position:absolute;inset:42px 0 auto;width:100%}.controls{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:24px}.controls label{display:flex;gap:8px;align-items:center;margin-left:12px}.position{margin-left:auto;color:#b8e4ed;font-variant-numeric:tabular-nums}.sources{border-top:1px solid #ffffff25;padding-top:20px;margin-top:30px;color:#c2cfdc;font-size:13px}.sources a{margin-right:20px}.note{font-size:13px;color:#c2cfdc;margin-top:16px}#announce{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+</style>
+<main>
+  <p class="eyebrow">LA MEMORIA ALBICELESTE · ESTUDIO DE MOVIMIENTO</p>
+  <h1>Una transición que se pueda seguir con la mirada</h1>
+  <p class="intro">Compara el panel inferior con el mismo contenido, tipografía y colores del museo. Las fotografías y la página principal permanecen intactas.</p>
+  <div class="options" role="group" aria-label="Propuesta de animación">
+    <button type="button" data-mode="vertical" aria-pressed="true">A · Dígitos y líneas · Recomendada</button>
+    <button type="button" data-mode="horizontal" aria-pressed="false">B · Desplazamiento lateral</button>
+  </div>
+  <p class="description" id="description">El año conserva los dígitos que no cambian. Los demás y las líneas de texto se deslizan dentro de su espacio, con el mismo ritmo. El contenido mantiene su opacidad.</p>
+  <section class="exhibit" aria-label="Vista del panel inferior"><div id="stage" aria-hidden="true"></div></section>
+  <p id="announce" aria-live="polite"></p>
+  <div class="controls">
+    <button id="previous" type="button">← Anterior</button>
+    <button id="next" type="button">Siguiente →</button>
+    <button id="replay" type="button">Repetir cambio</button>
+    <label><input id="slow" type="checkbox"> Cámara lenta</label>
+    <span class="position" id="position"></span>
+  </div>
+  <p class="note">Prueba avanzar y retroceder durante el movimiento. B mueve una superficie más grande; A mantiene cada dato en su columna. Esta es una propuesta aislada, pendiente de aprobación.</p>
+  <div class="sources">Referencias consultadas:
+    <a href="https://number-flow.barvian.me/" target="_blank" rel="noreferrer">NumberFlow · dígitos</a>
+    <a href="https://gsap.com/docs/v3/Plugins/SplitText/masks/" target="_blank" rel="noreferrer">GSAP · máscaras de texto</a>
+    <a href="https://developer.apple.com/videos/play/wwdc2018/803/" target="_blank" rel="noreferrer">Apple · continuidad e interrupción</a>
+  </div>
+  <noscript>Activa JavaScript para comparar las dos transiciones. El museo conserva su lectura sin JavaScript.</noscript>
+</main>
+<script>
+const chapters = [
+  {year:'2005',title:['Una camiseta','Toda una vida'],body:'Debuta ante Hungría y ve la roja casi de inmediato. El sueño apenas empezaba.',location:'Budapest, Hungría',score:'2 — 1',team:'Argentina / Hungría',competition:'Amistoso internacional'},
+  {year:'2006',title:['El mundo','lo descubre'],body:'Con 18 años, debuta en un Mundial y marca en la goleada 6–0.',location:'Gelsenkirchen, Alemania',score:'6 — 0',team:'Argentina / Serbia y Montenegro',competition:'Mundial — fase de grupos'},
+  {year:'2007',title:['La primera','gran caída'],body:'Brasil gana 3–0 en la final de la Copa América. La primera final con la mayor termina en tristeza.',location:'Maracaibo, Venezuela',score:'0 — 3',team:'Argentina / Brasil',competition:'Final de la Copa América'},
+  {year:'2008',title:['Oro','con Argentina'],body:'Messi y una generación dorada ganan los Juegos Olímpicos.',location:'Pekín, China',score:'1 — 0',team:'Argentina / Nigeria',competition:'Final olímpica'},
+  {year:'2009',title:['La 10','ya tiene dueño'],body:'Maradona le confía la 10. Messi marca en el 4–0 ante Venezuela, rumbo a Sudáfrica.',location:'Buenos Aires, Argentina',score:'4 — 0',team:'Argentina / Venezuela',competition:'Eliminatorias al Mundial'},
+  {year:'2010',title:['Un sueño','interrumpido'],body:'Alemania gana 4–0. Argentina vuelve a quedarse en cuartos.',location:'Ciudad del Cabo, Sudáfrica',score:'0 — 4',team:'Argentina / Alemania',competition:'Cuartos del Mundial'}
+];
+const stage=document.querySelector('#stage'), reduced=matchMedia('(prefers-reduced-motion: reduce)');
+let mode='vertical',target=0,offset=0,velocity=0,frame=0,last=0,groups=[],lastFrom=0,lastTo=1;
+const el=(tag,className,text)=>{const node=document.createElement(tag);if(className)node.className=className;if(text!==undefined)node.textContent=text;return node};
+function ribbon(values,className){
+  const clip=el('div',`clip ${className}`),unique=[],positions=[];
+  values.forEach(value=>{if(!unique.length||unique[unique.length-1]!==value)unique.push(value);positions.push(unique.length-1)});
+  const cells=unique.map(value=>{const cell=el('span','cell',value);clip.append(cell);return cell});
+  groups.push({cells,positions});return clip;
+}
+function staticCaption(chapter){
+  const row=el('div','caption lateral'),year=el('div','year',chapter.year),story=el('div'),title=el('div','title');
+  chapter.title.forEach(line=>title.append(el('div','',line)));story.append(title,el('div','summary',chapter.body));
+  const match=el('div');match.append(el('div','location',chapter.location),el('div','score',chapter.score),el('div','team',chapter.team),el('div','competition',chapter.competition));
+  row.append(year,story,match);return row;
+}
+function mount(){
+  stage.replaceChildren();groups=[];
+  if(mode==='horizontal'){
+    const cells=chapters.map(chapter=>{const row=staticCaption(chapter);stage.append(row);return row});
+    groups.push({cells,positions:chapters.map((_,i)=>i)});
+  }else{
+    const row=el('div','caption'),year=el('div','year'),story=el('div'),title=el('div','title'),match=el('div');
+    for(let i=0;i<4;i++)year.append(ribbon(chapters.map(c=>c.year[i]),'digit'));
+    for(let i=0;i<2;i++)title.append(ribbon(chapters.map(c=>c.title[i]),''));
+    story.append(title,ribbon(chapters.map(c=>c.body),'summary'));
+    for(const field of ['location','score','team','competition'])match.append(ribbon(chapters.map(c=>c[field]),field));
+    row.append(year,story,match);stage.append(row);
+  }
+  draw();
+}
+function draw(){
+  const index=Math.max(0,Math.min(chapters.length-1,offset)),lo=Math.floor(index),hi=Math.min(lo+1,chapters.length-1),progress=index-lo;
+  for(const group of groups){
+    const position=group.positions[lo]+(group.positions[hi]-group.positions[lo])*progress;
+    group.cells.forEach((cell,i)=>{cell.style.transform=mode==='vertical'?`translate3d(0,${(i-position)*100}%,0)`:`translate3d(${(i-position)*100}%,0,0)`});
+  }
+}
+// A critically damped spring: retarget without discarding the on-screen position or velocity.
+function tick(now){
+  const dt=Math.min((now-last)/1000,.064);last=now;
+  const stiffness=document.querySelector('#slow').checked?4:18,displacement=offset-target,slope=velocity+stiffness*displacement,decay=Math.exp(-stiffness*dt);
+  offset=target+(displacement+slope*dt)*decay;velocity=(slope-stiffness*(displacement+slope*dt))*decay;
+  if(Math.abs(offset-target)<.0005&&Math.abs(velocity)<.005){offset=target;velocity=0;frame=0;draw();return}
+  draw();frame=requestAnimationFrame(tick);
+}
+function go(index,remember=true){
+  index=Math.max(0,Math.min(chapters.length-1,index));if(index===target)return;
+  if(remember){lastFrom=target;lastTo=index}target=index;
+  document.querySelector('#previous').disabled=index===0;document.querySelector('#next').disabled=index===chapters.length-1;
+  document.querySelector('#position').textContent=`${String(index+1).padStart(2,'0')} / ${chapters.length} · ${chapters[index].year}`;
+  document.querySelector('#announce').textContent=`${chapters[index].year}. ${chapters[index].title.join(' ')}. ${chapters[index].body}`;
+  if(reduced.matches){cancelAnimationFrame(frame);frame=0;offset=target;velocity=0;draw();return}
+  if(!frame){last=performance.now();frame=requestAnimationFrame(tick)}
+}
+document.querySelector('#previous').onclick=()=>go(target-1);document.querySelector('#next').onclick=()=>go(target+1);
+document.querySelector('#replay').onclick=()=>{cancelAnimationFrame(frame);frame=0;offset=lastFrom;target=lastFrom;velocity=0;draw();go(lastTo,false)};
+document.querySelectorAll('[data-mode]').forEach(button=>button.onclick=()=>{
+  mode=button.dataset.mode;document.querySelectorAll('[data-mode]').forEach(item=>item.setAttribute('aria-pressed',String(item===button)));
+  document.querySelector('#description').textContent=mode==='vertical'?'El año conserva los dígitos que no cambian. Los demás y las líneas de texto se deslizan dentro de su espacio, con el mismo ritmo. El contenido mantiene su opacidad.':'El año, el título y el resultado viajan juntos hacia un lado, como dos paneles contiguos. Se entiende la dirección del recorrido, aunque mueve una superficie mayor.';
+  mount();
+});
+reduced.addEventListener('change',()=>{if(reduced.matches){cancelAnimationFrame(frame);frame=0;offset=target;velocity=0;draw()}});
+mount();document.querySelector('#previous').disabled=true;document.querySelector('#position').textContent='01 / 6 · 2005';document.querySelector('#announce').textContent='2005. Una camiseta. Toda una vida.';
+</script>
+</html>
