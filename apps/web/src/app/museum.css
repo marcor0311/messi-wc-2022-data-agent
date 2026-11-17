@@ -73,6 +73,16 @@ html:has(.museum), body:has(.museum) { background: #0b203b; }
 .score-dismissal svg { width: 12px; height: 18px; color: #f04438; }
 .score-penalties { color: var(--memory-blue); font-size: .875rem; }
 .photo-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 32px; background: #183c5a; color: var(--memory-paper); font-size: 1rem; text-align: center; }
+.museum-photo { position: absolute; inset: 0; }
+.museum-photo > .photo-fallback { display: none; }
+.museum-photo[data-failed="true"] > img { visibility: hidden; }
+.museum-photo[data-failed="true"] > .photo-fallback { display: grid; }
+.museum-return { position: relative; display: grid; justify-items: center; padding: clamp(64px,10vh,120px) 5% clamp(80px,12vh,144px); border-top: 1px solid var(--memory-line); text-align: center; }
+.museum-return-content { display: grid; justify-items: center; gap: 18px; }
+.museum-return-content > p { margin: 0; color: var(--memory-muted); font-size: .875rem; letter-spacing: .04em; }
+.museum-return-link { display: inline-flex; align-items: center; gap: 18px; min-height: 56px; padding: 14px 20px; border: 1px solid #ffffff70; color: var(--memory-paper); font-size: 1rem; font-weight: 650; text-decoration: none; transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease, transform 180ms ease; }
+.museum-return-link svg { transform: rotate(-90deg); transition: transform 180ms ease; }
+.museum-return-link:active { transform: scale(.98); }
 
 .museum[data-reading="true"] .museum-hero { height: auto; min-height: 0; }
 .museum[data-reading="true"] .hero-copy { position: relative; inset: auto; width: 90%; padding: 200px 0 150px; margin: 0 auto; }
@@ -91,7 +101,7 @@ html:has(.museum), body:has(.museum) { background: #0b203b; }
 .coverflow-photo { position: relative; width: 62vw; height: min(60svh,calc(100svh - var(--gallery-copy-height) - 24px)); margin: 0; background: #142f4d; backface-visibility: hidden; }
 .coverflow-photo img { display: block; width: 100%; height: 100%; object-fit: cover; pointer-events: none; user-select: none; }
 .museum img[src*="quito-2017"], .museum img[src*="brasil-2013"] { object-position: center top; }
-.is-coverflow :is(.memory-scene,.museum-gallery-clip,.museum-perspective) { display: contents; }
+.is-coverflow .memory-scene { display: contents; }
 .is-coverflow .scene-stage { display: none; }
 /* Every caption contributes to the same tracks, including the hidden chapters.
    Changing the active chapter changes visibility only, never the layout. */
@@ -99,8 +109,7 @@ html:has(.museum), body:has(.museum) { background: #0b203b; }
 .is-coverflow .scene-copy { grid-area: 1 / 1 / -1 / -1; display: grid; grid-template-columns: subgrid; grid-template-rows: subgrid; width: auto; margin: 0; visibility: hidden; pointer-events: none; }
 .is-coverflow :is([data-active="true"],[data-exiting="true"]) .scene-copy { visibility: visible; }
 .is-coverflow [data-active="true"] .scene-copy { pointer-events: auto; }
-/* Only year and goal digits roll. Text remains in place and dissolves once,
-   after navigation settles; additive blending avoids a dark dip between states. */
+/* Only changed year and goal digits roll. Reading remains stationary. */
 .is-coverflow .museum-world { isolation: isolate; }
 .is-coverflow [data-number-motion] [data-gallery-panel] :is(.scene-year,.score-result strong) { clip-path: inset(50%); }
 .is-coverflow [data-number-motion] :is(.score-location,.score-team,.score-context,.award-board) { mix-blend-mode: plus-lighter; }
@@ -130,6 +139,8 @@ html:has(.museum), body:has(.museum) { background: #0b203b; }
 .is-coverflow :is(.score-team,.score-competition,.score-penalties) { font-size: 1rem; }
 @media (hover:hover) and (pointer:fine) {
   .museum :is(a,summary):hover { color: var(--memory-blue); }
+  .museum .museum-return-link:hover { color: var(--memory-ink); background: var(--memory-blue); border-color: var(--memory-blue); }
+  .museum .museum-return-link:hover svg { transform: translateX(3px) rotate(-90deg); }
   .museum button:not(:disabled):hover { border-color: var(--memory-blue); color: var(--memory-blue); }
 }
 @media (max-width:760px) {

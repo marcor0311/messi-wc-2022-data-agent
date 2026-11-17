@@ -5,36 +5,44 @@ Source: https://github.com/TahaSh/loopem
 Documentation: https://loopem.tahazsh.com/docs/layouts/coverflow/
 License: MIT, included in LICENSE. JavaScript files are unmodified package files.
 
-Used in the approved desktop proposal at /playbook-coverflow.html and in the
-landing gallery. The landing bundles these unmodified modules through Next.js;
-no new npm dependency is required. The landing uses clamp mode (fixed ends)
-and has no timeline. Its original narrative remains the server-rendered,
-reduced-motion and enlarged-text fallback.
-The landing routes wheel, keyboard and card selection through Loopem's native
-spring (stiffness 13, friction 0.026), preserving velocity when retargeting.
-Wheel deltas accumulate into a target and snap after 120ms of idle input;
-direct URLs and history restoration remain immediate. The numeric treatment is
-limited to year digits and the two goal values. Each isolated glyph uses its
-measured character advance and padded ink window; no full-year quarter crops.
-The reading block stays still during photo travel, then changes once with a
-180ms opacity dissolve for metadata. The title and summary transition as one
-stationary passage: 120ms exit followed by a 180ms entrance, with no overlap
-between the old and new wording. Additive blending is limited to metadata; no titles,
-descriptions, teams, locations or competition labels slide or cascade. Numeric
-changes run only after the final card settles; unchanged digits remain fixed.
-The visual numeric layer is hidden from assistive technology and retains the
-original chapter semantics. Reading and reduced-motion fallbacks remove it.
-Keyboard-activated in-page links navigate and focus their target immediately.
-`/museo-propuesta` retains the original photographic dimensions, cover
-crop and focal points, with a discreet overlaid exhibition label.
-The proposal uses the demo's Cover Flow geometry (108/84/86px, 56 degrees,
-reach 5, perspective 900px), scaled proportionally to the existing photo width.
-It keeps opacity at 1 and disables fading so photos never dissolve through each
-other. Loopem handles drag, flick, side-card selection and horizontal wheel
-input in wrap mode, using the demo's stiffness 13 and friction 0.026.
-GSAP drives interruptible button/timeline navigation through the public seek API.
-Vertical mouse-wheel input uses that same offset and snaps at gesture end.
-Application-managed playback wraps and pauses on hover or hidden documents;
-it stays off when reduced motion is requested.
-Photos and captions are reused from the existing main page; original provenance remains
-in /memoria/seleccion/selection.json and /memoria/sources.json.
+Used in /playbook-coverflow.html and the desktop museum. The landing bundles the
+unmodified modules through Next.js without another npm dependency.
+
+The museum uses GSAP ScrollTrigger to pin one viewport while native document
+scroll traverses the twenty-three chapters. Scroll position is the sole driver:
+Loopem receives the offset through seek() with its built-in input disabled.
+Vertical wheel events remain native. No document overflow lock, corrective
+scroll loop, mandatory snap, or gesture-idle exit gate is installed.
+ScrollTrigger computes the pin range during refresh, not during each wheel event.
+ScrollToPlugin handles interruptible card/link navigation; keyboard chapter
+selection and URL restoration commit immediately. Vertical keys remain native.
+Drag and horizontal trackpad input update the same document scroll position.
+GSAP context, tweens, event listeners and the picker are cleaned up on unmount
+or when the accessible reading mode takes over.
+
+The approved Cover Flow geometry is 108/84/86px, 56 degrees, reach 5, perspective
+900px, scaled to the existing 62vw photograph width. Opacity remains 1 with
+fixed ends. overscan: 1 bounds the live photograph layer to five images instead
+of the previous ten near the middle of the gallery.
+
+Captions share fixed grid tracks. Only changed year/goal digits animate; their
+font metrics and clipping windows are measured and cached at setup/resize.
+One GSAP ticker drives the photo follow, numeric transforms and text transitions.
+After native scrollEnd, an interruptible 280ms ScrollTo tween centers the nearest
+photo; fresh wheel input cancels it. Caption changes commit once the photo rests.
+Changed digits roll vertically over 350ms. Title/summary exit over 120ms before
+the next passage enters over 180ms; metadata crossfades over 180ms. Only metadata
+uses additive blending. No title, summary, team or location slides horizontally.
+The numeric layer is hidden from assistive technology; original chapter
+semantics remain the accessible source. All chapters remain a complete vertical
+server-rendered document without JavaScript, with reduced motion or enlarged text.
+
+MuseumHero, MuseumGallery, MuseumChapter, MuseumReturn and MuseumPhoto render on
+the server. getImageProps supplies optimized responsive image markup, and one
+museum-level delegated error handler exposes image fallbacks. Only the small
+MuseumExperience lifecycle boundary hydrates; the controller loads dynamically.
+
+References: https://gsap.com/docs/v3/Plugins/ScrollTrigger/ and
+https://nextjs.org/docs/app/api-reference/components/image#getimageprops.
+Photo provenance remains in /memoria/seleccion/selection.json and /memoria/sources.json.
+The standalone playbook prototype retains its separate autoplay/gesture demo.

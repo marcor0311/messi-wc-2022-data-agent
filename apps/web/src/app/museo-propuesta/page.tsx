@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Home from "../page";
+import MuseumHome from "@/components/museum-home";
 import "./photography.css";
 
 export const metadata: Metadata = {
@@ -9,5 +9,5 @@ export const metadata: Metadata = {
 
 /** A reviewable photo treatment, isolated from the approved main page. */
 export default function PhotographyProposal() {
-  return <div className="museum-photo-proposal"><Home /></div>;
+  return <div className="museum-photo-proposal"><MuseumHome /></div>;
 }

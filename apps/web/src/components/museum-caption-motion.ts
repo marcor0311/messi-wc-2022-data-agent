@@ -1,22 +1,22 @@
+import { gsap } from "gsap";
+
 type Digit = { value: string; source: HTMLElement | null };
 type Field = { window: HTMLElement; values: Digit[]; digit?: number; cells: HTMLElement[]; changed: boolean };
+type Typography = { size: number; properties: [string, string][] };
 
-/** Only numeric ink is enhanced; the original chapter remains the accessible source. */
+/** Cached numeric ink; measurement happens on setup/resize, never on scroll. */
 export function createCaptionMotion(world: HTMLElement, panels: HTMLElement[], initialIndex: number) {
   const layer = document.createElement("div");
   layer.className = "museum-caption-motion";
   layer.setAttribute("aria-hidden", "true");
   layer.inert = true;
+  const styles = new Map<HTMLElement, Typography>();
+  const typeProperties = ["font-family", "font-size", "font-weight", "font-style", "font-variant-numeric", "line-height", "letter-spacing", "color", "text-box-trim", "text-box-edge"];
   let fields: Field[] = [];
   let current = initialIndex;
   let target = initialIndex;
-  let pending: number | undefined;
-  let frame = 0;
-  let last = 0;
-  let progress = 1;
-  let velocity = 0;
-  const typeProperties = ["font-family", "font-size", "font-weight", "font-style", "font-variant-numeric", "line-height", "letter-spacing", "color", "text-box-trim", "text-box-edge"];
-
+  let motion: gsap.core.Tween | undefined;
+  const state = { progress: 1 };
   const glyph = (entry: Digit, digit?: number) => {
     const cell = document.createElement("div");
     cell.className = "caption-cell";
@@ -28,11 +28,10 @@ export function createCaptionMotion(world: HTMLElement, panels: HTMLElement[], i
       child.removeAttribute("tabindex");
     }
     if (digit !== undefined) node.querySelector(".scene-year-label")!.textContent = entry.value;
-    const style = getComputedStyle(entry.source);
-    for (const property of typeProperties) node.style.setProperty(property, style.getPropertyValue(property));
-    const size = parseFloat(style.fontSize);
+    const style = styles.get(entry.source)!;
+    for (const [property, value] of style.properties) node.style.setProperty(property, value);
     Object.assign(node.style, {
-      position: "absolute", inset: "auto", left: `${size * .08}px`, top: `${size * .10}px`,
+      position: "absolute", inset: "auto", left: `${style.size * .08}px`, top: `${style.size * .10}px`,
       display: "block", margin: "0", width: "max-content", height: "auto",
     });
     cell.append(node);
@@ -50,57 +49,43 @@ export function createCaptionMotion(world: HTMLElement, panels: HTMLElement[], i
   const draw = () => {
     const direction = target >= current ? 1 : -1;
     for (const field of fields) {
-      field.cells[0].style.transform = `translate3d(0,${field.changed ? -progress * direction * 100 : 0}%,0)`;
-      if (field.changed) field.cells[1].style.transform = `translate3d(0,${(1 - progress) * direction * 100}%,0)`;
+      field.cells[0].style.transform = `translate3d(0,${field.changed ? -state.progress * direction * 100 : 0}%,0)`;
+      if (field.changed) field.cells[1].style.transform = `translate3d(0,${(1 - state.progress) * direction * 100}%,0)`;
     }
-  };
-  const tick = (now: number) => {
-    const dt = Math.min((now - last) / 1000, .064);
-    last = now;
-    const displacement = progress - 1, slope = velocity + 18 * displacement, decay = Math.exp(-18 * dt);
-    progress = 1 + (displacement + slope * dt) * decay;
-    velocity = (slope - 18 * (displacement + slope * dt)) * decay;
-    if (Math.abs(progress - 1) < .0005 && Math.abs(velocity) < .005) {
-      current = target;
-      frame = 0;
-      progress = 1;
-      render(current, current);
-      draw();
-      if (pending !== undefined) { const next = pending; pending = undefined; set(next, true); }
-      return;
-    }
-    draw();
-    frame = requestAnimationFrame(tick);
   };
   const set = (index: number, animate: boolean) => {
-    if (index === target && pending === undefined) return;
-    if (frame && animate) { pending = index; return; }
-    cancelAnimationFrame(frame);
-    frame = 0;
-    pending = undefined;
-    if (!animate) current = index;
+    if (index === target) return;
+    motion?.kill();
+    current = animate ? target : index;
     target = index;
-    progress = animate ? 0 : 1;
-    velocity = 0;
+    state.progress = animate ? 0 : 1;
     render(current, target);
     draw();
-    if (animate) { last = performance.now(); frame = requestAnimationFrame(tick); }
+    if (animate) motion = gsap.to(state, {
+      progress: 1, duration: .35, ease: "power3.out", onUpdate: draw,
+      onComplete: () => { current = target; render(current, current); draw(); },
+    });
   };
   const measure = () => {
-    cancelAnimationFrame(frame);
-    frame = 0;
-    pending = undefined;
+    motion?.kill();
     current = target;
-    layer.replaceChildren();
-    fields = [];
+    state.progress = 1;
+    // All typography and geometry reads precede changes to the visual layer.
+    styles.clear();
+    for (const panel of panels) {
+      for (const source of panel.querySelectorAll<HTMLElement>(".scene-year,.score-result strong")) {
+        const style = getComputedStyle(source);
+        styles.set(source, { size: parseFloat(style.fontSize), properties: typeProperties.map(property => [property, style.getPropertyValue(property)]) });
+      }
+    }
     const origin = world.getBoundingClientRect();
-    const add = (name: string, values: Digit[], digit?: number) => {
+    const specs: { name: string; values: Digit[]; digit?: number; left: number; top: number; width: number; height: number }[] = [];
+    const read = (name: string, values: Digit[], digit?: number) => {
       const source = values.find(entry => entry.source)!.source!;
       const rect = source.getBoundingClientRect();
-      const size = parseFloat(getComputedStyle(source).fontSize);
+      const size = styles.get(source)!.size;
       let x = rect.x, width = rect.width;
       if (digit !== undefined) {
-        // Measure each advance; equal quarters cut glyphs with negative tracking.
         const label = source.querySelector(".scene-year-label")!;
         const range = document.createRange();
         range.setStart(label.firstChild!, digit);
@@ -109,34 +94,31 @@ export function createCaptionMotion(world: HTMLElement, panels: HTMLElement[], i
         x = character.x;
         width = character.width;
       }
-      const window = document.createElement("div");
-      window.className = "caption-window";
-      window.dataset.captionField = name;
-      Object.assign(window.style, {
-        left: `${x - origin.x - size * .08}px`, top: `${rect.y - origin.y - size * .10}px`,
-        width: `${width + size * .16}px`, height: `${rect.height + size * .20}px`,
-      });
-      layer.append(window);
-      fields.push({ window, values, digit, cells: [], changed: false });
+      specs.push({ name, values, digit, left: x - origin.x - size * .08,
+        top: rect.y - origin.y - size * .10, width: width + size * .16, height: rect.height + size * .20 });
     };
-    for (let digit = 0; digit < 4; digit++) add(`year-${digit}`, panels.map(panel => {
+    for (let digit = 0; digit < 4; digit++) read(`year-${digit}`, panels.map(panel => {
       const source = panel.querySelector<HTMLElement>(".scene-year")!;
       return { source, value: source.textContent!.trim()[digit] };
     }), digit);
-    for (let digit = 0; digit < 2; digit++) add(`score-${digit}`, panels.map(panel => {
+    for (let digit = 0; digit < 2; digit++) read(`score-${digit}`, panels.map(panel => {
       const source = panel.querySelectorAll<HTMLElement>(".score-result strong")[digit] ?? null;
       return { source, value: source?.textContent ?? "" };
     }));
+    layer.replaceChildren();
+    fields = specs.map(spec => {
+      const window = document.createElement("div");
+      window.className = "caption-window";
+      window.dataset.captionField = spec.name;
+      Object.assign(window.style, { left: `${spec.left}px`, top: `${spec.top}px`, width: `${spec.width}px`, height: `${spec.height}px` });
+      layer.append(window);
+      return { window, values: spec.values, digit: spec.digit, cells: [], changed: false };
+    });
     render(current, current);
     draw();
   };
-
   measure();
   world.append(layer);
   world.dataset.numberMotion = "true";
-  return { set, measure, destroy: () => {
-    cancelAnimationFrame(frame);
-    delete world.dataset.numberMotion;
-    layer.remove();
-  } };
+  return { set, measure, destroy: () => { motion?.kill(); delete world.dataset.numberMotion; layer.remove(); styles.clear(); } };
 }
