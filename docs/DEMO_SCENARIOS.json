@@ -1,0 +1,994 @@
+[
+  {
+    "question": "¿Cuántos tiros, goles, xG y npxG sumó Lionel Andrés Messi Cuccittini en el torneo?",
+    "query": {
+      "dataset": "player_match",
+      "filters": [
+        {
+          "column": "player_id",
+          "op": "eq",
+          "value": 5503
+        }
+      ],
+      "columns": [],
+      "group_by": [],
+      "metrics": [
+        "shots",
+        "goals",
+        "xg",
+        "npxg"
+      ],
+      "visualization": "table",
+      "title": null,
+      "order_by": null,
+      "descending": true,
+      "limit": 100
+    },
+    "verified_rows": 1,
+    "source_rows": 7,
+    "truncated": false,
+    "provenance": {
+      "gold_load_id": "4f7a541c93d7271e6980966a0e5ba8614714567c1fea0b5391e7e6fede5e2ac9",
+      "dataset": "player_match",
+      "source_sha256": "827368f3e653536182d09a8dc50ebc739a740dfb8dfa43ed7380132d96c4923f",
+      "query_sha256": "9f01c695e0f0b6f0f8877c11e698ee1b1a75676aa512ac2a77be229bfa4973ae"
+    }
+  },
+  {
+    "question": "Compara los tiros y npxG de Lionel Andrés Messi Cuccittini y Kylian Mbappé Lottin en el torneo.",
+    "query": {
+      "dataset": "player_match",
+      "filters": [
+        {
+          "column": "player_id",
+          "op": "in",
+          "value": [
+            5503,
+            3009
+          ]
+        }
+      ],
+      "columns": [],
+      "group_by": [
+        "player_id"
+      ],
+      "metrics": [
+        "shots",
+        "npxg"
+      ],
+      "visualization": "bars",
+      "title": null,
+      "order_by": null,
+      "descending": true,
+      "limit": 100
+    },
+    "verified_rows": 2,
+    "source_rows": 14,
+    "truncated": false,
+    "provenance": {
+      "gold_load_id": "4f7a541c93d7271e6980966a0e5ba8614714567c1fea0b5391e7e6fede5e2ac9",
+      "dataset": "player_match",
+      "source_sha256": "827368f3e653536182d09a8dc50ebc739a740dfb8dfa43ed7380132d96c4923f",
+      "query_sha256": "40ef5ad37a011f672305e5f8edcb07a8b9033653fa12d6213336cfaeaf78b9a5"
+    }
+  },
+  {
+    "question": "¿Cómo evolucionó el xG de Lionel Andrés Messi Cuccittini partido a partido?",
+    "query": {
+      "dataset": "player_match",
+      "filters": [
+        {
+          "column": "player_id",
+          "op": "eq",
+          "value": 5503
+        }
+      ],
+      "columns": [],
+      "group_by": [
+        "match_id"
+      ],
+      "metrics": [
+        "xg",
+        "npxg"
+      ],
+      "visualization": "trend",
+      "title": null,
+      "order_by": "match_id",
+      "descending": false,
+      "limit": 100
+    },
+    "verified_rows": 7,
+    "source_rows": 7,
+    "truncated": false,
+    "provenance": {
+      "gold_load_id": "4f7a541c93d7271e6980966a0e5ba8614714567c1fea0b5391e7e6fede5e2ac9",
+      "dataset": "player_match",
+      "source_sha256": "827368f3e653536182d09a8dc50ebc739a740dfb8dfa43ed7380132d96c4923f",
+      "query_sha256": "ae87e06c413a7609d3be8f4427cc65a8e741ae551418c92b743c6032557ae27e"
+    }
+  },
+  {
+    "question": "Muestra los tiros de Lionel Andrés Messi Cuccittini en la final con sus destinos registrados.",
+    "query": {
+      "dataset": "actions",
+      "filters": [
+        {
+          "column": "player_id",
+          "op": "eq",
+          "value": 5503
+        },
+        {
+          "column": "match_id",
+          "op": "eq",
+          "value": 3869685
+        },
+        {
+          "column": "type_name",
+          "op": "eq",
+          "value": "Shot"
+        }
+      ],
+      "columns": [],
+      "group_by": [],
+      "metrics": [],
+      "visualization": "pitch",
+      "title": null,
+      "order_by": null,
+      "descending": true,
+      "limit": 100
+    },
+    "verified_rows": 5,
+    "source_rows": 5,
+    "truncated": false,
+    "provenance": {
+      "gold_load_id": "4f7a541c93d7271e6980966a0e5ba8614714567c1fea0b5391e7e6fede5e2ac9",
+      "dataset": "actions",
+      "source_sha256": "c92c26b3808a0f6d4e8fe266c2fead2f0617a36e99761276f79b67d07e9c9652",
+      "query_sha256": "33347a9288eb8d7fe21b4dcb243763879a31c6986e62c81d605e2c8706e33b06"
+    }
+  },
+  {
+    "question": "Quita los penales de los tiros de Lionel Andrés Messi Cuccittini en la final.",
+    "query": {
+      "dataset": "actions",
+      "filters": [
+        {
+          "column": "player_id",
+          "op": "eq",
+          "value": 5503
+        },
+        {
+          "column": "match_id",
+          "op": "eq",
+          "value": 3869685
+        },
+        {
+          "column": "type_name",
+          "op": "eq",
+          "value": "Shot"
+        },
+        {
+          "column": "is_penalty",
+          "op": "eq",
+          "value": false
+        }
+      ],
+      "columns": [],
+      "group_by": [],
+      "metrics": [],
+      "visualization": "pitch",
+      "title": null,
+      "order_by": null,
+      "descending": true,
+      "limit": 100
+    },
+    "verified_rows": 4,
+    "source_rows": 4,
+    "truncated": false,
+    "provenance": {
+      "gold_load_id": "4f7a541c93d7271e6980966a0e5ba8614714567c1fea0b5391e7e6fede5e2ac9",
+      "dataset": "actions",
+      "source_sha256": "c92c26b3808a0f6d4e8fe266c2fead2f0617a36e99761276f79b67d07e9c9652",
+      "query_sha256": "eea70fab02f462f31a9adcf399cb466d0b52442ffb3e21afafe570c1a48654eb"
+    }
+  },
+  {
+    "question": "Compara los tiros sin penal de Lionel Andrés Messi Cuccittini y Kylian Mbappé Lottin en la final.",
+    "query": {
+      "dataset": "actions",
+      "filters": [
+        {
+          "column": "match_id",
+          "op": "eq",
+          "value": 3869685
+        },
+        {
+          "column": "player_id",
+          "op": "in",
+          "value": [
+            5503,
+            3009
+          ]
+        },
+        {
+          "column": "type_name",
+          "op": "eq",
+          "value": "Shot"
+        },
+        {
+          "column": "is_penalty",
+          "op": "eq",
+          "value": false
+        }
+      ],
+      "columns": [],
+      "group_by": [
+        "player_id"
+      ],
+      "metrics": [
+        "shots",
+        "goals",
+        "xg"
+      ],
+      "visualization": "bars",
+      "title": null,
+      "order_by": null,
+      "descending": true,
+      "limit": 100
+    },
+    "verified_rows": 2,
+    "source_rows": 8,
+    "truncated": false,
+    "provenance": {
+      "gold_load_id": "4f7a541c93d7271e6980966a0e5ba8614714567c1fea0b5391e7e6fede5e2ac9",
+      "dataset": "actions",
+      "source_sha256": "c92c26b3808a0f6d4e8fe266c2fead2f0617a36e99761276f79b67d07e9c9652",
+      "query_sha256": "5c72a607d5c1e2ffe66b3738b69a017df6556e952d8c077dd3e994069b1912f9"
+    }
+  },
+  {
+    "question": "Muestra la densidad de las recepciones de Lionel Andrés Messi Cuccittini durante el torneo.",
+    "query": {
+      "dataset": "receipts",
+      "filters": [
+        {
+          "column": "player_id",
+          "op": "eq",
+          "value": 5503
+        }
+      ],
+      "columns": [],
+      "group_by": [],
+      "metrics": [],
+      "visualization": "heatmap",
+      "title": null,
+      "order_by": null,
+      "descending": true,
+      "limit": 100
+    },
+    "verified_rows": 63,
+    "source_rows": 387,
+    "truncated": false,
+    "provenance": {
+      "gold_load_id": "4f7a541c93d7271e6980966a0e5ba8614714567c1fea0b5391e7e6fede5e2ac9",
+      "dataset": "receipts",
+      "source_sha256": "5be001356cea300ac00b83e2471a8dc04741ec5a1fab1c624b19398fd50ff6ee",
+      "query_sha256": "9e76556ac1d888634d2cc648b639118ccc713b7ed479c506c1383f3fa1cc65e4"
+    }
+  },
+  {
+    "question": "¿Dónde recibió Lionel Andrés Messi Cuccittini en la final?",
+    "query": {
+      "dataset": "receipts",
+      "filters": [
+        {
+          "column": "player_id",
+          "op": "eq",
+          "value": 5503
+        },
+        {
+          "column": "match_id",
+          "op": "eq",
+          "value": 3869685
+        }
+      ],
+      "columns": [],
+      "group_by": [],
+      "metrics": [],
+      "visualization": "pitch",
+      "title": null,
+      "order_by": null,
+      "descending": true,
+      "limit": 100
+    },
+    "verified_rows": 60,
+    "source_rows": 60,
+    "truncated": false,
+    "provenance": {
+      "gold_load_id": "4f7a541c93d7271e6980966a0e5ba8614714567c1fea0b5391e7e6fede5e2ac9",
+      "dataset": "receipts",
+      "source_sha256": "5be001356cea300ac00b83e2471a8dc04741ec5a1fab1c624b19398fd50ff6ee",
+      "query_sha256": "dd0133fa4e1f85b8d97a75041b3c13754370b5c0d3b7db1b1681d882b7b8ee5e"
+    }
+  },
+  {
+    "question": "¿Con qué compañeros conectó pases Lionel Andrés Messi Cuccittini en la final?",
+    "query": {
+      "dataset": "connections",
+      "filters": [
+        {
+          "column": "player_id",
+          "op": "eq",
+          "value": 5503
+        },
+        {
+          "column": "match_id",
+          "op": "eq",
+          "value": 3869685
+        }
+      ],
+      "columns": [],
+      "group_by": [],
+      "metrics": [],
+      "visualization": "network",
+      "title": null,
+      "order_by": null,
+      "descending": true,
+      "limit": 100
+    },
+    "verified_rows": 11,
+    "source_rows": 11,
+    "truncated": false,
+    "provenance": {
+      "gold_load_id": "4f7a541c93d7271e6980966a0e5ba8614714567c1fea0b5391e7e6fede5e2ac9",
+      "dataset": "connections",
+      "source_sha256": "56dd8457ba1e298fba0c1f97c04c7efe37b2366d5c45ec3dad7c8c10841312ef",
+      "query_sha256": "ff1cc0bb6c813b60d7d936f65e74ab48b864776a86c8e6e07062b024db7c0cc8"
+    }
+  },
+  {
+    "question": "Muestra el once declarado de Argentina en la final.",
+    "query": {
+      "dataset": "initial_lineups",
+      "filters": [
+        {
+          "column": "team_id",
+          "op": "eq",
+          "value": 779
+        },
+        {
+          "column": "match_id",
+          "op": "eq",
+          "value": 3869685
+        }
+      ],
+      "columns": [],
+      "group_by": [],
+      "metrics": [],
+      "visualization": "lineup",
+      "title": null,
+      "order_by": null,
+      "descending": true,
+      "limit": 100
+    },
+    "verified_rows": 1,
+    "source_rows": 1,
+    "truncated": false,
+    "provenance": {
+      "gold_load_id": "4f7a541c93d7271e6980966a0e5ba8614714567c1fea0b5391e7e6fede5e2ac9",
+      "dataset": "initial_lineups",
+      "source_sha256": "4a500598bd295506c1a43bfe49c5091e2e3eaf991d629cf68269469cea190c17",
+      "query_sha256": "6d4dcaaf02385543a4ed3394c76b2d4b36397b7038f0b8cde8184fd625d07502"
+    }
+  },
+  {
+    "question": "Compara ese once con el de France en la misma final.",
+    "query": {
+      "dataset": "initial_lineups",
+      "filters": [
+        {
+          "column": "match_id",
+          "op": "eq",
+          "value": 3869685
+        },
+        {
+          "column": "team_id",
+          "op": "eq",
+          "value": 771
+        }
+      ],
+      "columns": [],
+      "group_by": [],
+      "metrics": [],
+      "visualization": "lineup",
+      "title": null,
+      "order_by": null,
+      "descending": true,
+      "limit": 100
+    },
+    "verified_rows": 1,
+    "source_rows": 1,
+    "truncated": false,
+    "provenance": {
+      "gold_load_id": "4f7a541c93d7271e6980966a0e5ba8614714567c1fea0b5391e7e6fede5e2ac9",
+      "dataset": "initial_lineups",
+      "source_sha256": "4a500598bd295506c1a43bfe49c5091e2e3eaf991d629cf68269469cea190c17",
+      "query_sha256": "aff58f094edf7acbe34435c65f4da81fce982a977dd20c0a2438c41b4fe9ce1c"
+    }
+  },
+  {
+    "question": "Muestra los dos onces de la final de Argentina, para comparar el contexto táctico de Lionel Andrés Messi Cuccittini.",
+    "query": {
+      "dataset": "initial_lineups",
+      "filters": [
+        {
+          "column": "match_id",
+          "op": "eq",
+          "value": 3869685
+        }
+      ],
+      "columns": [],
+      "group_by": [],
+      "metrics": [],
+      "visualization": "lineup",
+      "title": null,
+      "order_by": null,
+      "descending": true,
+      "limit": 100
+    },
+    "verified_rows": 2,
+    "source_rows": 2,
+    "truncated": false,
+    "provenance": {
+      "gold_load_id": "4f7a541c93d7271e6980966a0e5ba8614714567c1fea0b5391e7e6fede5e2ac9",
+      "dataset": "initial_lineups",
+      "source_sha256": "4a500598bd295506c1a43bfe49c5091e2e3eaf991d629cf68269469cea190c17",
+      "query_sha256": "3f564b6758315b64c2d025fff42e4d9ce5aa47524160da1921b47d8bc5eaa488"
+    }
+  },
+  {
+    "question": "Ordena cronológicamente los tiros de Lionel Andrés Messi Cuccittini en la final.",
+    "query": {
+      "dataset": "actions",
+      "filters": [
+        {
+          "column": "player_id",
+          "op": "eq",
+          "value": 5503
+        },
+        {
+          "column": "match_id",
+          "op": "eq",
+          "value": 3869685
+        },
+        {
+          "column": "type_name",
+          "op": "eq",
+          "value": "Shot"
+        }
+      ],
+      "columns": [],
+      "group_by": [],
+      "metrics": [],
+      "visualization": "timeline",
+      "title": null,
+      "order_by": null,
+      "descending": true,
+      "limit": 100
+    },
+    "verified_rows": 5,
+    "source_rows": 5,
+    "truncated": false,
+    "provenance": {
+      "gold_load_id": "4f7a541c93d7271e6980966a0e5ba8614714567c1fea0b5391e7e6fede5e2ac9",
+      "dataset": "actions",
+      "source_sha256": "c92c26b3808a0f6d4e8fe266c2fead2f0617a36e99761276f79b67d07e9c9652",
+      "query_sha256": "4a62ed3c44041b6b0bf1d5ed46ed59097e6ef7de73dfff54c3cee98303dee6b5"
+    }
+  },
+  {
+    "question": "Muestra los pases de Lionel Andrés Messi Cuccittini en la primera parte de la final.",
+    "query": {
+      "dataset": "actions",
+      "filters": [
+        {
+          "column": "player_id",
+          "op": "eq",
+          "value": 5503
+        },
+        {
+          "column": "match_id",
+          "op": "eq",
+          "value": 3869685
+        },
+        {
+          "column": "type_name",
+          "op": "eq",
+          "value": "Pass"
+        },
+        {
+          "column": "period",
+          "op": "eq",
+          "value": 1
+        }
+      ],
+      "columns": [],
+      "group_by": [],
+      "metrics": [],
+      "visualization": "pitch",
+      "title": null,
+      "order_by": null,
+      "descending": true,
+      "limit": 100
+    },
+    "verified_rows": 24,
+    "source_rows": 24,
+    "truncated": false,
+    "provenance": {
+      "gold_load_id": "4f7a541c93d7271e6980966a0e5ba8614714567c1fea0b5391e7e6fede5e2ac9",
+      "dataset": "actions",
+      "source_sha256": "c92c26b3808a0f6d4e8fe266c2fead2f0617a36e99761276f79b67d07e9c9652",
+      "query_sha256": "96ca8fe84433d737f063b3b8c8e37147a4489c028a35724fe3aeac1afdc5659f"
+    }
+  },
+  {
+    "question": "¿Cómo cambió la creación de tiros de Lionel Andrés Messi Cuccittini por partido?",
+    "query": {
+      "dataset": "player_match",
+      "filters": [
+        {
+          "column": "player_id",
+          "op": "eq",
+          "value": 5503
+        }
+      ],
+      "columns": [],
+      "group_by": [
+        "match_id"
+      ],
+      "metrics": [
+        "shots_created",
+        "xg_assisted"
+      ],
+      "visualization": "trend",
+      "title": null,
+      "order_by": "match_id",
+      "descending": false,
+      "limit": 100
+    },
+    "verified_rows": 7,
+    "source_rows": 7,
+    "truncated": false,
+    "provenance": {
+      "gold_load_id": "4f7a541c93d7271e6980966a0e5ba8614714567c1fea0b5391e7e6fede5e2ac9",
+      "dataset": "player_match",
+      "source_sha256": "827368f3e653536182d09a8dc50ebc739a740dfb8dfa43ed7380132d96c4923f",
+      "query_sha256": "a89b62fbfa77b89b9ae76e8ea900924beb4603bc01d771c32b5248e8515deb57"
+    }
+  },
+  {
+    "question": "¿Qué pases de Lionel Andrés Messi Cuccittini estuvieron vinculados a tiros durante el torneo?",
+    "query": {
+      "dataset": "shot_creations",
+      "filters": [
+        {
+          "column": "creator_id",
+          "op": "eq",
+          "value": 5503
+        }
+      ],
+      "columns": [
+        "match_id",
+        "pass_event_id",
+        "shot_event_id",
+        "shooter_id",
+        "statsbomb_xg"
+      ],
+      "group_by": [],
+      "metrics": [],
+      "visualization": "table",
+      "title": null,
+      "order_by": null,
+      "descending": true,
+      "limit": 100
+    },
+    "verified_rows": 19,
+    "source_rows": 19,
+    "truncated": false,
+    "provenance": {
+      "gold_load_id": "4f7a541c93d7271e6980966a0e5ba8614714567c1fea0b5391e7e6fede5e2ac9",
+      "dataset": "shot_creations",
+      "source_sha256": "caa6df37073fc0ae25c57bdbbff66da84f78b8440849981b2beb5828816086c0",
+      "query_sha256": "c6031e4e24e8d391eab69e1b3ca010b65b94abcd04b83bb794d1b327ecc06912"
+    }
+  },
+  {
+    "question": "Compara la precisión bajo presión de Lionel Andrés Messi Cuccittini y Kylian Mbappé Lottin.",
+    "query": {
+      "dataset": "player_match",
+      "filters": [
+        {
+          "column": "player_id",
+          "op": "in",
+          "value": [
+            5503,
+            3009
+          ]
+        }
+      ],
+      "columns": [],
+      "group_by": [
+        "player_id"
+      ],
+      "metrics": [
+        "pressure_pass_completion_pct",
+        "passes_under_pressure"
+      ],
+      "visualization": "bars",
+      "title": null,
+      "order_by": null,
+      "descending": true,
+      "limit": 100
+    },
+    "verified_rows": 2,
+    "source_rows": 14,
+    "truncated": false,
+    "provenance": {
+      "gold_load_id": "4f7a541c93d7271e6980966a0e5ba8614714567c1fea0b5391e7e6fede5e2ac9",
+      "dataset": "player_match",
+      "source_sha256": "827368f3e653536182d09a8dc50ebc739a740dfb8dfa43ed7380132d96c4923f",
+      "query_sha256": "b10b8d8b3330b505e8f746fcc305896de3949fa08712a03fd05fd47a2d16ce82"
+    }
+  },
+  {
+    "question": "¿Cuántas entradas al área por pase y conducción hizo Lionel Andrés Messi Cuccittini?",
+    "query": {
+      "dataset": "player_match",
+      "filters": [
+        {
+          "column": "player_id",
+          "op": "eq",
+          "value": 5503
+        }
+      ],
+      "columns": [],
+      "group_by": [],
+      "metrics": [
+        "pass_box_entries",
+        "carry_box_entries"
+      ],
+      "visualization": "bars",
+      "title": null,
+      "order_by": null,
+      "descending": true,
+      "limit": 100
+    },
+    "verified_rows": 1,
+    "source_rows": 7,
+    "truncated": false,
+    "provenance": {
+      "gold_load_id": "4f7a541c93d7271e6980966a0e5ba8614714567c1fea0b5391e7e6fede5e2ac9",
+      "dataset": "player_match",
+      "source_sha256": "827368f3e653536182d09a8dc50ebc739a740dfb8dfa43ed7380132d96c4923f",
+      "query_sha256": "b2d168bbee59f60b6de46caa58785c2628ada98e21ee0cb0477f0d7f03c966c2"
+    }
+  },
+  {
+    "question": "¿Dónde realizó conducciones Lionel Andrés Messi Cuccittini en la final?",
+    "query": {
+      "dataset": "actions",
+      "filters": [
+        {
+          "column": "player_id",
+          "op": "eq",
+          "value": 5503
+        },
+        {
+          "column": "match_id",
+          "op": "eq",
+          "value": 3869685
+        },
+        {
+          "column": "type_name",
+          "op": "eq",
+          "value": "Carry"
+        }
+      ],
+      "columns": [],
+      "group_by": [],
+      "metrics": [],
+      "visualization": "heatmap",
+      "title": null,
+      "order_by": null,
+      "descending": true,
+      "limit": 100
+    },
+    "verified_rows": 33,
+    "source_rows": 53,
+    "truncated": false,
+    "provenance": {
+      "gold_load_id": "4f7a541c93d7271e6980966a0e5ba8614714567c1fea0b5391e7e6fede5e2ac9",
+      "dataset": "actions",
+      "source_sha256": "c92c26b3808a0f6d4e8fe266c2fead2f0617a36e99761276f79b67d07e9c9652",
+      "query_sha256": "a4b72ddfed5125823f2fd4a5ad63856ec309baff965eff40b0e1d8151ac0cc41"
+    }
+  },
+  {
+    "question": "¿Qué conexiones de pase hacia Lionel Andrés Messi Cuccittini aparecen en el torneo?",
+    "query": {
+      "dataset": "connections",
+      "filters": [
+        {
+          "column": "recipient_id",
+          "op": "eq",
+          "value": 5503
+        }
+      ],
+      "columns": [],
+      "group_by": [],
+      "metrics": [],
+      "visualization": "table",
+      "title": null,
+      "order_by": "pass_count",
+      "descending": true,
+      "limit": 30
+    },
+    "verified_rows": 30,
+    "source_rows": 80,
+    "truncated": true,
+    "provenance": {
+      "gold_load_id": "4f7a541c93d7271e6980966a0e5ba8614714567c1fea0b5391e7e6fede5e2ac9",
+      "dataset": "connections",
+      "source_sha256": "56dd8457ba1e298fba0c1f97c04c7efe37b2366d5c45ec3dad7c8c10841312ef",
+      "query_sha256": "bc65024e7d4cc83fd6090996bc014d853fb3e39f937e4e7bef45a556eb9e640a"
+    }
+  },
+  {
+    "question": "¿Qué cambios de alineación realizó Argentina en la final?",
+    "query": {
+      "dataset": "lineup_changes",
+      "filters": [
+        {
+          "column": "team_id",
+          "op": "eq",
+          "value": 779
+        },
+        {
+          "column": "match_id",
+          "op": "eq",
+          "value": 3869685
+        }
+      ],
+      "columns": [],
+      "group_by": [],
+      "metrics": [],
+      "visualization": "table",
+      "title": null,
+      "order_by": null,
+      "descending": true,
+      "limit": 100
+    },
+    "verified_rows": 11,
+    "source_rows": 11,
+    "truncated": false,
+    "provenance": {
+      "gold_load_id": "4f7a541c93d7271e6980966a0e5ba8614714567c1fea0b5391e7e6fede5e2ac9",
+      "dataset": "lineup_changes",
+      "source_sha256": "e4f56f31ec5e3c03b5441647d7c5689bc548cb78134c4bf5d7f0a63fc3da0bbd",
+      "query_sha256": "bd42dd0f259e4e6120f9f3f32bfc70225ae0b599f71e167a8e43012d1f92df64"
+    }
+  },
+  {
+    "question": "Muestra los segmentos tácticos declarados de Argentina en la final.",
+    "query": {
+      "dataset": "lineup_segments",
+      "filters": [
+        {
+          "column": "team_id",
+          "op": "eq",
+          "value": 779
+        },
+        {
+          "column": "match_id",
+          "op": "eq",
+          "value": 3869685
+        }
+      ],
+      "columns": [],
+      "group_by": [],
+      "metrics": [],
+      "visualization": "table",
+      "title": null,
+      "order_by": null,
+      "descending": true,
+      "limit": 100
+    },
+    "verified_rows": 12,
+    "source_rows": 12,
+    "truncated": false,
+    "provenance": {
+      "gold_load_id": "4f7a541c93d7271e6980966a0e5ba8614714567c1fea0b5391e7e6fede5e2ac9",
+      "dataset": "lineup_segments",
+      "source_sha256": "a9ce0631db96d6b7c155a895615fe23384fbf67d4cdeff242c64645081eaeb6d",
+      "query_sha256": "447d350d526b2d5a34aa3a4b84af15ce99d00ce9587f3faea44591cae87330f5"
+    }
+  },
+  {
+    "question": "¿Cómo se distribuyó la actividad de Lionel Andrés Messi Cuccittini por segmento táctico?",
+    "query": {
+      "dataset": "segment_player_metrics",
+      "filters": [
+        {
+          "column": "player_id",
+          "op": "eq",
+          "value": 5503
+        }
+      ],
+      "columns": [],
+      "group_by": [
+        "segment_id",
+        "player_id"
+      ],
+      "metrics": [
+        "shots",
+        "passes",
+        "npxg"
+      ],
+      "visualization": "table",
+      "title": null,
+      "order_by": null,
+      "descending": true,
+      "limit": 100
+    },
+    "verified_rows": 63,
+    "source_rows": 63,
+    "truncated": false,
+    "provenance": {
+      "gold_load_id": "4f7a541c93d7271e6980966a0e5ba8614714567c1fea0b5391e7e6fede5e2ac9",
+      "dataset": "segment_player_metrics",
+      "source_sha256": "d751b0ad7eec10a0548e368369aa073fdc6cc3ebab7c7a438eac7a82f8df3158",
+      "query_sha256": "cf5bf0fcfcf51bd1971cd38a2d83e1ebfdb30e25459ad0d2bc06a43b1ce30c00"
+    }
+  },
+  {
+    "question": "¿Qué acciones de tanda de Lionel Andrés Messi Cuccittini están registradas?",
+    "query": {
+      "dataset": "shootout_actions",
+      "filters": [
+        {
+          "column": "player_id",
+          "op": "eq",
+          "value": 5503
+        }
+      ],
+      "columns": [],
+      "group_by": [],
+      "metrics": [],
+      "visualization": "table",
+      "title": null,
+      "order_by": null,
+      "descending": true,
+      "limit": 100
+    },
+    "verified_rows": 2,
+    "source_rows": 2,
+    "truncated": false,
+    "provenance": {
+      "gold_load_id": "4f7a541c93d7271e6980966a0e5ba8614714567c1fea0b5391e7e6fede5e2ac9",
+      "dataset": "shootout_actions",
+      "source_sha256": "fe21fea755597af148c1e913bcc73cd00437efa7d6b9790b97b3bf1933d63a40",
+      "query_sha256": "4d462974002ee15be0243ebdcae9bcb9a3cdfe980b5673618752af3f59f464dc"
+    }
+  },
+  {
+    "question": "Compara recuperaciones, presiones y regates de Lionel Andrés Messi Cuccittini por partido.",
+    "query": {
+      "dataset": "player_match",
+      "filters": [
+        {
+          "column": "player_id",
+          "op": "eq",
+          "value": 5503
+        }
+      ],
+      "columns": [],
+      "group_by": [
+        "match_id"
+      ],
+      "metrics": [
+        "successful_recoveries",
+        "pressures",
+        "complete_dribbles"
+      ],
+      "visualization": "bars",
+      "title": null,
+      "order_by": null,
+      "descending": true,
+      "limit": 100
+    },
+    "verified_rows": 7,
+    "source_rows": 7,
+    "truncated": false,
+    "provenance": {
+      "gold_load_id": "4f7a541c93d7271e6980966a0e5ba8614714567c1fea0b5391e7e6fede5e2ac9",
+      "dataset": "player_match",
+      "source_sha256": "827368f3e653536182d09a8dc50ebc739a740dfb8dfa43ed7380132d96c4923f",
+      "query_sha256": "8774b2cbe8da76d020de59c2b32ba76393e3b5657e02544ac4bb3422b8cda1fb"
+    }
+  },
+  {
+    "question": "¿Cómo evolucionaron los tiros de Argentina a lo largo del Mundial de Lionel Andrés Messi Cuccittini?",
+    "query": {
+      "dataset": "team_match",
+      "filters": [
+        {
+          "column": "team_id",
+          "op": "eq",
+          "value": 779
+        }
+      ],
+      "columns": [],
+      "group_by": [
+        "match_id"
+      ],
+      "metrics": [
+        "shots",
+        "xg"
+      ],
+      "visualization": "trend",
+      "title": null,
+      "order_by": "match_id",
+      "descending": false,
+      "limit": 100
+    },
+    "verified_rows": 7,
+    "source_rows": 7,
+    "truncated": false,
+    "provenance": {
+      "gold_load_id": "4f7a541c93d7271e6980966a0e5ba8614714567c1fea0b5391e7e6fede5e2ac9",
+      "dataset": "team_match",
+      "source_sha256": "e9829bdb4a3e742fe16575a007aebf21de84e04aab798b60589795be54696aee",
+      "query_sha256": "c8474b1c0f9449f8d943b3b72f45e8b8f65a7d35ef3815341e4c626d8ee726d7"
+    }
+  },
+  {
+    "question": "¿Cómo fue la precisión de pase de Lionel Andrés Messi Cuccittini en cada período de la final?",
+    "query": {
+      "dataset": "actions",
+      "filters": [
+        {
+          "column": "player_id",
+          "op": "eq",
+          "value": 5503
+        },
+        {
+          "column": "match_id",
+          "op": "eq",
+          "value": 3869685
+        }
+      ],
+      "columns": [],
+      "group_by": [
+        "period"
+      ],
+      "metrics": [
+        "pass_completion_pct",
+        "passes"
+      ],
+      "visualization": "bars",
+      "title": null,
+      "order_by": "period",
+      "descending": false,
+      "limit": 100
+    },
+    "verified_rows": 4,
+    "source_rows": 241,
+    "truncated": false,
+    "provenance": {
+      "gold_load_id": "4f7a541c93d7271e6980966a0e5ba8614714567c1fea0b5391e7e6fede5e2ac9",
+      "dataset": "actions",
+      "source_sha256": "c92c26b3808a0f6d4e8fe266c2fead2f0617a36e99761276f79b67d07e9c9652",
+      "query_sha256": "a45fd5e220150aa0cf415f719a5392c1b0dabb1f8b1f7d387d9fc357e1d958ac"
+    }
+  }
+]

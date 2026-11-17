@@ -1,0 +1,6835 @@
+{
+  "cache_version": 2,
+  "load_id": "4f7a541c93d7271e6980966a0e5ba8614714567c1fea0b5391e7e6fede5e2ac9",
+  "manifest": {
+    "counts": {
+      "actions": 234531,
+      "connections": 15206,
+      "initial_lineups": 128,
+      "lineup_changes": 981,
+      "lineup_segments": 1109,
+      "player_match": 3244,
+      "receipts": 56346,
+      "segment_player_metrics": 12119,
+      "shootout_actions": 106,
+      "shot_creations": 1039,
+      "team_match": 128
+    },
+    "dataset": "statsbomb-wc2022-gold",
+    "definitions_sha256": "493ad01ea7ea0f8707fc229c60a68095fa4ffc71cb239e4080ef36e76c7451eb",
+    "files": {
+      "actions.jsonl": "c92c26b3808a0f6d4e8fe266c2fead2f0617a36e99761276f79b67d07e9c9652",
+      "connections.jsonl": "56dd8457ba1e298fba0c1f97c04c7efe37b2366d5c45ec3dad7c8c10841312ef",
+      "initial_lineups.jsonl": "4a500598bd295506c1a43bfe49c5091e2e3eaf991d629cf68269469cea190c17",
+      "lineup_changes.jsonl": "e4f56f31ec5e3c03b5441647d7c5689bc548cb78134c4bf5d7f0a63fc3da0bbd",
+      "lineup_segments.jsonl": "a9ce0631db96d6b7c155a895615fe23384fbf67d4cdeff242c64645081eaeb6d",
+      "metric_catalog.json": "9345e39950a66bdc750c3ecd6ee6139f4465d76a1d691f880ad02acc40d93213",
+      "player_match.jsonl": "827368f3e653536182d09a8dc50ebc739a740dfb8dfa43ed7380132d96c4923f",
+      "quality_report.json": "e4f82481f9adcce87e99cf626de5723d1912dec887cded9166f2e326b9aa68ea",
+      "receipts.jsonl": "5be001356cea300ac00b83e2471a8dc04741ec5a1fab1c624b19398fd50ff6ee",
+      "segment_player_metrics.jsonl": "d751b0ad7eec10a0548e368369aa073fdc6cc3ebab7c7a438eac7a82f8df3158",
+      "shootout_actions.jsonl": "fe21fea755597af148c1e913bcc73cd00437efa7d6b9790b97b3bf1933d63a40",
+      "shot_creations.jsonl": "caa6df37073fc0ae25c57bdbbff66da84f78b8440849981b2beb5828816086c0",
+      "team_match.jsonl": "e9829bdb4a3e742fe16575a007aebf21de84e04aab798b60589795be54696aee"
+    },
+    "gold_version": 1,
+    "load_id": "4f7a541c93d7271e6980966a0e5ba8614714567c1fea0b5391e7e6fede5e2ac9",
+    "source_commit": "4b73468fc5b0f1950f9f66fada70ad3a4f9327cb",
+    "source_load_ids": {
+      "base": "c5f072d295ec8fda129b59a8697631b78dc4bc89cc3ce24e50fe32bf945c585a",
+      "lineups": "411501bee3e618579e1ab9f9e0ac14a634e2b1196efb17bbde1e5870d04c1bbd",
+      "quality": "9eadd3000f871665f151b52278b4248848dccbfe0ffaf0526aabc33149e92f69"
+    },
+    "source_manifest_hashes": {
+      "base": "6cc30d85a0ad6223fbd3633313155becfb0f834154f571386a4e901f1b044cb0",
+      "lineups": "d4f80b7ad8451a5e3cb3e7157fed59034c6b8085c7f547f23272b84ebc99d6b4",
+      "quality": "fa03846bd79145bf3cbe675e417741fbf57884c8713b6408bf81f6b20225c114"
+    }
+  },
+  "datasets": {
+    "actions": {
+      "rows": 234531,
+      "columns": {
+        "actor_on_field": {
+          "types": [
+            "bool"
+          ],
+          "nulls": 0,
+          "min": false,
+          "max": true,
+          "distinct_count": 2,
+          "values": [
+            true,
+            false
+          ]
+        },
+        "assists": {
+          "types": [
+            "int"
+          ],
+          "nulls": 166016,
+          "min": 0,
+          "max": 1,
+          "distinct_count": 2,
+          "values": [
+            0,
+            1
+          ]
+        },
+        "carry_box_entries": {
+          "types": [
+            "int"
+          ],
+          "nulls": 180767,
+          "min": 0,
+          "max": 1,
+          "distinct_count": 2,
+          "values": [
+            0,
+            1
+          ]
+        },
+        "carry_events": {
+          "types": [
+            "int"
+          ],
+          "nulls": 180767,
+          "min": 1,
+          "max": 1,
+          "distinct_count": 1,
+          "values": [
+            1
+          ]
+        },
+        "carry_final_third_entries": {
+          "types": [
+            "int"
+          ],
+          "nulls": 180767,
+          "min": 0,
+          "max": 1,
+          "distinct_count": 2,
+          "values": [
+            0,
+            1
+          ]
+        },
+        "clock_reliable": {
+          "types": [
+            "bool"
+          ],
+          "nulls": 0,
+          "min": false,
+          "max": true,
+          "distinct_count": 2,
+          "values": [
+            true,
+            false
+          ]
+        },
+        "complete_dribbles": {
+          "types": [
+            "int"
+          ],
+          "nulls": 232738,
+          "min": 0,
+          "max": 1,
+          "distinct_count": 2,
+          "values": [
+            1,
+            0
+          ]
+        },
+        "completed_passes": {
+          "types": [
+            "int"
+          ],
+          "nulls": 166016,
+          "min": 0,
+          "max": 1,
+          "distinct_count": 2,
+          "values": [
+            1,
+            0
+          ]
+        },
+        "completed_passes_under_pressure": {
+          "types": [
+            "int"
+          ],
+          "nulls": 226623,
+          "min": 0,
+          "max": 1,
+          "distinct_count": 2,
+          "values": [
+            1,
+            0
+          ]
+        },
+        "dispossessed": {
+          "types": [
+            "int"
+          ],
+          "nulls": 233100,
+          "min": 1,
+          "max": 1,
+          "distinct_count": 1,
+          "values": [
+            1
+          ]
+        },
+        "dribble_attempts": {
+          "types": [
+            "int"
+          ],
+          "nulls": 232738,
+          "min": 1,
+          "max": 1,
+          "distinct_count": 1,
+          "values": [
+            1
+          ]
+        },
+        "end_x": {
+          "types": [
+            "float"
+          ],
+          "nulls": 110799,
+          "min": 0.1,
+          "max": 120.0,
+          "distinct_count": 1198
+        },
+        "end_y": {
+          "types": [
+            "float"
+          ],
+          "nulls": 110799,
+          "min": 0.1,
+          "max": 80.0,
+          "distinct_count": 800
+        },
+        "event_id": {
+          "types": [
+            "str"
+          ],
+          "nulls": 0,
+          "distinct_count": 234531
+        },
+        "event_index": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 1,
+          "max": 5125,
+          "distinct_count": 5125
+        },
+        "events": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 1,
+          "max": 1,
+          "distinct_count": 1,
+          "values": [
+            1
+          ]
+        },
+        "failed_passes": {
+          "types": [
+            "int"
+          ],
+          "nulls": 166016,
+          "min": 0,
+          "max": 1,
+          "distinct_count": 2,
+          "values": [
+            0,
+            1
+          ]
+        },
+        "failed_recoveries": {
+          "types": [
+            "int"
+          ],
+          "nulls": 228710,
+          "min": 0,
+          "max": 1,
+          "distinct_count": 2,
+          "values": [
+            0,
+            1
+          ]
+        },
+        "fouls_won": {
+          "types": [
+            "int"
+          ],
+          "nulls": 232838,
+          "min": 1,
+          "max": 1,
+          "distinct_count": 1,
+          "values": [
+            1
+          ]
+        },
+        "goal_difference_before": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": -7,
+          "max": 7,
+          "distinct_count": 15,
+          "values": [
+            0,
+            -1,
+            1,
+            -2,
+            2,
+            3,
+            -3,
+            4,
+            -4,
+            5,
+            -5,
+            7,
+            6,
+            -7,
+            -6
+          ]
+        },
+        "goals": {
+          "types": [
+            "int"
+          ],
+          "nulls": 233078,
+          "min": 0,
+          "max": 1,
+          "distinct_count": 2,
+          "values": [
+            0,
+            1
+          ]
+        },
+        "is_complete": {
+          "types": [
+            "bool"
+          ],
+          "nulls": 166016,
+          "min": false,
+          "max": true,
+          "distinct_count": 2,
+          "values": [
+            true,
+            false
+          ]
+        },
+        "is_goal": {
+          "types": [
+            "bool"
+          ],
+          "nulls": 233078,
+          "min": false,
+          "max": true,
+          "distinct_count": 2,
+          "values": [
+            false,
+            true
+          ]
+        },
+        "is_penalty": {
+          "types": [
+            "bool"
+          ],
+          "nulls": 233078,
+          "min": false,
+          "max": true,
+          "distinct_count": 2,
+          "values": [
+            false,
+            true
+          ]
+        },
+        "known_dribbles": {
+          "types": [
+            "int"
+          ],
+          "nulls": 232738,
+          "min": 1,
+          "max": 1,
+          "distinct_count": 1,
+          "values": [
+            1
+          ]
+        },
+        "known_passes": {
+          "types": [
+            "int"
+          ],
+          "nulls": 166016,
+          "min": 0,
+          "max": 1,
+          "distinct_count": 2,
+          "values": [
+            1,
+            0
+          ]
+        },
+        "known_passes_under_pressure": {
+          "types": [
+            "int"
+          ],
+          "nulls": 226623,
+          "min": 0,
+          "max": 1,
+          "distinct_count": 2,
+          "values": [
+            1,
+            0
+          ]
+        },
+        "lineup_segment_id": {
+          "types": [
+            "str"
+          ],
+          "nulls": 0,
+          "distinct_count": 1109
+        },
+        "location_x": {
+          "types": [
+            "float"
+          ],
+          "nulls": 2101,
+          "min": 0.1,
+          "max": 120.0,
+          "distinct_count": 1199
+        },
+        "location_y": {
+          "types": [
+            "float"
+          ],
+          "nulls": 2101,
+          "min": 0.1,
+          "max": 80.0,
+          "distinct_count": 800
+        },
+        "match_id": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 3857254,
+          "max": 3869685,
+          "distinct_count": 64,
+          "values": [
+            3869420,
+            3869220,
+            3869321,
+            3869219,
+            3857255,
+            3869685,
+            3857291,
+            3857294,
+            3869151,
+            3857296,
+            3857264,
+            3869253,
+            3857279,
+            3857292,
+            3857266,
+            3857295,
+            3869519,
+            3857269,
+            3857298,
+            3857281,
+            3857277,
+            3857284,
+            3857282,
+            3857254,
+            3857258,
+            3857271,
+            3857283,
+            3869152,
+            3857263,
+            3857290,
+            3857278,
+            3857257,
+            3869117,
+            3857275,
+            3857274,
+            3869684,
+            3869552,
+            3857301,
+            3857272,
+            3869118,
+            3857268,
+            3857293,
+            3857287,
+            3857270,
+            3869254,
+            3857276,
+            3869486,
+            3857262,
+            3857289,
+            3857288,
+            3857299,
+            3857300,
+            3857261,
+            3857280,
+            3857286,
+            3857259,
+            3869354,
+            3857256,
+            3857297,
+            3857265,
+            3857273,
+            3857285,
+            3857260,
+            3857267
+          ]
+        },
+        "minute": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 124,
+          "distinct_count": 125
+        },
+        "miscontrols": {
+          "types": [
+            "int"
+          ],
+          "nulls": 232776,
+          "min": 1,
+          "max": 1,
+          "distinct_count": 1,
+          "values": [
+            1
+          ]
+        },
+        "non_penalty_goals": {
+          "types": [
+            "int"
+          ],
+          "nulls": 233101,
+          "min": 0,
+          "max": 1,
+          "distinct_count": 2,
+          "values": [
+            0,
+            1
+          ]
+        },
+        "non_penalty_shots": {
+          "types": [
+            "int"
+          ],
+          "nulls": 233101,
+          "min": 1,
+          "max": 1,
+          "distinct_count": 1,
+          "values": [
+            1
+          ]
+        },
+        "npxg": {
+          "types": [
+            "float"
+          ],
+          "nulls": 233101,
+          "min": 0.00018,
+          "max": 0.8974681,
+          "distinct_count": 1429
+        },
+        "off_camera": {
+          "types": [
+            "bool"
+          ],
+          "nulls": 0,
+          "min": false,
+          "max": true,
+          "distinct_count": 2,
+          "values": [
+            false,
+            true
+          ]
+        },
+        "outcome_name": {
+          "types": [
+            "str"
+          ],
+          "nulls": 219116,
+          "distinct_count": 14,
+          "values": [
+            "Incomplete",
+            "Out",
+            "Complete",
+            "Off T",
+            "Unknown",
+            "Blocked",
+            "Saved",
+            "Pass Offside",
+            "Goal",
+            "Wayward",
+            "Injury Clearance",
+            "Post",
+            "Saved to Post",
+            "Saved Off Target"
+          ]
+        },
+        "own_goals_against": {
+          "types": [
+            "int"
+          ],
+          "nulls": 234528,
+          "min": 1,
+          "max": 1,
+          "distinct_count": 1,
+          "values": [
+            1
+          ]
+        },
+        "own_goals_for": {
+          "types": [
+            "int"
+          ],
+          "nulls": 234528,
+          "min": 1,
+          "max": 1,
+          "distinct_count": 1,
+          "values": [
+            1
+          ]
+        },
+        "pass_box_entries": {
+          "types": [
+            "int"
+          ],
+          "nulls": 178185,
+          "min": 0,
+          "max": 1,
+          "distinct_count": 2,
+          "values": [
+            0,
+            1
+          ]
+        },
+        "pass_final_third_entries": {
+          "types": [
+            "int"
+          ],
+          "nulls": 178185,
+          "min": 0,
+          "max": 1,
+          "distinct_count": 2,
+          "values": [
+            0,
+            1
+          ]
+        },
+        "passes": {
+          "types": [
+            "int"
+          ],
+          "nulls": 166016,
+          "min": 1,
+          "max": 1,
+          "distinct_count": 1,
+          "values": [
+            1
+          ]
+        },
+        "passes_under_pressure": {
+          "types": [
+            "int"
+          ],
+          "nulls": 226623,
+          "min": 1,
+          "max": 1,
+          "distinct_count": 1,
+          "values": [
+            1
+          ]
+        },
+        "penalty_goals": {
+          "types": [
+            "int"
+          ],
+          "nulls": 234508,
+          "min": 0,
+          "max": 1,
+          "distinct_count": 2,
+          "values": [
+            1,
+            0
+          ]
+        },
+        "penalty_shots": {
+          "types": [
+            "int"
+          ],
+          "nulls": 234508,
+          "min": 1,
+          "max": 1,
+          "distinct_count": 1,
+          "values": [
+            1
+          ]
+        },
+        "penalty_xg": {
+          "types": [
+            "float"
+          ],
+          "nulls": 234508,
+          "min": 0.7835,
+          "max": 0.7835,
+          "distinct_count": 1,
+          "values": [
+            0.7835
+          ]
+        },
+        "period": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 1,
+          "max": 4,
+          "distinct_count": 4,
+          "values": [
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        "play_pattern_name": {
+          "types": [
+            "str"
+          ],
+          "nulls": 0,
+          "distinct_count": 9,
+          "values": [
+            "Regular Play",
+            "From Throw In",
+            "From Free Kick",
+            "From Goal Kick",
+            "From Corner",
+            "From Keeper",
+            "From Kick Off",
+            "From Counter",
+            "Other"
+          ]
+        },
+        "player_id": {
+          "types": [
+            "int"
+          ],
+          "nulls": 1088,
+          "min": 2941,
+          "max": 348757,
+          "distinct_count": 680
+        },
+        "possession": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 1,
+          "max": 257,
+          "distinct_count": 257
+        },
+        "possession_team_id": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 768,
+          "max": 4885,
+          "distinct_count": 32,
+          "values": [
+            779,
+            785,
+            771,
+            772,
+            781,
+            768,
+            780,
+            788,
+            941,
+            1839,
+            791,
+            770,
+            773,
+            776,
+            782,
+            787,
+            1833,
+            778,
+            792,
+            789,
+            3565,
+            786,
+            794,
+            783,
+            3566,
+            907,
+            777,
+            4885,
+            2722,
+            799,
+            795,
+            797
+          ]
+        },
+        "pressures": {
+          "types": [
+            "int"
+          ],
+          "nulls": 217977,
+          "min": 1,
+          "max": 1,
+          "distinct_count": 1,
+          "values": [
+            1
+          ]
+        },
+        "quality_rule_ids": {
+          "types": [
+            "list"
+          ],
+          "nulls": 0
+        },
+        "recipient_id": {
+          "types": [
+            "int"
+          ],
+          "nulls": 170796,
+          "min": 2941,
+          "max": 348757,
+          "distinct_count": 677
+        },
+        "recovery_attempts": {
+          "types": [
+            "int"
+          ],
+          "nulls": 228710,
+          "min": 1,
+          "max": 1,
+          "distinct_count": 1,
+          "values": [
+            1
+          ]
+        },
+        "second": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 59,
+          "distinct_count": 60,
+          "values": [
+            0,
+            1,
+            9,
+            5,
+            50,
+            30,
+            34,
+            20,
+            21,
+            13,
+            39,
+            22,
+            27,
+            40,
+            8,
+            12,
+            24,
+            2,
+            32,
+            3,
+            7,
+            25,
+            35,
+            23,
+            4,
+            43,
+            36,
+            26,
+            14,
+            10,
+            41,
+            15,
+            17,
+            37,
+            31,
+            59,
+            33,
+            29,
+            45,
+            53,
+            6,
+            52,
+            38,
+            56,
+            44,
+            19,
+            11,
+            51,
+            42,
+            58,
+            16,
+            18,
+            49,
+            55,
+            47,
+            48,
+            46,
+            54,
+            28,
+            57
+          ]
+        },
+        "seconds_in_period": {
+          "types": [
+            "float"
+          ],
+          "nulls": 0,
+          "min": 0.0,
+          "max": 3543.591,
+          "distinct_count": 156029
+        },
+        "shot_type": {
+          "types": [
+            "str"
+          ],
+          "nulls": 233078,
+          "distinct_count": 4,
+          "values": [
+            "Open Play",
+            "Free Kick",
+            "Penalty",
+            "Corner"
+          ]
+        },
+        "shots": {
+          "types": [
+            "int"
+          ],
+          "nulls": 233078,
+          "min": 1,
+          "max": 1,
+          "distinct_count": 1,
+          "values": [
+            1
+          ]
+        },
+        "shots_created": {
+          "types": [
+            "int"
+          ],
+          "nulls": 233492,
+          "min": 1,
+          "max": 1,
+          "distinct_count": 1,
+          "values": [
+            1
+          ]
+        },
+        "statsbomb_xg": {
+          "types": [
+            "float"
+          ],
+          "nulls": 233078,
+          "min": 0.00018,
+          "max": 0.8974681,
+          "distinct_count": 1430
+        },
+        "successful_recoveries": {
+          "types": [
+            "int"
+          ],
+          "nulls": 228710,
+          "min": 0,
+          "max": 1,
+          "distinct_count": 2,
+          "values": [
+            1,
+            0
+          ]
+        },
+        "team_id": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 768,
+          "max": 4885,
+          "distinct_count": 32,
+          "values": [
+            779,
+            785,
+            771,
+            772,
+            781,
+            788,
+            768,
+            780,
+            941,
+            1839,
+            791,
+            773,
+            770,
+            776,
+            778,
+            782,
+            787,
+            792,
+            1833,
+            789,
+            786,
+            3565,
+            794,
+            783,
+            3566,
+            777,
+            907,
+            4885,
+            2722,
+            799,
+            795,
+            797
+          ]
+        },
+        "type_name": {
+          "types": [
+            "str"
+          ],
+          "nulls": 0,
+          "distinct_count": 33,
+          "values": [
+            "Pass",
+            "Ball Receipt*",
+            "Carry",
+            "Pressure",
+            "Ball Recovery",
+            "Duel",
+            "Clearance",
+            "Block",
+            "Dribble",
+            "Foul Committed",
+            "Miscontrol",
+            "Goal Keeper",
+            "Foul Won",
+            "Shot",
+            "Dispossessed",
+            "Interception",
+            "Dribbled Past",
+            "Substitution",
+            "Injury Stoppage",
+            "Half Start",
+            "Half End",
+            "Tactical Shift",
+            "50/50",
+            "Referee Ball-Drop",
+            "Starting XI",
+            "Shield",
+            "Player Off",
+            "Player On",
+            "Bad Behaviour",
+            "Error",
+            "Offside",
+            "Own Goal For",
+            "Own Goal Against"
+          ]
+        },
+        "under_pressure": {
+          "types": [
+            "bool"
+          ],
+          "nulls": 0,
+          "min": false,
+          "max": true,
+          "distinct_count": 2,
+          "values": [
+            false,
+            true
+          ]
+        },
+        "unknown_passes": {
+          "types": [
+            "int"
+          ],
+          "nulls": 166016,
+          "min": 0,
+          "max": 1,
+          "distinct_count": 2,
+          "values": [
+            0,
+            1
+          ]
+        },
+        "unknown_passes_under_pressure": {
+          "types": [
+            "int"
+          ],
+          "nulls": 226623,
+          "min": 0,
+          "max": 1,
+          "distinct_count": 2,
+          "values": [
+            0,
+            1
+          ]
+        },
+        "xg": {
+          "types": [
+            "float"
+          ],
+          "nulls": 233078,
+          "min": 0.00018,
+          "max": 0.8974681,
+          "distinct_count": 1430
+        },
+        "xg_assisted": {
+          "types": [
+            "float"
+          ],
+          "nulls": 233492,
+          "min": 0.003913026,
+          "max": 0.8974681,
+          "distinct_count": 1039
+        }
+      },
+      "sha256": "c92c26b3808a0f6d4e8fe266c2fead2f0617a36e99761276f79b67d07e9c9652"
+    },
+    "connections": {
+      "rows": 15206,
+      "columns": {
+        "match_id": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 3857254,
+          "max": 3869685,
+          "distinct_count": 64,
+          "values": [
+            3869321,
+            3869254,
+            3869685,
+            3869253,
+            3869219,
+            3857270,
+            3857294,
+            3869519,
+            3857258,
+            3857264,
+            3857292,
+            3869684,
+            3857291,
+            3857278,
+            3857281,
+            3857259,
+            3857261,
+            3857269,
+            3857290,
+            3869420,
+            3857268,
+            3857296,
+            3869118,
+            3869151,
+            3857262,
+            3857298,
+            3869117,
+            3857282,
+            3869220,
+            3857279,
+            3857276,
+            3857301,
+            3857257,
+            3857271,
+            3857275,
+            3857293,
+            3857297,
+            3869152,
+            3857256,
+            3857263,
+            3857266,
+            3857283,
+            3857288,
+            3857280,
+            3857287,
+            3857289,
+            3857277,
+            3857254,
+            3857272,
+            3857284,
+            3857255,
+            3857295,
+            3869552,
+            3857273,
+            3857285,
+            3857300,
+            3869486,
+            3857265,
+            3857260,
+            3857274,
+            3857299,
+            3857286,
+            3857267,
+            3869354
+          ]
+        },
+        "mean_end_x": {
+          "types": [
+            "float"
+          ],
+          "nulls": 0,
+          "min": 1.3,
+          "max": 120.0,
+          "distinct_count": 6808
+        },
+        "mean_end_y": {
+          "types": [
+            "float"
+          ],
+          "nulls": 0,
+          "min": 0.9,
+          "max": 80.0,
+          "distinct_count": 6269
+        },
+        "mean_start_x": {
+          "types": [
+            "float"
+          ],
+          "nulls": 0,
+          "min": 2.0,
+          "max": 120.0,
+          "distinct_count": 6671
+        },
+        "mean_start_y": {
+          "types": [
+            "float"
+          ],
+          "nulls": 0,
+          "min": 0.1,
+          "max": 80.0,
+          "distinct_count": 6261
+        },
+        "pass_count": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 1,
+          "max": 69,
+          "distinct_count": 45,
+          "values": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            22,
+            21,
+            20,
+            27,
+            23,
+            24,
+            25,
+            26,
+            28,
+            29,
+            32,
+            34,
+            35,
+            31,
+            39,
+            69,
+            67,
+            30,
+            36,
+            33,
+            40,
+            44,
+            59,
+            47,
+            68,
+            37
+          ]
+        },
+        "player_id": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 2941,
+          "max": 326758,
+          "distinct_count": 673
+        },
+        "recipient_id": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 2941,
+          "max": 348757,
+          "distinct_count": 677
+        },
+        "source_event_ids": {
+          "types": [
+            "list"
+          ],
+          "nulls": 0
+        },
+        "team_id": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 768,
+          "max": 4885,
+          "distinct_count": 32,
+          "values": [
+            779,
+            785,
+            771,
+            788,
+            780,
+            781,
+            768,
+            941,
+            772,
+            1839,
+            773,
+            791,
+            787,
+            778,
+            792,
+            789,
+            1833,
+            786,
+            776,
+            782,
+            770,
+            783,
+            907,
+            3566,
+            2722,
+            797,
+            794,
+            799,
+            795,
+            777,
+            4885,
+            3565
+          ]
+        }
+      },
+      "sha256": "56dd8457ba1e298fba0c1f97c04c7efe37b2366d5c45ec3dad7c8c10841312ef"
+    },
+    "initial_lineups": {
+      "rows": 128,
+      "columns": {
+        "formation_code": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 343,
+          "max": 41212,
+          "distinct_count": 10,
+          "values": [
+            433,
+            4231,
+            442,
+            352,
+            343,
+            3421,
+            3412,
+            4141,
+            4411,
+            41212
+          ]
+        },
+        "match_id": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 3857254,
+          "max": 3869685,
+          "distinct_count": 64,
+          "values": [
+            3857254,
+            3857255,
+            3857256,
+            3857257,
+            3857258,
+            3857259,
+            3857260,
+            3857261,
+            3857262,
+            3857263,
+            3857264,
+            3857265,
+            3857266,
+            3857267,
+            3857268,
+            3857269,
+            3857270,
+            3857271,
+            3857272,
+            3857273,
+            3857274,
+            3857275,
+            3857276,
+            3857277,
+            3857278,
+            3857279,
+            3857280,
+            3857281,
+            3857282,
+            3857283,
+            3857284,
+            3857285,
+            3857286,
+            3857287,
+            3857288,
+            3857289,
+            3857290,
+            3857291,
+            3857292,
+            3857293,
+            3857294,
+            3857295,
+            3857296,
+            3857297,
+            3857298,
+            3857299,
+            3857300,
+            3857301,
+            3869117,
+            3869118,
+            3869151,
+            3869152,
+            3869219,
+            3869220,
+            3869253,
+            3869254,
+            3869321,
+            3869354,
+            3869420,
+            3869486,
+            3869519,
+            3869552,
+            3869684,
+            3869685
+          ]
+        },
+        "player_ids": {
+          "types": [
+            "list"
+          ],
+          "nulls": 0
+        },
+        "players": {
+          "types": [
+            "list"
+          ],
+          "nulls": 0
+        },
+        "source_event_id": {
+          "types": [
+            "str"
+          ],
+          "nulls": 0,
+          "distinct_count": 128
+        },
+        "team_id": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 768,
+          "max": 4885,
+          "distinct_count": 32,
+          "values": [
+            779,
+            771,
+            788,
+            785,
+            781,
+            768,
+            780,
+            941,
+            772,
+            778,
+            773,
+            792,
+            791,
+            789,
+            787,
+            1839,
+            776,
+            777,
+            786,
+            2722,
+            794,
+            799,
+            907,
+            770,
+            3565,
+            782,
+            1833,
+            783,
+            797,
+            3566,
+            795,
+            4885
+          ]
+        }
+      },
+      "sha256": "4a500598bd295506c1a43bfe49c5091e2e3eaf991d629cf68269469cea190c17"
+    },
+    "lineup_changes": {
+      "rows": 981,
+      "columns": {
+        "after": {
+          "types": [
+            "dict"
+          ],
+          "nulls": 0
+        },
+        "before": {
+          "types": [
+            "dict"
+          ],
+          "nulls": 0
+        },
+        "change_type": {
+          "types": [
+            "str"
+          ],
+          "nulls": 0,
+          "distinct_count": 5,
+          "values": [
+            "Substitution",
+            "Tactical Shift",
+            "Player Off",
+            "Player On",
+            "Dismissal"
+          ]
+        },
+        "event_id": {
+          "types": [
+            "str"
+          ],
+          "nulls": 0,
+          "distinct_count": 981
+        },
+        "event_index": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 34,
+          "max": 4910,
+          "distinct_count": 816
+        },
+        "match_id": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 3857254,
+          "max": 3869685,
+          "distinct_count": 64,
+          "values": [
+            3857278,
+            3869486,
+            3869685,
+            3857259,
+            3857262,
+            3857271,
+            3857297,
+            3869220,
+            3857273,
+            3857260,
+            3857264,
+            3857281,
+            3857282,
+            3857294,
+            3857301,
+            3869321,
+            3857295,
+            3857299,
+            3857300,
+            3869219,
+            3869684,
+            3857267,
+            3857270,
+            3857279,
+            3857280,
+            3857288,
+            3857293,
+            3869151,
+            3869254,
+            3857265,
+            3857276,
+            3857277,
+            3857291,
+            3857292,
+            3869117,
+            3857257,
+            3857258,
+            3857269,
+            3857275,
+            3857284,
+            3857285,
+            3857289,
+            3857298,
+            3857255,
+            3857256,
+            3857261,
+            3857268,
+            3857283,
+            3857290,
+            3869118,
+            3869253,
+            3869420,
+            3869519,
+            3869552,
+            3857254,
+            3857263,
+            3857266,
+            3857286,
+            3857296,
+            3857287,
+            3869152,
+            3857274,
+            3857272,
+            3869354
+          ]
+        },
+        "period": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 1,
+          "max": 4,
+          "distinct_count": 4,
+          "values": [
+            2,
+            1,
+            4,
+            3
+          ]
+        },
+        "player_id": {
+          "types": [
+            "int"
+          ],
+          "nulls": 243,
+          "min": 2941,
+          "max": 296254,
+          "distinct_count": 354
+        },
+        "replacement_id": {
+          "types": [
+            "int"
+          ],
+          "nulls": 394,
+          "min": 2954,
+          "max": 348757,
+          "distinct_count": 343
+        },
+        "team_id": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 768,
+          "max": 4885,
+          "distinct_count": 32,
+          "values": [
+            788,
+            779,
+            785,
+            771,
+            780,
+            781,
+            799,
+            797,
+            791,
+            792,
+            941,
+            778,
+            768,
+            1839,
+            772,
+            773,
+            789,
+            787,
+            907,
+            3565,
+            1833,
+            3566,
+            795,
+            786,
+            4885,
+            2722,
+            777,
+            770,
+            782,
+            794,
+            776,
+            783
+          ]
+        },
+        "timestamp": {
+          "types": [
+            "str"
+          ],
+          "nulls": 0,
+          "distinct_count": 904
+        }
+      },
+      "sha256": "e4f56f31ec5e3c03b5441647d7c5689bc548cb78134c4bf5d7f0a63fc3da0bbd"
+    },
+    "lineup_segments": {
+      "rows": 1109,
+      "columns": {
+        "declaration_event_id": {
+          "types": [
+            "str"
+          ],
+          "nulls": 0,
+          "distinct_count": 371
+        },
+        "declared_player_ids": {
+          "types": [
+            "list"
+          ],
+          "nulls": 0
+        },
+        "declared_positions": {
+          "types": [
+            "dict"
+          ],
+          "nulls": 0
+        },
+        "end_event_index_exclusive": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 35,
+          "max": 5126,
+          "distinct_count": 868
+        },
+        "formation_current": {
+          "types": [
+            "bool"
+          ],
+          "nulls": 0,
+          "min": false,
+          "max": true,
+          "distinct_count": 2,
+          "values": [
+            false,
+            true
+          ]
+        },
+        "last_declared_formation": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 343,
+          "max": 41212,
+          "distinct_count": 11,
+          "values": [
+            4231,
+            433,
+            442,
+            343,
+            352,
+            3421,
+            4411,
+            4141,
+            3412,
+            41212,
+            3511
+          ]
+        },
+        "match_id": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 3857254,
+          "max": 3869685,
+          "distinct_count": 64,
+          "values": [
+            3857278,
+            3869486,
+            3869685,
+            3857259,
+            3857262,
+            3857271,
+            3857297,
+            3869220,
+            3857273,
+            3857260,
+            3857264,
+            3857281,
+            3857282,
+            3857294,
+            3857301,
+            3869321,
+            3857295,
+            3857299,
+            3857300,
+            3869219,
+            3869684,
+            3857267,
+            3857270,
+            3857279,
+            3857280,
+            3857288,
+            3857293,
+            3869151,
+            3869254,
+            3857265,
+            3857276,
+            3857277,
+            3857291,
+            3857292,
+            3869117,
+            3857257,
+            3857258,
+            3857269,
+            3857275,
+            3857284,
+            3857285,
+            3857289,
+            3857298,
+            3857255,
+            3857256,
+            3857261,
+            3857268,
+            3857283,
+            3857290,
+            3869118,
+            3869253,
+            3869420,
+            3869519,
+            3869552,
+            3857254,
+            3857263,
+            3857266,
+            3857286,
+            3857296,
+            3857287,
+            3869152,
+            3857274,
+            3857272,
+            3869354
+          ]
+        },
+        "on_field_player_ids": {
+          "types": [
+            "list"
+          ],
+          "nulls": 0
+        },
+        "segment_id": {
+          "types": [
+            "str"
+          ],
+          "nulls": 0,
+          "distinct_count": 1109
+        },
+        "selected_player_ids": {
+          "types": [
+            "list"
+          ],
+          "nulls": 0
+        },
+        "source_event_id": {
+          "types": [
+            "str"
+          ],
+          "nulls": 0,
+          "distinct_count": 1109
+        },
+        "start_event_index": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 1,
+          "max": 4911,
+          "distinct_count": 817
+        },
+        "tactical_snapshot_issues": {
+          "types": [
+            "list"
+          ],
+          "nulls": 0
+        },
+        "team_id": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 768,
+          "max": 4885,
+          "distinct_count": 32,
+          "values": [
+            788,
+            779,
+            785,
+            771,
+            780,
+            781,
+            799,
+            797,
+            791,
+            941,
+            792,
+            768,
+            778,
+            1839,
+            772,
+            773,
+            789,
+            787,
+            907,
+            3565,
+            1833,
+            3566,
+            795,
+            786,
+            4885,
+            2722,
+            777,
+            770,
+            782,
+            794,
+            776,
+            783
+          ]
+        },
+        "temporarily_off_player_ids": {
+          "types": [
+            "list"
+          ],
+          "nulls": 0
+        }
+      },
+      "sha256": "a9ce0631db96d6b7c155a895615fe23384fbf67d4cdeff242c64645081eaeb6d"
+    },
+    "player_match": {
+      "rows": 3244,
+      "columns": {
+        "appeared": {
+          "types": [
+            "bool"
+          ],
+          "nulls": 0,
+          "min": false,
+          "max": true,
+          "distinct_count": 2,
+          "values": [
+            true,
+            false
+          ]
+        },
+        "assists": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 2,
+          "distinct_count": 3,
+          "values": [
+            0,
+            1,
+            2
+          ]
+        },
+        "carry_box_entries": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 8,
+          "distinct_count": 9,
+          "values": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            7,
+            8,
+            6
+          ]
+        },
+        "carry_events": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 178,
+          "distinct_count": 107
+        },
+        "carry_final_third_entries": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 12,
+          "distinct_count": 12,
+          "values": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            9,
+            8,
+            12,
+            10
+          ]
+        },
+        "complete_dribbles": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 13,
+          "distinct_count": 11,
+          "values": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            7,
+            6,
+            8,
+            9,
+            13
+          ]
+        },
+        "completed_passes": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 206,
+          "distinct_count": 116
+        },
+        "completed_passes_under_pressure": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 24,
+          "distinct_count": 21,
+          "values": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            13,
+            14,
+            12,
+            20,
+            16,
+            19,
+            24,
+            18,
+            15
+          ]
+        },
+        "dispossessed": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 8,
+          "distinct_count": 9,
+          "values": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            7,
+            6,
+            8
+          ]
+        },
+        "dribble_attempts": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 18,
+          "distinct_count": 15,
+          "values": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            7,
+            6,
+            8,
+            11,
+            12,
+            10,
+            9,
+            14,
+            18
+          ]
+        },
+        "dribble_success_pct": {
+          "types": [
+            "float"
+          ],
+          "nulls": 2366,
+          "min": 0.0,
+          "max": 100.0,
+          "distinct_count": 28,
+          "values": [
+            100.0,
+            0.0,
+            50.0,
+            66.66666666666667,
+            33.333333333333336,
+            75.0,
+            60.0,
+            40.0,
+            25.0,
+            57.142857142857146,
+            14.285714285714286,
+            80.0,
+            20.0,
+            42.857142857142854,
+            54.54545454545455,
+            37.5,
+            28.571428571428573,
+            71.42857142857143,
+            70.0,
+            83.33333333333333,
+            16.666666666666668,
+            44.44444444444444,
+            64.28571428571429,
+            72.22222222222223,
+            87.5,
+            85.71428571428571,
+            45.45454545454545,
+            62.5
+          ]
+        },
+        "events": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 615,
+          "distinct_count": 318
+        },
+        "failed_passes": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 26,
+          "distinct_count": 26,
+          "values": [
+            0,
+            4,
+            2,
+            1,
+            3,
+            5,
+            6,
+            8,
+            7,
+            9,
+            10,
+            11,
+            13,
+            12,
+            14,
+            16,
+            15,
+            17,
+            19,
+            18,
+            20,
+            21,
+            23,
+            22,
+            24,
+            26
+          ]
+        },
+        "failed_recoveries": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 3,
+          "distinct_count": 4,
+          "values": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "fouls_won": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 10,
+          "distinct_count": 11,
+          "values": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            8,
+            7,
+            9,
+            10
+          ]
+        },
+        "goals": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 3,
+          "distinct_count": 4,
+          "values": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "is_starter": {
+          "types": [
+            "bool"
+          ],
+          "nulls": 0,
+          "min": false,
+          "max": true,
+          "distinct_count": 2,
+          "values": [
+            false,
+            true
+          ]
+        },
+        "known_dribbles": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 18,
+          "distinct_count": 15,
+          "values": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            7,
+            6,
+            8,
+            11,
+            12,
+            10,
+            9,
+            14,
+            18
+          ]
+        },
+        "known_passes": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 220,
+          "distinct_count": 126
+        },
+        "known_passes_under_pressure": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 28,
+          "distinct_count": 23,
+          "values": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            16,
+            22,
+            17,
+            21,
+            28,
+            18,
+            19,
+            15
+          ]
+        },
+        "match_id": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 3857254,
+          "max": 3869685,
+          "distinct_count": 64,
+          "values": [
+            3857254,
+            3857255,
+            3857258,
+            3857263,
+            3857264,
+            3857265,
+            3857268,
+            3857272,
+            3857274,
+            3857276,
+            3857277,
+            3857282,
+            3857283,
+            3857284,
+            3857285,
+            3857286,
+            3857289,
+            3857291,
+            3857294,
+            3857295,
+            3857299,
+            3857300,
+            3869117,
+            3869151,
+            3869220,
+            3869321,
+            3857257,
+            3857259,
+            3857267,
+            3857271,
+            3857273,
+            3857279,
+            3857281,
+            3857287,
+            3857288,
+            3857290,
+            3857292,
+            3857293,
+            3857296,
+            3857298,
+            3857301,
+            3869684,
+            3857261,
+            3857269,
+            3857275,
+            3857278,
+            3869152,
+            3869420,
+            3869685,
+            3857256,
+            3857262,
+            3857266,
+            3857270,
+            3857297,
+            3869253,
+            3869254,
+            3869354,
+            3869519,
+            3857260,
+            3869118,
+            3869219,
+            3869486,
+            3869552,
+            3857280
+          ]
+        },
+        "miscontrols": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 7,
+          "distinct_count": 8,
+          "values": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ]
+        },
+        "non_penalty_goals": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 3,
+          "distinct_count": 4,
+          "values": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "non_penalty_shots": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 9,
+          "distinct_count": 9,
+          "values": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            9
+          ]
+        },
+        "npxg": {
+          "types": [
+            "float",
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 1.74503562,
+          "distinct_count": 837
+        },
+        "npxg_per_non_penalty_shot": {
+          "types": [
+            "float"
+          ],
+          "nulls": 2408,
+          "min": 0.004195439,
+          "max": 0.8945071,
+          "distinct_count": 836
+        },
+        "opponent_id": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 768,
+          "max": 4885,
+          "distinct_count": 32,
+          "values": [
+            779,
+            771,
+            788,
+            785,
+            941,
+            780,
+            781,
+            768,
+            772,
+            778,
+            792,
+            1839,
+            773,
+            787,
+            789,
+            791,
+            799,
+            3565,
+            782,
+            797,
+            3566,
+            795,
+            770,
+            1833,
+            776,
+            907,
+            783,
+            4885,
+            777,
+            786,
+            2722,
+            794
+          ]
+        },
+        "own_goals_against": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 1,
+          "distinct_count": 2,
+          "values": [
+            0,
+            1
+          ]
+        },
+        "own_goals_for": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 0,
+          "distinct_count": 1,
+          "values": [
+            0
+          ]
+        },
+        "pass_box_entries": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 8,
+          "distinct_count": 8,
+          "values": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            8
+          ]
+        },
+        "pass_completion_pct": {
+          "types": [
+            "float"
+          ],
+          "nulls": 1270,
+          "min": 0.0,
+          "max": 100.0,
+          "distinct_count": 514
+        },
+        "pass_final_third_entries": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 28,
+          "distinct_count": 21,
+          "values": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            13,
+            14,
+            18,
+            16,
+            12,
+            15,
+            22,
+            17,
+            28
+          ]
+        },
+        "passes": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 220,
+          "distinct_count": 126
+        },
+        "passes_received": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 193,
+          "distinct_count": 111
+        },
+        "passes_under_pressure": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 28,
+          "distinct_count": 23,
+          "values": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            11,
+            10,
+            12,
+            13,
+            14,
+            17,
+            15,
+            16,
+            22,
+            21,
+            28,
+            18,
+            19
+          ]
+        },
+        "penalty_goals": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 2,
+          "distinct_count": 3,
+          "values": [
+            0,
+            1,
+            2
+          ]
+        },
+        "penalty_shots": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 2,
+          "distinct_count": 3,
+          "values": [
+            0,
+            1,
+            2
+          ]
+        },
+        "penalty_xg": {
+          "types": [
+            "float",
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 1.567,
+          "distinct_count": 3,
+          "values": [
+            0,
+            0.7835,
+            1.567
+          ]
+        },
+        "player_id": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 2941,
+          "max": 349913,
+          "distinct_count": 829
+        },
+        "player_name": {
+          "types": [
+            "str"
+          ],
+          "nulls": 0,
+          "distinct_count": 833
+        },
+        "pressure_pass_completion_pct": {
+          "types": [
+            "float"
+          ],
+          "nulls": 1479,
+          "min": 0.0,
+          "max": 100.0,
+          "distinct_count": 51,
+          "values": [
+            100.0,
+            50.0,
+            0.0,
+            66.66666666666667,
+            75.0,
+            33.333333333333336,
+            60.0,
+            80.0,
+            83.33333333333333,
+            40.0,
+            85.71428571428571,
+            87.5,
+            57.142857142857146,
+            71.42857142857143,
+            25.0,
+            62.5,
+            88.88888888888889,
+            72.72727272727273,
+            77.77777777777777,
+            81.81818181818181,
+            42.857142857142854,
+            91.66666666666667,
+            20.0,
+            90.9090909090909,
+            55.55555555555556,
+            44.44444444444444,
+            70.0,
+            90.0,
+            37.5,
+            64.28571428571429,
+            84.61538461538461,
+            63.63636363636363,
+            76.92307692307692,
+            54.54545454545455,
+            92.3076923076923,
+            14.285714285714286,
+            81.25,
+            78.57142857142857,
+            82.3529411764706,
+            69.23076923076923,
+            92.85714285714286,
+            61.53846153846154,
+            58.333333333333336,
+            78.94736842105263,
+            16.666666666666668,
+            28.571428571428573,
+            86.36363636363636,
+            76.47058823529412,
+            45.45454545454545,
+            90.47619047619048,
+            86.66666666666667
+          ]
+        },
+        "pressures": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 36,
+          "distinct_count": 37,
+          "values": [
+            0,
+            7,
+            3,
+            2,
+            4,
+            9,
+            6,
+            8,
+            1,
+            10,
+            5,
+            11,
+            13,
+            12,
+            14,
+            15,
+            16,
+            18,
+            17,
+            19,
+            21,
+            23,
+            20,
+            22,
+            24,
+            27,
+            25,
+            26,
+            29,
+            30,
+            31,
+            33,
+            28,
+            34,
+            35,
+            32,
+            36
+          ]
+        },
+        "recovery_attempts": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 13,
+          "distinct_count": 14,
+          "values": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            10,
+            9,
+            11,
+            12,
+            13
+          ]
+        },
+        "shot_involvements": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 11,
+          "distinct_count": 12,
+          "values": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            10,
+            9,
+            11
+          ]
+        },
+        "shots": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 9,
+          "distinct_count": 9,
+          "values": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            9
+          ]
+        },
+        "shots_created": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 6,
+          "distinct_count": 7,
+          "values": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ]
+        },
+        "successful_recoveries": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 13,
+          "distinct_count": 14,
+          "values": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13
+          ]
+        },
+        "team_id": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 768,
+          "max": 4885,
+          "distinct_count": 32,
+          "values": [
+            779,
+            785,
+            788,
+            771,
+            941,
+            768,
+            781,
+            780,
+            772,
+            791,
+            789,
+            1839,
+            792,
+            778,
+            787,
+            773,
+            777,
+            786,
+            794,
+            770,
+            1833,
+            4885,
+            907,
+            3565,
+            782,
+            3566,
+            795,
+            776,
+            783,
+            797,
+            2722,
+            799
+          ]
+        },
+        "unknown_passes": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 4,
+          "distinct_count": 5,
+          "values": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        "unknown_passes_under_pressure": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 2,
+          "distinct_count": 3,
+          "values": [
+            0,
+            1,
+            2
+          ]
+        },
+        "xg": {
+          "types": [
+            "float",
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 1.782553667,
+          "distinct_count": 838
+        },
+        "xg_assisted": {
+          "types": [
+            "float",
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 1.129503752,
+          "distinct_count": 696
+        },
+        "xg_involved": {
+          "types": [
+            "float",
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 1.956154229,
+          "distinct_count": 1093
+        },
+        "xg_per_shot": {
+          "types": [
+            "float"
+          ],
+          "nulls": 2405,
+          "min": 0.004195439,
+          "max": 0.8945071,
+          "distinct_count": 837
+        }
+      },
+      "sha256": "827368f3e653536182d09a8dc50ebc739a740dfb8dfa43ed7380132d96c4923f"
+    },
+    "receipts": {
+      "rows": 56346,
+      "columns": {
+        "event_id": {
+          "types": [
+            "str"
+          ],
+          "nulls": 0,
+          "distinct_count": 56346
+        },
+        "lineup_segment_id": {
+          "types": [
+            "str"
+          ],
+          "nulls": 0,
+          "distinct_count": 730
+        },
+        "location_x": {
+          "types": [
+            "float"
+          ],
+          "nulls": 0,
+          "min": 0.3,
+          "max": 120.0,
+          "distinct_count": 1186
+        },
+        "location_y": {
+          "types": [
+            "float"
+          ],
+          "nulls": 0,
+          "min": 0.1,
+          "max": 80.0,
+          "distinct_count": 799
+        },
+        "match_id": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 3857254,
+          "max": 3869685,
+          "distinct_count": 64,
+          "values": [
+            3869420,
+            3869220,
+            3857291,
+            3857255,
+            3857294,
+            3869321,
+            3857264,
+            3869219,
+            3857279,
+            3857296,
+            3869253,
+            3869151,
+            3869685,
+            3857292,
+            3857266,
+            3857284,
+            3857269,
+            3869519,
+            3857298,
+            3869152,
+            3857271,
+            3857290,
+            3857295,
+            3857283,
+            3857258,
+            3857277,
+            3857272,
+            3869684,
+            3857263,
+            3857254,
+            3857282,
+            3869118,
+            3857268,
+            3857270,
+            3857281,
+            3869552,
+            3857262,
+            3869254,
+            3857275,
+            3869117,
+            3857278,
+            3857261,
+            3857287,
+            3857301,
+            3857274,
+            3857286,
+            3857257,
+            3869486,
+            3869354,
+            3857276,
+            3857289,
+            3857280,
+            3857299,
+            3857256,
+            3857293,
+            3857297,
+            3857300,
+            3857285,
+            3857259,
+            3857265,
+            3857288,
+            3857273,
+            3857267,
+            3857260
+          ]
+        },
+        "passer_id": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 2941,
+          "max": 326758,
+          "distinct_count": 673
+        },
+        "player_id": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 2941,
+          "max": 348757,
+          "distinct_count": 677
+        },
+        "team_id": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 768,
+          "max": 4885,
+          "distinct_count": 32,
+          "values": [
+            779,
+            785,
+            772,
+            771,
+            768,
+            781,
+            780,
+            941,
+            788,
+            1839,
+            770,
+            773,
+            791,
+            776,
+            782,
+            778,
+            787,
+            1833,
+            792,
+            789,
+            786,
+            783,
+            3565,
+            3566,
+            794,
+            907,
+            777,
+            4885,
+            2722,
+            799,
+            795,
+            797
+          ]
+        }
+      },
+      "sha256": "5be001356cea300ac00b83e2471a8dc04741ec5a1fab1c624b19398fd50ff6ee"
+    },
+    "segment_player_metrics": {
+      "rows": 12119,
+      "columns": {
+        "assists": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 2,
+          "distinct_count": 3,
+          "values": [
+            0,
+            1,
+            2
+          ]
+        },
+        "carry_box_entries": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 6,
+          "distinct_count": 7,
+          "values": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            6,
+            5
+          ]
+        },
+        "carry_events": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 110,
+          "distinct_count": 72,
+          "values": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            14,
+            13,
+            15,
+            16,
+            17,
+            20,
+            19,
+            18,
+            23,
+            24,
+            21,
+            25,
+            22,
+            29,
+            26,
+            30,
+            28,
+            32,
+            27,
+            31,
+            34,
+            33,
+            35,
+            37,
+            39,
+            36,
+            42,
+            45,
+            43,
+            38,
+            48,
+            40,
+            44,
+            47,
+            55,
+            46,
+            53,
+            41,
+            50,
+            52,
+            67,
+            57,
+            65,
+            64,
+            54,
+            63,
+            49,
+            59,
+            56,
+            81,
+            95,
+            110,
+            60,
+            68,
+            89,
+            84,
+            51,
+            66,
+            58
+          ]
+        },
+        "carry_final_third_entries": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 9,
+          "distinct_count": 9,
+          "values": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            8,
+            9
+          ]
+        },
+        "complete_dribbles": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 7,
+          "distinct_count": 8,
+          "values": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            7,
+            6
+          ]
+        },
+        "completed_passes": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 115,
+          "distinct_count": 81,
+          "values": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            13,
+            12,
+            15,
+            14,
+            16,
+            17,
+            18,
+            19,
+            21,
+            22,
+            20,
+            24,
+            30,
+            29,
+            23,
+            26,
+            25,
+            27,
+            28,
+            34,
+            36,
+            31,
+            33,
+            32,
+            35,
+            37,
+            40,
+            45,
+            38,
+            39,
+            49,
+            46,
+            50,
+            41,
+            42,
+            43,
+            48,
+            55,
+            44,
+            52,
+            59,
+            64,
+            47,
+            67,
+            54,
+            57,
+            58,
+            70,
+            65,
+            53,
+            61,
+            71,
+            60,
+            68,
+            51,
+            56,
+            63,
+            99,
+            66,
+            115,
+            108,
+            73,
+            81,
+            87,
+            83,
+            98,
+            85,
+            75,
+            69
+          ]
+        },
+        "completed_passes_under_pressure": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 15,
+          "distinct_count": 14,
+          "values": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            13,
+            15
+          ]
+        },
+        "dispossessed": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 8,
+          "distinct_count": 9,
+          "values": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            7,
+            6,
+            8
+          ]
+        },
+        "dribble_attempts": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 8,
+          "distinct_count": 9,
+          "values": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ]
+        },
+        "dribble_success_pct": {
+          "types": [
+            "float"
+          ],
+          "nulls": 10899,
+          "min": 0.0,
+          "max": 100.0,
+          "distinct_count": 15,
+          "values": [
+            100.0,
+            0.0,
+            50.0,
+            33.333333333333336,
+            66.66666666666667,
+            75.0,
+            60.0,
+            25.0,
+            20.0,
+            57.142857142857146,
+            83.33333333333333,
+            42.857142857142854,
+            80.0,
+            40.0,
+            16.666666666666668
+          ]
+        },
+        "events": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 350,
+          "distinct_count": 213
+        },
+        "failed_passes": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 20,
+          "distinct_count": 18,
+          "values": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            13,
+            12,
+            14,
+            15,
+            17,
+            20
+          ]
+        },
+        "failed_recoveries": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 3,
+          "distinct_count": 4,
+          "values": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "fouls_won": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 9,
+          "distinct_count": 9,
+          "values": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            9,
+            8,
+            7
+          ]
+        },
+        "goals": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 3,
+          "distinct_count": 4,
+          "values": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "known_dribbles": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 8,
+          "distinct_count": 9,
+          "values": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ]
+        },
+        "known_passes": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 119,
+          "distinct_count": 88,
+          "values": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            12,
+            11,
+            13,
+            14,
+            15,
+            18,
+            16,
+            17,
+            20,
+            22,
+            19,
+            21,
+            23,
+            27,
+            24,
+            25,
+            26,
+            32,
+            33,
+            28,
+            34,
+            31,
+            30,
+            36,
+            29,
+            40,
+            38,
+            41,
+            43,
+            42,
+            35,
+            37,
+            39,
+            46,
+            44,
+            48,
+            49,
+            54,
+            52,
+            58,
+            50,
+            47,
+            55,
+            53,
+            63,
+            51,
+            45,
+            69,
+            64,
+            72,
+            73,
+            61,
+            56,
+            60,
+            59,
+            66,
+            62,
+            67,
+            65,
+            68,
+            57,
+            116,
+            119,
+            75,
+            76,
+            88,
+            70,
+            92,
+            105,
+            91,
+            107,
+            99,
+            87,
+            81,
+            77,
+            74,
+            83
+          ]
+        },
+        "known_passes_under_pressure": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 16,
+          "distinct_count": 17,
+          "values": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            16,
+            15,
+            14
+          ]
+        },
+        "miscontrols": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 6,
+          "distinct_count": 7,
+          "values": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ]
+        },
+        "non_penalty_goals": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 3,
+          "distinct_count": 4,
+          "values": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "non_penalty_shots": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 6,
+          "distinct_count": 7,
+          "values": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ]
+        },
+        "npxg": {
+          "types": [
+            "float",
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 1.74503562,
+          "distinct_count": 1069
+        },
+        "npxg_per_non_penalty_shot": {
+          "types": [
+            "float"
+          ],
+          "nulls": 11051,
+          "min": 0.004195439,
+          "max": 0.8974681,
+          "distinct_count": 1068
+        },
+        "own_goals_against": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 1,
+          "distinct_count": 2,
+          "values": [
+            0,
+            1
+          ]
+        },
+        "own_goals_for": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 0,
+          "distinct_count": 1,
+          "values": [
+            0
+          ]
+        },
+        "pass_box_entries": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 5,
+          "distinct_count": 6,
+          "values": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        "pass_completion_pct": {
+          "types": [
+            "float"
+          ],
+          "nulls": 5288,
+          "min": 0.0,
+          "max": 100.0,
+          "distinct_count": 314
+        },
+        "pass_final_third_entries": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 13,
+          "distinct_count": 14,
+          "values": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            10,
+            12,
+            9,
+            11,
+            13
+          ]
+        },
+        "passes": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 119,
+          "distinct_count": 88,
+          "values": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            12,
+            11,
+            13,
+            14,
+            15,
+            16,
+            18,
+            17,
+            20,
+            21,
+            19,
+            22,
+            23,
+            25,
+            27,
+            24,
+            26,
+            32,
+            28,
+            33,
+            34,
+            30,
+            29,
+            31,
+            36,
+            43,
+            41,
+            37,
+            39,
+            40,
+            35,
+            38,
+            44,
+            42,
+            46,
+            47,
+            48,
+            58,
+            50,
+            54,
+            64,
+            49,
+            52,
+            51,
+            53,
+            45,
+            55,
+            73,
+            66,
+            62,
+            69,
+            60,
+            59,
+            56,
+            61,
+            68,
+            72,
+            63,
+            75,
+            70,
+            57,
+            67,
+            116,
+            119,
+            76,
+            74,
+            88,
+            92,
+            105,
+            91,
+            107,
+            99,
+            87,
+            81,
+            77,
+            83,
+            65
+          ]
+        },
+        "passes_received": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 115,
+          "distinct_count": 79,
+          "values": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            11,
+            10,
+            12,
+            14,
+            13,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            23,
+            25,
+            22,
+            28,
+            30,
+            24,
+            26,
+            32,
+            27,
+            29,
+            33,
+            34,
+            31,
+            36,
+            40,
+            39,
+            38,
+            37,
+            35,
+            41,
+            43,
+            42,
+            46,
+            49,
+            47,
+            53,
+            45,
+            48,
+            52,
+            65,
+            54,
+            63,
+            44,
+            55,
+            62,
+            57,
+            50,
+            56,
+            66,
+            77,
+            64,
+            68,
+            110,
+            115,
+            70,
+            51,
+            69,
+            60,
+            73,
+            93,
+            79,
+            91,
+            88,
+            84,
+            81,
+            59,
+            58
+          ]
+        },
+        "passes_under_pressure": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 16,
+          "distinct_count": 17,
+          "values": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            16,
+            15,
+            14
+          ]
+        },
+        "penalty_goals": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 1,
+          "distinct_count": 2,
+          "values": [
+            0,
+            1
+          ]
+        },
+        "penalty_shots": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 1,
+          "distinct_count": 2,
+          "values": [
+            0,
+            1
+          ]
+        },
+        "penalty_xg": {
+          "types": [
+            "float",
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 0.7835,
+          "distinct_count": 2,
+          "values": [
+            0,
+            0.7835
+          ]
+        },
+        "player_id": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 2941,
+          "max": 348757,
+          "distinct_count": 680
+        },
+        "pressure_pass_completion_pct": {
+          "types": [
+            "float"
+          ],
+          "nulls": 8569,
+          "min": 0.0,
+          "max": 100.0,
+          "distinct_count": 34,
+          "values": [
+            100.0,
+            0.0,
+            50.0,
+            66.66666666666667,
+            75.0,
+            33.333333333333336,
+            80.0,
+            60.0,
+            83.33333333333333,
+            25.0,
+            85.71428571428571,
+            40.0,
+            87.5,
+            88.88888888888889,
+            71.42857142857143,
+            57.142857142857146,
+            62.5,
+            81.81818181818181,
+            90.0,
+            77.77777777777777,
+            42.857142857142854,
+            37.5,
+            90.9090909090909,
+            70.0,
+            55.55555555555556,
+            44.44444444444444,
+            28.571428571428573,
+            93.75,
+            86.66666666666667,
+            91.66666666666667,
+            78.57142857142857,
+            20.0,
+            72.72727272727273,
+            84.61538461538461
+          ]
+        },
+        "pressures": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 27,
+          "distinct_count": 28,
+          "values": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            21,
+            19,
+            20,
+            24,
+            26,
+            23,
+            22,
+            27,
+            25
+          ]
+        },
+        "recovery_attempts": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 11,
+          "distinct_count": 12,
+          "values": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11
+          ]
+        },
+        "segment_id": {
+          "types": [
+            "str"
+          ],
+          "nulls": 0,
+          "distinct_count": 1109
+        },
+        "shot_involvements": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 8,
+          "distinct_count": 9,
+          "values": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ]
+        },
+        "shots": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 6,
+          "distinct_count": 7,
+          "values": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ]
+        },
+        "shots_created": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 4,
+          "distinct_count": 5,
+          "values": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        "successful_recoveries": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 9,
+          "distinct_count": 10,
+          "values": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            9,
+            8
+          ]
+        },
+        "unknown_passes": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 3,
+          "distinct_count": 4,
+          "values": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "unknown_passes_under_pressure": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 1,
+          "distinct_count": 2,
+          "values": [
+            0,
+            1
+          ]
+        },
+        "xg": {
+          "types": [
+            "float",
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 1.74503562,
+          "distinct_count": 1070
+        },
+        "xg_assisted": {
+          "types": [
+            "float",
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 0.8974681,
+          "distinct_count": 851
+        },
+        "xg_involved": {
+          "types": [
+            "float",
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 1.956154229,
+          "distinct_count": 1341
+        },
+        "xg_per_shot": {
+          "types": [
+            "float"
+          ],
+          "nulls": 11041,
+          "min": 0.004195439,
+          "max": 0.8974681,
+          "distinct_count": 1069
+        }
+      },
+      "sha256": "d751b0ad7eec10a0548e368369aa073fdc6cc3ebab7c7a438eac7a82f8df3158"
+    },
+    "shootout_actions": {
+      "rows": 106,
+      "columns": {
+        "event_id": {
+          "types": [
+            "str"
+          ],
+          "nulls": 0,
+          "distinct_count": 106
+        },
+        "event_index": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 4387,
+          "max": 5145,
+          "distinct_count": 106
+        },
+        "is_goal": {
+          "types": [
+            "bool"
+          ],
+          "nulls": 0,
+          "min": false,
+          "max": true,
+          "distinct_count": 2,
+          "values": [
+            false,
+            true
+          ]
+        },
+        "is_shot": {
+          "types": [
+            "bool"
+          ],
+          "nulls": 0,
+          "min": false,
+          "max": true,
+          "distinct_count": 2,
+          "values": [
+            false,
+            true
+          ]
+        },
+        "match_id": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 3869219,
+          "max": 3869685,
+          "distinct_count": 5,
+          "values": [
+            3869321,
+            3869685,
+            3869219,
+            3869420,
+            3869220
+          ]
+        },
+        "player_id": {
+          "types": [
+            "int"
+          ],
+          "nulls": 20,
+          "min": 3009,
+          "max": 67700,
+          "distinct_count": 47,
+          "values": [
+            6909,
+            16531,
+            8326,
+            25719,
+            11748,
+            5547,
+            3099,
+            6785,
+            3441,
+            5503,
+            16308,
+            28263,
+            8125,
+            8776,
+            37211,
+            5469,
+            8949,
+            22041,
+            3300,
+            11603,
+            3634,
+            6720,
+            5237,
+            6583,
+            67700,
+            5203,
+            5245,
+            3669,
+            7745,
+            7891,
+            7829,
+            38718,
+            20033,
+            11456,
+            21547,
+            25104,
+            28914,
+            5539,
+            5463,
+            25305,
+            16527,
+            4372,
+            3009,
+            8217,
+            5743,
+            10481,
+            22097
+          ]
+        },
+        "team_id": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 771,
+          "max": 941,
+          "distinct_count": 8,
+          "values": [
+            779,
+            785,
+            941,
+            778,
+            781,
+            771,
+            788,
+            772
+          ]
+        },
+        "type_name": {
+          "types": [
+            "str"
+          ],
+          "nulls": 0,
+          "distinct_count": 5,
+          "values": [
+            "Shot",
+            "Goal Keeper",
+            "Half Start",
+            "Half End",
+            "Bad Behaviour"
+          ]
+        }
+      },
+      "sha256": "fe21fea755597af148c1e913bcc73cd00437efa7d6b9790b97b3bf1933d63a40"
+    },
+    "shot_creations": {
+      "rows": 1039,
+      "columns": {
+        "creator_id": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 2941,
+          "max": 296254,
+          "distinct_count": 370
+        },
+        "match_id": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 3857254,
+          "max": 3869685,
+          "distinct_count": 64,
+          "values": [
+            3857292,
+            3857284,
+            3857268,
+            3857266,
+            3869117,
+            3869420,
+            3857280,
+            3857260,
+            3857270,
+            3857279,
+            3857285,
+            3857264,
+            3857273,
+            3857296,
+            3857256,
+            3857259,
+            3869354,
+            3869685,
+            3857257,
+            3857283,
+            3869254,
+            3869486,
+            3857254,
+            3857261,
+            3857297,
+            3857299,
+            3857301,
+            3869253,
+            3869321,
+            3869519,
+            3869552,
+            3857258,
+            3857281,
+            3869152,
+            3869219,
+            3857262,
+            3857269,
+            3857271,
+            3857272,
+            3857287,
+            3857288,
+            3869684,
+            3857255,
+            3857263,
+            3857293,
+            3857298,
+            3857265,
+            3857278,
+            3869118,
+            3869151,
+            3857290,
+            3857291,
+            3869220,
+            3857267,
+            3857294,
+            3857300,
+            3857274,
+            3857275,
+            3857282,
+            3857286,
+            3857295,
+            3857276,
+            3857277,
+            3857289
+          ]
+        },
+        "pass_event_id": {
+          "types": [
+            "str"
+          ],
+          "nulls": 0,
+          "distinct_count": 1039
+        },
+        "shooter_id": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 2941,
+          "max": 348757,
+          "distinct_count": 368
+        },
+        "shot_event_id": {
+          "types": [
+            "str"
+          ],
+          "nulls": 0,
+          "distinct_count": 1039
+        },
+        "statsbomb_xg": {
+          "types": [
+            "float"
+          ],
+          "nulls": 0,
+          "min": 0.003913026,
+          "max": 0.8974681,
+          "distinct_count": 1039
+        },
+        "team_id": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 768,
+          "max": 4885,
+          "distinct_count": 32,
+          "values": [
+            771,
+            779,
+            781,
+            785,
+            770,
+            780,
+            768,
+            788,
+            1839,
+            772,
+            787,
+            941,
+            791,
+            778,
+            773,
+            782,
+            783,
+            776,
+            794,
+            1833,
+            797,
+            786,
+            777,
+            2722,
+            789,
+            799,
+            792,
+            907,
+            3565,
+            3566,
+            4885,
+            795
+          ]
+        }
+      },
+      "sha256": "caa6df37073fc0ae25c57bdbbff66da84f78b8440849981b2beb5828816086c0"
+    },
+    "team_match": {
+      "rows": 128,
+      "columns": {
+        "assists": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 5,
+          "distinct_count": 6,
+          "values": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        "carry_box_entries": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 15,
+          "distinct_count": 16,
+          "values": [
+            2,
+            4,
+            3,
+            7,
+            1,
+            5,
+            6,
+            8,
+            10,
+            9,
+            13,
+            0,
+            14,
+            12,
+            15,
+            11
+          ]
+        },
+        "carry_events": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 158,
+          "max": 943,
+          "distinct_count": 112
+        },
+        "carry_final_third_entries": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 3,
+          "max": 35,
+          "distinct_count": 29,
+          "values": [
+            11,
+            16,
+            15,
+            13,
+            18,
+            10,
+            14,
+            17,
+            5,
+            22,
+            23,
+            8,
+            12,
+            20,
+            7,
+            6,
+            19,
+            21,
+            25,
+            24,
+            28,
+            9,
+            27,
+            31,
+            3,
+            4,
+            35,
+            30,
+            33
+          ]
+        },
+        "complete_dribbles": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 1,
+          "max": 22,
+          "distinct_count": 18,
+          "values": [
+            3,
+            6,
+            5,
+            7,
+            9,
+            8,
+            4,
+            10,
+            11,
+            12,
+            2,
+            13,
+            1,
+            15,
+            16,
+            20,
+            22,
+            19
+          ]
+        },
+        "completed_passes": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 163,
+          "max": 1009,
+          "distinct_count": 117
+        },
+        "completed_passes_under_pressure": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 12,
+          "max": 142,
+          "distinct_count": 60,
+          "values": [
+            38,
+            23,
+            45,
+            31,
+            37,
+            30,
+            27,
+            43,
+            36,
+            33,
+            35,
+            26,
+            54,
+            29,
+            34,
+            51,
+            56,
+            55,
+            49,
+            32,
+            67,
+            25,
+            61,
+            17,
+            47,
+            50,
+            28,
+            44,
+            41,
+            53,
+            66,
+            81,
+            79,
+            142,
+            24,
+            46,
+            48,
+            60,
+            19,
+            40,
+            69,
+            88,
+            65,
+            68,
+            57,
+            73,
+            21,
+            96,
+            12,
+            70,
+            63,
+            20,
+            62,
+            16,
+            104,
+            74,
+            75,
+            58,
+            15,
+            22
+          ]
+        },
+        "dispossessed": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 2,
+          "max": 26,
+          "distinct_count": 22,
+          "values": [
+            14,
+            11,
+            10,
+            9,
+            6,
+            7,
+            17,
+            15,
+            13,
+            8,
+            4,
+            12,
+            19,
+            5,
+            22,
+            18,
+            16,
+            3,
+            2,
+            26,
+            21,
+            20
+          ]
+        },
+        "dribble_attempts": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 2,
+          "max": 33,
+          "distinct_count": 26,
+          "values": [
+            14,
+            13,
+            10,
+            12,
+            15,
+            16,
+            7,
+            6,
+            11,
+            18,
+            17,
+            21,
+            9,
+            5,
+            20,
+            23,
+            24,
+            8,
+            19,
+            33,
+            22,
+            25,
+            26,
+            2,
+            32,
+            31
+          ]
+        },
+        "dribble_success_pct": {
+          "types": [
+            "float"
+          ],
+          "nulls": 0,
+          "min": 9.090909090909092,
+          "max": 88.88888888888889,
+          "distinct_count": 62,
+          "values": [
+            42.857142857142854,
+            50.0,
+            60.0,
+            40.0,
+            62.5,
+            66.66666666666667,
+            71.42857142857143,
+            57.142857142857146,
+            46.15384615384615,
+            75.0,
+            33.333333333333336,
+            43.75,
+            53.333333333333336,
+            53.84615384615385,
+            35.714285714285715,
+            55.55555555555556,
+            46.666666666666664,
+            80.0,
+            41.666666666666664,
+            56.52173913043478,
+            41.1764705882353,
+            36.36363636363637,
+            81.81818181818181,
+            14.285714285714286,
+            38.888888888888886,
+            61.111111111111114,
+            31.25,
+            55.0,
+            83.33333333333333,
+            27.272727272727273,
+            16.666666666666668,
+            70.58823529411765,
+            28.571428571428573,
+            88.88888888888889,
+            64.0,
+            65.0,
+            72.72727272727273,
+            22.22222222222222,
+            38.46153846153846,
+            9.090909090909092,
+            61.53846153846154,
+            35.294117647058826,
+            37.5,
+            20.0,
+            47.36842105263158,
+            69.23076923076923,
+            58.333333333333336,
+            60.60606060606061,
+            23.076923076923077,
+            52.94117647058823,
+            30.0,
+            68.75,
+            57.89473684210526,
+            58.8235294117647,
+            43.47826086956522,
+            76.92307692307692,
+            64.28571428571429,
+            52.38095238095238,
+            38.095238095238095,
+            35.483870967741936,
+            84.61538461538461,
+            57.57575757575758
+          ]
+        },
+        "events": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 975,
+          "max": 3382,
+          "distinct_count": 122
+        },
+        "failed_passes": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 56,
+          "max": 139,
+          "distinct_count": 56,
+          "values": [
+            83,
+            81,
+            85,
+            95,
+            78,
+            77,
+            75,
+            82,
+            88,
+            92,
+            98,
+            73,
+            87,
+            99,
+            84,
+            79,
+            91,
+            94,
+            107,
+            90,
+            80,
+            86,
+            97,
+            103,
+            116,
+            125,
+            101,
+            104,
+            132,
+            110,
+            134,
+            74,
+            108,
+            121,
+            126,
+            117,
+            67,
+            72,
+            111,
+            96,
+            119,
+            112,
+            100,
+            56,
+            76,
+            89,
+            93,
+            102,
+            106,
+            71,
+            139,
+            109,
+            113,
+            64,
+            70,
+            127
+          ]
+        },
+        "failed_recoveries": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 9,
+          "distinct_count": 10,
+          "values": [
+            3,
+            2,
+            4,
+            1,
+            5,
+            6,
+            7,
+            0,
+            8,
+            9
+          ]
+        },
+        "fouls_won": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 4,
+          "max": 37,
+          "distinct_count": 22,
+          "values": [
+            10,
+            15,
+            14,
+            13,
+            11,
+            9,
+            16,
+            17,
+            8,
+            20,
+            7,
+            12,
+            4,
+            18,
+            23,
+            22,
+            21,
+            5,
+            19,
+            6,
+            37,
+            26
+          ]
+        },
+        "goals": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 7,
+          "distinct_count": 7,
+          "values": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            6,
+            7
+          ]
+        },
+        "goals_against": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 7,
+          "distinct_count": 7,
+          "values": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            6,
+            7
+          ]
+        },
+        "goals_for": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 7,
+          "distinct_count": 7,
+          "values": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            6,
+            7
+          ]
+        },
+        "initial_formation": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 343,
+          "max": 41212,
+          "distinct_count": 10,
+          "values": [
+            433,
+            4231,
+            442,
+            352,
+            343,
+            3421,
+            3412,
+            4141,
+            4411,
+            41212
+          ]
+        },
+        "is_home": {
+          "types": [
+            "bool"
+          ],
+          "nulls": 0,
+          "min": false,
+          "max": true,
+          "distinct_count": 2,
+          "values": [
+            true,
+            false
+          ]
+        },
+        "known_dribbles": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 2,
+          "max": 33,
+          "distinct_count": 26,
+          "values": [
+            14,
+            13,
+            10,
+            12,
+            15,
+            16,
+            7,
+            6,
+            11,
+            18,
+            17,
+            21,
+            9,
+            5,
+            20,
+            23,
+            24,
+            8,
+            19,
+            33,
+            22,
+            25,
+            26,
+            2,
+            32,
+            31
+          ]
+        },
+        "known_passes": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 246,
+          "max": 1091,
+          "distinct_count": 114
+        },
+        "known_passes_under_pressure": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 23,
+          "max": 164,
+          "distinct_count": 66,
+          "values": [
+            45,
+            63,
+            53,
+            42,
+            72,
+            77,
+            51,
+            43,
+            59,
+            50,
+            60,
+            52,
+            57,
+            40,
+            48,
+            39,
+            49,
+            56,
+            26,
+            44,
+            37,
+            47,
+            54,
+            23,
+            85,
+            70,
+            66,
+            96,
+            27,
+            81,
+            68,
+            105,
+            73,
+            75,
+            164,
+            64,
+            76,
+            33,
+            88,
+            35,
+            58,
+            32,
+            90,
+            36,
+            83,
+            118,
+            25,
+            84,
+            69,
+            55,
+            122,
+            65,
+            61,
+            91,
+            92,
+            101,
+            62,
+            82,
+            79,
+            38,
+            126,
+            87,
+            106,
+            71,
+            86,
+            74
+          ]
+        },
+        "match_date": {
+          "types": [
+            "str"
+          ],
+          "nulls": 0,
+          "distinct_count": 23,
+          "values": [
+            "2022-11-22",
+            "2022-12-01",
+            "2022-12-02",
+            "2022-11-30",
+            "2022-11-24",
+            "2022-11-28",
+            "2022-11-29",
+            "2022-11-27",
+            "2022-11-26",
+            "2022-11-23",
+            "2022-11-25",
+            "2022-11-21",
+            "2022-12-03",
+            "2022-12-04",
+            "2022-12-05",
+            "2022-12-06",
+            "2022-12-09",
+            "2022-12-10",
+            "2022-11-20",
+            "2022-12-13",
+            "2022-12-14",
+            "2022-12-17",
+            "2022-12-18"
+          ]
+        },
+        "match_id": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 3857254,
+          "max": 3869685,
+          "distinct_count": 64,
+          "values": [
+            3857254,
+            3857255,
+            3857256,
+            3857257,
+            3857258,
+            3857259,
+            3857260,
+            3857261,
+            3857262,
+            3857263,
+            3857264,
+            3857265,
+            3857266,
+            3857267,
+            3857268,
+            3857269,
+            3857270,
+            3857271,
+            3857272,
+            3857273,
+            3857274,
+            3857275,
+            3857276,
+            3857277,
+            3857278,
+            3857279,
+            3857280,
+            3857281,
+            3857282,
+            3857283,
+            3857284,
+            3857285,
+            3857286,
+            3857287,
+            3857288,
+            3857289,
+            3857290,
+            3857291,
+            3857292,
+            3857293,
+            3857294,
+            3857295,
+            3857296,
+            3857297,
+            3857298,
+            3857299,
+            3857300,
+            3857301,
+            3869117,
+            3869118,
+            3869151,
+            3869152,
+            3869219,
+            3869220,
+            3869253,
+            3869254,
+            3869321,
+            3869354,
+            3869420,
+            3869486,
+            3869519,
+            3869552,
+            3869684,
+            3869685
+          ]
+        },
+        "miscontrols": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 2,
+          "max": 27,
+          "distinct_count": 22,
+          "values": [
+            14,
+            13,
+            12,
+            10,
+            11,
+            16,
+            9,
+            20,
+            18,
+            8,
+            15,
+            17,
+            19,
+            7,
+            21,
+            22,
+            6,
+            25,
+            2,
+            4,
+            26,
+            27
+          ]
+        },
+        "non_penalty_goals": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 6,
+          "distinct_count": 6,
+          "values": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            4
+          ]
+        },
+        "non_penalty_shots": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 31,
+          "distinct_count": 25,
+          "values": [
+            10,
+            12,
+            13,
+            8,
+            5,
+            7,
+            14,
+            9,
+            11,
+            6,
+            4,
+            21,
+            15,
+            16,
+            23,
+            18,
+            17,
+            26,
+            2,
+            25,
+            0,
+            31,
+            3,
+            20,
+            19
+          ]
+        },
+        "npxg": {
+          "types": [
+            "float",
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 4.316106397,
+          "distinct_count": 128
+        },
+        "npxg_per_non_penalty_shot": {
+          "types": [
+            "float"
+          ],
+          "nulls": 1,
+          "min": 0.028743315000000002,
+          "max": 0.23019748550000002,
+          "distinct_count": 127
+        },
+        "opponent_id": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 768,
+          "max": 4885,
+          "distinct_count": 32,
+          "values": [
+            779,
+            771,
+            788,
+            785,
+            781,
+            768,
+            780,
+            941,
+            778,
+            772,
+            773,
+            792,
+            791,
+            789,
+            787,
+            1839,
+            777,
+            776,
+            786,
+            2722,
+            799,
+            794,
+            907,
+            770,
+            3565,
+            1833,
+            782,
+            783,
+            797,
+            3566,
+            795,
+            4885
+          ]
+        },
+        "opponent_name": {
+          "types": [
+            "str"
+          ],
+          "nulls": 0,
+          "distinct_count": 32,
+          "values": [
+            "Argentina",
+            "France",
+            "Morocco",
+            "Croatia",
+            "Brazil",
+            "England",
+            "Portugal",
+            "Netherlands",
+            "Japan",
+            "Spain",
+            "Switzerland",
+            "Australia",
+            "South Korea",
+            "Poland",
+            "Senegal",
+            "United States",
+            "Tunisia",
+            "Denmark",
+            "Serbia",
+            "Cameroon",
+            "Saudi Arabia",
+            "Mexico",
+            "Wales",
+            "Germany",
+            "Ecuador",
+            "Canada",
+            "Belgium",
+            "Uruguay",
+            "Iran",
+            "Qatar",
+            "Costa Rica",
+            "Ghana"
+          ]
+        },
+        "own_goals_against": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 1,
+          "distinct_count": 2,
+          "values": [
+            0,
+            1
+          ]
+        },
+        "own_goals_for": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 1,
+          "distinct_count": 2,
+          "values": [
+            0,
+            1
+          ]
+        },
+        "pass_box_entries": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 1,
+          "max": 28,
+          "distinct_count": 21,
+          "values": [
+            8,
+            10,
+            7,
+            5,
+            9,
+            12,
+            3,
+            6,
+            14,
+            13,
+            18,
+            2,
+            11,
+            15,
+            4,
+            16,
+            23,
+            17,
+            1,
+            28,
+            24
+          ]
+        },
+        "pass_completion_pct": {
+          "types": [
+            "float"
+          ],
+          "nulls": 0,
+          "min": 60.81504702194357,
+          "max": 92.65381083562902,
+          "distinct_count": 128
+        },
+        "pass_final_third_entries": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 7,
+          "max": 101,
+          "distinct_count": 47,
+          "values": [
+            36,
+            38,
+            29,
+            37,
+            20,
+            27,
+            42,
+            23,
+            30,
+            18,
+            24,
+            45,
+            17,
+            22,
+            19,
+            40,
+            21,
+            12,
+            79,
+            35,
+            52,
+            25,
+            28,
+            9,
+            55,
+            43,
+            34,
+            63,
+            31,
+            44,
+            13,
+            49,
+            50,
+            7,
+            53,
+            8,
+            75,
+            14,
+            33,
+            64,
+            11,
+            72,
+            39,
+            15,
+            16,
+            101,
+            57
+          ]
+        },
+        "passes": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 247,
+          "max": 1093,
+          "distinct_count": 113
+        },
+        "passes_received": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 163,
+          "max": 1009,
+          "distinct_count": 117
+        },
+        "passes_under_pressure": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 23,
+          "max": 165,
+          "distinct_count": 67,
+          "values": [
+            43,
+            53,
+            50,
+            77,
+            51,
+            49,
+            63,
+            72,
+            61,
+            56,
+            73,
+            45,
+            40,
+            59,
+            37,
+            66,
+            42,
+            75,
+            64,
+            46,
+            44,
+            60,
+            54,
+            57,
+            28,
+            47,
+            84,
+            48,
+            23,
+            55,
+            70,
+            96,
+            39,
+            68,
+            86,
+            165,
+            52,
+            35,
+            89,
+            36,
+            32,
+            90,
+            83,
+            120,
+            25,
+            69,
+            85,
+            124,
+            62,
+            78,
+            91,
+            81,
+            71,
+            82,
+            92,
+            102,
+            110,
+            80,
+            26,
+            38,
+            127,
+            105,
+            88,
+            106,
+            27,
+            58,
+            76
+          ]
+        },
+        "penalty_goals": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 2,
+          "distinct_count": 3,
+          "values": [
+            0,
+            1,
+            2
+          ]
+        },
+        "penalty_shots": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 2,
+          "distinct_count": 3,
+          "values": [
+            0,
+            1,
+            2
+          ]
+        },
+        "penalty_xg": {
+          "types": [
+            "float",
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 1.567,
+          "distinct_count": 3,
+          "values": [
+            0,
+            0.7835,
+            1.567
+          ]
+        },
+        "pressure_pass_completion_pct": {
+          "types": [
+            "float"
+          ],
+          "nulls": 0,
+          "min": 45.0,
+          "max": 86.58536585365853,
+          "distinct_count": 115
+        },
+        "pressures": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 74,
+          "max": 229,
+          "distinct_count": 76,
+          "values": [
+            103,
+            83,
+            127,
+            112,
+            140,
+            137,
+            109,
+            101,
+            147,
+            118,
+            135,
+            126,
+            161,
+            107,
+            94,
+            102,
+            119,
+            105,
+            113,
+            104,
+            86,
+            125,
+            141,
+            110,
+            150,
+            133,
+            149,
+            146,
+            164,
+            216,
+            190,
+            130,
+            89,
+            229,
+            139,
+            129,
+            74,
+            136,
+            111,
+            158,
+            124,
+            88,
+            96,
+            157,
+            90,
+            170,
+            154,
+            168,
+            132,
+            166,
+            128,
+            184,
+            134,
+            99,
+            121,
+            143,
+            145,
+            80,
+            123,
+            138,
+            95,
+            117,
+            120,
+            152,
+            177,
+            175,
+            106,
+            172,
+            151,
+            79,
+            163,
+            192,
+            98,
+            144,
+            194,
+            167
+          ]
+        },
+        "recovery_attempts": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 23,
+          "max": 73,
+          "distinct_count": 42,
+          "values": [
+            49,
+            45,
+            56,
+            50,
+            57,
+            38,
+            42,
+            40,
+            41,
+            48,
+            44,
+            52,
+            36,
+            37,
+            34,
+            33,
+            51,
+            39,
+            35,
+            47,
+            53,
+            46,
+            29,
+            43,
+            58,
+            55,
+            59,
+            23,
+            64,
+            25,
+            24,
+            63,
+            54,
+            60,
+            28,
+            31,
+            73,
+            61,
+            32,
+            67,
+            70,
+            62
+          ]
+        },
+        "shot_involvements": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 31,
+          "distinct_count": 25,
+          "values": [
+            10,
+            12,
+            13,
+            7,
+            9,
+            8,
+            5,
+            11,
+            6,
+            14,
+            15,
+            4,
+            21,
+            18,
+            17,
+            16,
+            23,
+            26,
+            20,
+            24,
+            22,
+            2,
+            0,
+            31,
+            3
+          ]
+        },
+        "shots": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 31,
+          "distinct_count": 25,
+          "values": [
+            10,
+            12,
+            13,
+            7,
+            9,
+            8,
+            5,
+            11,
+            6,
+            14,
+            15,
+            4,
+            21,
+            18,
+            17,
+            16,
+            23,
+            26,
+            20,
+            24,
+            22,
+            2,
+            0,
+            31,
+            3
+          ]
+        },
+        "shots_created": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 25,
+          "distinct_count": 20,
+          "values": [
+            7,
+            9,
+            8,
+            5,
+            10,
+            4,
+            6,
+            11,
+            3,
+            12,
+            2,
+            13,
+            15,
+            19,
+            16,
+            1,
+            14,
+            18,
+            0,
+            25
+          ]
+        },
+        "stage_name": {
+          "types": [
+            "str"
+          ],
+          "nulls": 0,
+          "distinct_count": 6,
+          "values": [
+            "Group Stage",
+            "Round of 16",
+            "Quarter-finals",
+            "Semi-finals",
+            "3rd Place Final",
+            "Final"
+          ]
+        },
+        "successful_recoveries": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 20,
+          "max": 69,
+          "distinct_count": 40,
+          "values": [
+            36,
+            42,
+            46,
+            43,
+            47,
+            32,
+            37,
+            52,
+            34,
+            35,
+            49,
+            51,
+            48,
+            44,
+            40,
+            39,
+            53,
+            55,
+            38,
+            50,
+            58,
+            41,
+            54,
+            29,
+            25,
+            56,
+            33,
+            30,
+            45,
+            20,
+            22,
+            21,
+            28,
+            59,
+            26,
+            31,
+            69,
+            24,
+            67,
+            66
+          ]
+        },
+        "team_id": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 768,
+          "max": 4885,
+          "distinct_count": 32,
+          "values": [
+            779,
+            771,
+            788,
+            785,
+            781,
+            768,
+            780,
+            941,
+            772,
+            778,
+            773,
+            792,
+            791,
+            789,
+            787,
+            1839,
+            776,
+            777,
+            786,
+            2722,
+            794,
+            799,
+            907,
+            770,
+            3565,
+            782,
+            1833,
+            783,
+            797,
+            3566,
+            795,
+            4885
+          ]
+        },
+        "team_name": {
+          "types": [
+            "str"
+          ],
+          "nulls": 0,
+          "distinct_count": 32,
+          "values": [
+            "Argentina",
+            "France",
+            "Morocco",
+            "Croatia",
+            "Brazil",
+            "England",
+            "Portugal",
+            "Netherlands",
+            "Spain",
+            "Japan",
+            "Switzerland",
+            "Australia",
+            "South Korea",
+            "Poland",
+            "Senegal",
+            "United States",
+            "Denmark",
+            "Tunisia",
+            "Serbia",
+            "Cameroon",
+            "Mexico",
+            "Saudi Arabia",
+            "Wales",
+            "Germany",
+            "Ecuador",
+            "Belgium",
+            "Canada",
+            "Uruguay",
+            "Iran",
+            "Qatar",
+            "Costa Rica",
+            "Ghana"
+          ]
+        },
+        "unknown_passes": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 12,
+          "distinct_count": 11,
+          "values": [
+            3,
+            2,
+            4,
+            1,
+            5,
+            6,
+            0,
+            7,
+            8,
+            9,
+            12
+          ]
+        },
+        "unknown_passes_under_pressure": {
+          "types": [
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 5,
+          "distinct_count": 5,
+          "values": [
+            0,
+            1,
+            2,
+            3,
+            5
+          ]
+        },
+        "xg": {
+          "types": [
+            "float",
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 4.316106397,
+          "distinct_count": 128
+        },
+        "xg_assisted": {
+          "types": [
+            "float",
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 3.820039642,
+          "distinct_count": 128
+        },
+        "xg_involved": {
+          "types": [
+            "float",
+            "int"
+          ],
+          "nulls": 0,
+          "min": 0,
+          "max": 4.316106397,
+          "distinct_count": 128
+        },
+        "xg_per_shot": {
+          "types": [
+            "float"
+          ],
+          "nulls": 1,
+          "min": 0.028743315000000002,
+          "max": 0.23019748550000002,
+          "distinct_count": 127
+        }
+      },
+      "sha256": "e9829bdb4a3e742fe16575a007aebf21de84e04aab798b60589795be54696aee"
+    }
+  },
+  "metrics": {
+    "additive": {
+      "assists": {
+        "definition": "Pass con goal_assist verdadero.",
+        "label": "Asistencias del proveedor",
+        "unit": "count"
+      },
+      "carry_box_entries": {
+        "definition": "Carry desde fuera hacia x en [102,120], y en [18,62].",
+        "label": "Entradas al área por conducción",
+        "unit": "count"
+      },
+      "carry_events": {
+        "definition": "Eventos Carry; distintos de Dribble.",
+        "label": "Conducciones",
+        "unit": "count"
+      },
+      "carry_final_third_entries": {
+        "definition": "Carry con x inicial <80 y destino x>=80.",
+        "label": "Entradas al último tercio por conducción",
+        "unit": "count"
+      },
+      "complete_dribbles": {
+        "definition": "Dribble con outcome Complete.",
+        "label": "Regates completos",
+        "unit": "count"
+      },
+      "completed_passes": {
+        "definition": "Pass sin atributo outcome.",
+        "label": "Pases completos",
+        "unit": "count"
+      },
+      "completed_passes_under_pressure": {
+        "definition": "Pase completo con under_pressure verdadero.",
+        "label": "Pases completos bajo presión",
+        "unit": "count"
+      },
+      "dispossessed": {
+        "definition": "Eventos Dispossessed; sin deduplicación de incidentes.",
+        "label": "Desposesiones sufridas",
+        "unit": "count"
+      },
+      "dribble_attempts": {
+        "definition": "Eventos Dribble.",
+        "label": "Regates intentados",
+        "unit": "count"
+      },
+      "events": {
+        "definition": "Evento no perteneciente a tanda; incluye administración.",
+        "label": "Eventos registrados",
+        "unit": "count"
+      },
+      "failed_passes": {
+        "definition": "Pass con outcome presente y distinto de Unknown.",
+        "label": "Pases no completos conocidos",
+        "unit": "count"
+      },
+      "failed_recoveries": {
+        "definition": "Ball Recovery con recovery_failure verdadero.",
+        "label": "Recuperaciones fallidas",
+        "unit": "count"
+      },
+      "fouls_won": {
+        "definition": "Eventos Foul Won; conserva ventaja y penal como contexto.",
+        "label": "Faltas recibidas registradas",
+        "unit": "count"
+      },
+      "goals": {
+        "definition": "Shot con outcome Goal; no incluye autogoles.",
+        "label": "Goles de tiro",
+        "unit": "count"
+      },
+      "known_dribbles": {
+        "definition": "Dribble con outcome Complete o Incomplete.",
+        "label": "Regates conocidos",
+        "unit": "count"
+      },
+      "known_passes": {
+        "definition": "Pass cuyo outcome no es Unknown.",
+        "label": "Pases de resultado conocido",
+        "unit": "count"
+      },
+      "known_passes_under_pressure": {
+        "definition": "Pase bajo presión con resultado conocido.",
+        "label": "Pases conocidos bajo presión",
+        "unit": "count"
+      },
+      "miscontrols": {
+        "definition": "Eventos Miscontrol; sin fusionar con otras pérdidas.",
+        "label": "Malos controles",
+        "unit": "count"
+      },
+      "non_penalty_goals": {
+        "definition": "Gol de tiro no Penalty.",
+        "label": "Goles sin penal",
+        "unit": "count"
+      },
+      "non_penalty_shots": {
+        "definition": "Shot cuyo tipo no es Penalty.",
+        "label": "Tiros sin penal",
+        "unit": "count"
+      },
+      "npxg": {
+        "definition": "Suma de xG de tiros no Penalty.",
+        "label": "xG sin penal",
+        "unit": "xG"
+      },
+      "own_goals_against": {
+        "definition": "Evento Own Goal Against; no se suma otra vez al marcador.",
+        "label": "Autogoles cometidos",
+        "unit": "count"
+      },
+      "own_goals_for": {
+        "definition": "Evento Own Goal For del equipo beneficiado.",
+        "label": "Autogoles a favor",
+        "unit": "count"
+      },
+      "pass_box_entries": {
+        "definition": "Pase completo desde fuera hacia x en [102,120], y en [18,62].",
+        "label": "Entradas al área por pase",
+        "unit": "count"
+      },
+      "pass_final_third_entries": {
+        "definition": "Pase completo con x inicial <80 y destino x>=80.",
+        "label": "Entradas al último tercio por pase",
+        "unit": "count"
+      },
+      "passes": {
+        "definition": "Eventos Pass, incluidos resultados desconocidos.",
+        "label": "Pases intentados",
+        "unit": "count"
+      },
+      "passes_received": {
+        "definition": "Pass completo con receptor conocido, asignado al receptor por ID.",
+        "label": "Pases completos recibidos",
+        "unit": "count"
+      },
+      "passes_under_pressure": {
+        "definition": "Pass con under_pressure verdadero.",
+        "label": "Pases bajo presión",
+        "unit": "count"
+      },
+      "penalty_goals": {
+        "definition": "Gol de un penal de partido.",
+        "label": "Goles de penal",
+        "unit": "count"
+      },
+      "penalty_shots": {
+        "definition": "Shot tipo Penalty, excluida tanda.",
+        "label": "Penales de partido",
+        "unit": "count"
+      },
+      "penalty_xg": {
+        "definition": "xG de penales de partido.",
+        "label": "xG de penales",
+        "unit": "xG"
+      },
+      "pressures": {
+        "definition": "Eventos Pressure; no equivalen a recuperaciones.",
+        "label": "Presiones",
+        "unit": "count"
+      },
+      "recovery_attempts": {
+        "definition": "Eventos Ball Recovery.",
+        "label": "Intentos de recuperación",
+        "unit": "count"
+      },
+      "shot_involvements": {
+        "definition": "Tiro único como rematador o último pasador; métrica individual no aditiva entre jugadores.",
+        "label": "Participaciones directas en tiros",
+        "unit": "count"
+      },
+      "shots": {
+        "definition": "Evento Shot en períodos 1–4.",
+        "label": "Tiros",
+        "unit": "count"
+      },
+      "shots_created": {
+        "definition": "Tiros únicos vinculados al último pase; incluye asistencias de gol.",
+        "label": "Tiros creados",
+        "unit": "count"
+      },
+      "successful_recoveries": {
+        "definition": "Ball Recovery sin recovery_failure verdadero.",
+        "label": "Recuperaciones exitosas",
+        "unit": "count"
+      },
+      "unknown_passes": {
+        "definition": "Pass con outcome Unknown.",
+        "label": "Pases desconocidos",
+        "unit": "count"
+      },
+      "unknown_passes_under_pressure": {
+        "definition": "Pase bajo presión con outcome Unknown.",
+        "label": "Pases desconocidos bajo presión",
+        "unit": "count"
+      },
+      "xg": {
+        "definition": "Suma de shot.statsbomb_xg de tiros de partido.",
+        "label": "xG StatsBomb",
+        "unit": "xG"
+      },
+      "xg_assisted": {
+        "definition": "xG de tiros vinculados al pase creador; no es xA de todos los pases.",
+        "label": "xG asistido",
+        "unit": "xG"
+      },
+      "xg_involved": {
+        "definition": "xG de tiros únicos como rematador o último pasador; no representa mérito causal.",
+        "label": "xG de tiros con participación directa",
+        "unit": "xG"
+      }
+    },
+    "policy": "Sin tandas, sin estimar minutos; ratios calculados desde numerador/denominador agregados.",
+    "ratios": {
+      "dribble_success_pct": {
+        "denominator": "known_dribbles",
+        "label": "Éxito del regate conocido",
+        "numerator": "complete_dribbles",
+        "scale": 100
+      },
+      "npxg_per_non_penalty_shot": {
+        "denominator": "non_penalty_shots",
+        "label": "Calidad media del tiro sin penal",
+        "numerator": "npxg",
+        "scale": 1
+      },
+      "pass_completion_pct": {
+        "denominator": "known_passes",
+        "label": "Precisión de pase conocida",
+        "numerator": "completed_passes",
+        "scale": 100
+      },
+      "pressure_pass_completion_pct": {
+        "denominator": "known_passes_under_pressure",
+        "label": "Precisión bajo presión conocida",
+        "numerator": "completed_passes_under_pressure",
+        "scale": 100
+      },
+      "xg_per_shot": {
+        "denominator": "shots",
+        "label": "Calidad media del tiro",
+        "numerator": "xg",
+        "scale": 1
+      }
+    },
+    "version": 1
+  },
+  "coordinates": {
+    "x": [
+      0,
+      120
+    ],
+    "y": [
+      0,
+      80
+    ],
+    "orientation": "StatsBomb attacking direction; y grows downward. Event locations, not tracking."
+  },
+  "limitations": [
+    "No continuous tracking, speed, distance covered or physical workload.",
+    "Declared tactical positions are not measured player coordinates.",
+    "Shootouts are separate from match actions and match metrics.",
+    "Do not sum percentages; recompute from their numerators and denominators.",
+    "Missing coordinates and unknown outcomes remain missing.",
+    "No reliable minutes denominator; per-90 metrics are unsupported.",
+    "Shot goals exclude own goals; team goals_for is the match score."
+  ],
+  "relationships": [
+    "match_id joins match datasets; team_id joins team_match.",
+    "player_id / recipient_id / creator_id / shooter_id join player_match by player_id and match_id.",
+    "lineup_segment_id / segment_id join lineup_segments.",
+    "event_id / shot_event_id / pass_event_id join actions by event_id and match_id."
+  ]
+}

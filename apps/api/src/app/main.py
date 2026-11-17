@@ -102,3 +102,7 @@ def create_turn(conversation_id: UUID, request: TurnRequest, store=Depends(get_s
 @app.post("/api/conversations/{conversation_id}/activate", response_model=ConversationResponse)
 def activate_turn(conversation_id: UUID, request: ActivateRequest, store=Depends(get_store)):
     return complete_history(store.activate(str(conversation_id), request.turn_id, request.expected_active_turn_id))
+
+
+from app.agent.routes import router as data_agent_router
+app.include_router(data_agent_router)
