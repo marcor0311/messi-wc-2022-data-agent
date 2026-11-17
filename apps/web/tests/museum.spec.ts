@@ -136,9 +136,9 @@ test("direct URLs, history and keyboard controls preserve the story position", a
   await page.goto("/#qatar");
   await expect(page.locator(".museum")).toHaveAttribute("data-enhanced", "true");
   await expect(page.locator(".museum")).toHaveAttribute("data-current-chapter","qatar");
-  await page.getByRole("listbox", { name: "Recorrido fotográfico de Messi" }).focus();
+  await page.getByRole("group", { name: "Recorrido fotográfico de Messi" }).focus();
   await page.keyboard.press("ArrowLeft");
-  await expect(page.getByRole("listbox", { name: "Recorrido fotográfico de Messi" })).toBeFocused();
+  await expect(page.getByRole("group", { name: "Recorrido fotográfico de Messi" })).toBeFocused();
   await expect(page.locator(".museum")).toHaveAttribute("data-current-chapter","wembley");
   await page.goBack();
   await expect(page.locator(".museum")).toHaveAttribute("data-current-chapter","qatar");

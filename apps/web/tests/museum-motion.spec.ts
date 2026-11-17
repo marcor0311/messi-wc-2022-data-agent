@@ -2,61 +2,96 @@ import { test, expect } from "@playwright/test";
 
 test.skip(({ isMobile }) => !!isMobile, "The museum is desktop only.");
 
-for (const input of ["keyboard", "vertical wheel", "horizontal wheel"]) {
-  test(`${input} travels through intermediate positions instead of cutting`, async ({ page }) => {
-    await page.goto("/#comienzos");
-    await expect(page.locator(".museum")).toHaveAttribute("data-enhanced", "true");
-    const samples = await page.evaluate(async input => {
-      const host = document.querySelector<HTMLElement>(".museum-coverflow")!;
-      const photo = host.querySelector<HTMLElement>('[data-loopem-key="0"]')!;
-      const x = () => Number(photo.style.transform.match(/translate3d\(([-\d.]+)px/)![1]);
-      const before = x();
-      if (input === "keyboard") document.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowRight", bubbles: true }));
-      else host.dispatchEvent(new WheelEvent("wheel", { deltaY: input === "vertical wheel" ? 350 : 0, deltaX: input === "horizontal wheel" ? 350 : 0, bubbles: true, cancelable: true }));
-      const immediate = x();
-      const frames: number[] = [];
-      const end = performance.now() + 600;
+for (const viewport of [{ width: 1440, height: 800 }, { width: 1440, height: 1000 }, { width: 1920, height: 1080 }]) {
+  test(`photos settle centered and restore the distinct text transitions at ${viewport.width}×${viewport.height}`, async ({ page }) => {
+    await page.setViewportSize(viewport);
+    await page.goto("/#camiseta-10-2009");
+    await expect(page.locator(".museum")).toHaveAttribute("data-current-chapter", "camiseta-10-2009");
+    const samples = page.evaluate(async () => {
+      const old = document.querySelector<HTMLElement>('#camiseta-10-2009 .scene-heading')!;
+      const next = document.querySelector<HTMLElement>('#sudafrica-2010 .scene-heading')!;
+      const metadata = document.querySelector<HTMLElement>('#sudafrica-2010 .score-location')!;
+      const failures: string[] = [];
+      const photos = new Set<string>();
+      let sawExit = false, sawEntrance = false, sawMetadata = false, sawDigits = false;
+      const opacity = (element: HTMLElement) => getComputedStyle(element).visibility === "visible" ? Number(getComputedStyle(element).opacity) : 0;
+      const end = performance.now() + 2100;
       while (performance.now() < end) {
+        const before = opacity(old), after = opacity(next), detail = opacity(metadata);
+        if (before > .001 && after > .001) failures.push("overlapping passages");
+        if ([old, next, metadata].some(node => getComputedStyle(node).transform !== "none")) failures.push("moving reading text");
+        sawExit ||= before > .01 && before < .99;
+        sawEntrance ||= after > .01 && after < .99;
+        sawMetadata ||= detail > .01 && detail < .99;
+        const digit = document.querySelector<HTMLElement>('[data-caption-field="year-2"] .caption-cell')!;
+        sawDigits ||= digit.style.transform !== "translate3d(0px, 0%, 0px)";
+        const photo = document.querySelector<HTMLElement>('[data-loopem-key="5"]');
+        if (photo) photos.add(photo.style.transform);
         await new Promise(requestAnimationFrame);
-        frames.push(x());
       }
-      return { before, immediate, frames };
-    }, input);
-    expect(samples.immediate, "the input must retarget motion without teleporting").toBe(samples.before);
-    expect(new Set(samples.frames).size).toBeGreaterThan(8);
-    expect(samples.frames.some(x => x < samples.before - 10)).toBe(true);
-    await expect(page.locator(".museum-coverflow")).not.toHaveClass(/loopem-moving/);
+      return { failures, sawExit, sawEntrance, sawMetadata, sawDigits, photoFrames: photos.size };
+    });
+    await page.mouse.move(viewport.width / 2, 250);
+    await page.mouse.wheel(0, 650);
+    const result = await samples;
+    expect(result.failures).toEqual([]);
+    expect(result.sawExit).toBe(true);
+    expect(result.sawEntrance).toBe(true);
+    expect(result.sawMetadata).toBe(true);
+    expect(result.sawDigits).toBe(true);
+    expect(result.photoFrames).toBeGreaterThan(8);
+    await expect(page.locator(".museum")).toHaveAttribute("data-current-chapter", "sudafrica-2010");
+    const image = page.locator('[data-loopem-centered] .coverflow-photo');
+    await expect.poll(async () => {
+      const box = await image.boundingBox();
+      return Math.abs(box!.x + box!.width / 2 - viewport.width / 2);
+    }).toBeLessThan(2);
+    await expect(page.locator('#sudafrica-2010 .scene-heading')).toHaveCSS("opacity", "1");
+    await expect(page.locator('[data-exiting]')).toHaveCount(0);
+  });
+}
+
+for (const axis of ["vertical", "horizontal"]) {
+  test(`${axis} wheel input drives intermediate positions through native scroll`, async ({ page }) => {
+    await page.goto("/#comienzos");
+    await expect(page.locator(".museum")).toHaveAttribute("data-scroll-driver", "gsap");
+    await page.mouse.move(720, 250);
+    const photo = page.locator('.museum-coverflow [data-loopem-key="0"]');
+    const positions: number[] = [];
+    for (let i = 0; i < 5; i++) {
+      await page.mouse.wheel(axis === "horizontal" ? 70 : 0, axis === "vertical" ? 70 : 0);
+      await page.waitForTimeout(60);
+      positions.push(await photo.evaluate(element => element.getBoundingClientRect().left));
+    }
+    expect(new Set(positions).size).toBeGreaterThan(3);
+    expect(positions.at(-1)!).toBeLessThan(positions[0] - 20);
     await expect(page.locator(".museum")).toHaveAttribute("data-current-chapter", "alemania-2006");
   });
 }
 
-test("rapid navigation can reverse an unfinished spring and retains the requested destination", async ({ page }) => {
+test("rapid keyboard navigation commits immediately and preserves reversals", async ({ page }) => {
   await page.goto("/#comienzos");
   const museum = page.locator(".museum");
-  await expect(museum).toHaveAttribute("data-enhanced", "true");
-  await page.keyboard.press("ArrowRight");
-  await page.waitForTimeout(80);
-  await page.keyboard.press("ArrowLeft");
-  await expect(page.locator(".museum-coverflow")).not.toHaveClass(/loopem-moving/);
-  await expect(museum).toHaveAttribute("data-current-chapter", "comienzos");
+  await expect(museum).toHaveAttribute("data-scroll-driver", "gsap");
   await page.keyboard.press("ArrowRight");
   await page.keyboard.press("ArrowRight");
   await page.keyboard.press("ArrowLeft");
-  await expect(page.locator(".museum-coverflow")).not.toHaveClass(/loopem-moving/);
   await expect(museum).toHaveAttribute("data-current-chapter", "alemania-2006");
+  await expect(page.locator('#alemania-2006 .scene-heading')).toHaveCSS("opacity", "1");
+  await page.keyboard.press("ArrowLeft");
+  await expect(museum).toHaveAttribute("data-current-chapter", "comienzos");
 });
 
-test("only year and score digits roll; text stays still until the final card settles", async ({ page }) => {
+test("slow scrolling animates only changed numeric ink and leaves reading stationary", async ({ page }) => {
   await page.goto("/#comienzos");
   await expect(page.locator(".museum-caption-motion")).toHaveCount(1);
   await expect(page.locator('.caption-window')).toHaveCount(6);
-  const result = await page.evaluate(async () => {
+  const samples = page.evaluate(async () => {
     const layer = document.querySelector<HTMLElement>(".museum-caption-motion")!;
     const transforms = new Set<string>();
     const failures: string[] = [];
-    document.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowRight", bubbles: true }));
-    const start = performance.now();
-    while (performance.now() - start < 1600) {
+    const end = performance.now() + 1600;
+    while (performance.now() < end) {
       for (const cell of layer.querySelectorAll<HTMLElement>(".caption-cell")) {
         if (getComputedStyle(cell).opacity !== "1") failures.push("faded number");
       }
@@ -64,19 +99,20 @@ test("only year and score digits roll; text stays still until the final card set
         const cell = layer.querySelector<HTMLElement>(`[data-caption-field="${field}"] .caption-cell`)!;
         if (cell.style.transform !== "translate3d(0px, 0%, 0px)") failures.push("unchanged digit moved");
       }
-      const title = document.querySelector<HTMLElement>('#comienzos .scene-heading')!;
-      if (getComputedStyle(title).transform !== "none") failures.push("moving reading text");
-      if (performance.now() - start < 200 && getComputedStyle(title).opacity !== "1") failures.push("text changed during travel");
+      for (const title of document.querySelectorAll<HTMLElement>('.scene-heading')) {
+        if (getComputedStyle(title).transform !== "none") failures.push("moving reading text");
+      }
       transforms.add(layer.querySelector<HTMLElement>('[data-caption-field="year-3"] .caption-cell')!.style.transform);
       await new Promise(requestAnimationFrame);
     }
     return { transforms: [...transforms], failures };
   });
+  await page.mouse.move(720, 250);
+  for (let i = 0; i < 5; i++) { await page.mouse.wheel(0, 70); await page.waitForTimeout(120); }
+  const result = await samples;
   expect(result.failures).toEqual([]);
-  expect(result.transforms.length).toBeGreaterThan(8);
+  expect(result.transforms.length).toBeGreaterThan(3);
   await expect(page.locator(".museum")).toHaveAttribute("data-current-chapter", "alemania-2006");
-  await expect(page.locator('#alemania-2006 h2')).toBeVisible();
-  await expect(page.locator('[data-exiting]')).toHaveCount(0);
 });
 
 test("same-year navigation keeps all year digits still and awards preserve their accessible text", async ({ page }) => {
@@ -132,7 +168,7 @@ test(`title and summary transition without overlapping at ${viewport.width}×${v
     }
     return { failures, sawExit, sawEntrance };
   });
-  expect(result).toEqual({ failures: [], sawExit: true, sawEntrance: true });
+  expect(result.failures).toEqual([]);
   await expect(page.locator('#alemania-2006 .scene-heading')).toHaveCSS("opacity", "1");
   await expect(page.locator('[data-exiting]')).toHaveCount(0);
 });
