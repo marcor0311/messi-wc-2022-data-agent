@@ -1,4 +1,65 @@
-# messi-wc-2022-data-agent
+# Messi · Football Data Agent
+
+El laboratorio conversacional del Mundial 2022 de Messi está en `/agent`. Consulta Gold con herramientas validadas, compara jugadores y alineaciones, y renderiza ocho visualizaciones. La portada del museo y `/analisis` conservan sus recorridos previos.
+
+## Preparar
+
+Requiere los Gold locales existentes, Python 3.11+, Node 20.9+ y una cuenta elegible para uso del plan ChatGPT mediante OAuth. No se usan API keys.
+
+```sh
+uv venv .venv
+uv pip install --python .venv/bin/python -e 'apps/api[test]'
+npm --prefix apps/web ci
+.venv/bin/python scripts/discover_gold.py
+.venv/bin/python scripts/generate_demo.py
+```
+
+## Ejecutar el agente
+
+Terminal 1, desde la raíz:
+
+```sh
+.venv/bin/python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --no-access-log
+```
+
+Terminal 2:
+
+```sh
+npm --prefix apps/web run dev -- --hostname 127.0.0.1 --port 3000
+```
+
+Abre http://127.0.0.1:3000/agent y pulsa **Continue with ChatGPT**. Completa autorización y consentimiento en OpenAI. El modelo se descubre de la cuenta autenticada; puede elegirse en la interfaz. Sin autenticar, el explorador determinista permite verificar datos y visualizaciones. Eso no constituye una conversación con un modelo.
+
+Si 8000/3000 están ocupados, esta es la configuración alternativa usada para verificar la entrega:
+
+```sh
+AGENT_CALLBACK=http://127.0.0.1:8001/auth/callback AGENT_WEB_ORIGIN=http://127.0.0.1:3001 .venv/bin/python -m uvicorn app.main:app --host 127.0.0.1 --port 8001 --no-access-log
+# En otra terminal:
+API_URL=http://127.0.0.1:8001 NEXT_DIST_DIR=.next-agent npm --prefix apps/web run dev -- --hostname 127.0.0.1 --port 3001
+```
+
+Abre http://127.0.0.1:3001/agent. Usa `127.0.0.1`, como requiere el callback OAuth. Ejecuta un único proceso API. Las credenciales se guardan con permisos 0600 en `data/agent/credentials.json`; el historial autenticado en `data/agent/chats.sqlite3`. No se incluyen en Git. `AGENT_AUTH_FILE` y `AGENT_GOLD_DB` permiten cambiar sus rutas.
+
+## Documentación y verificación
+
+- [Guía de demo: 27 consultas centradas en Messi](docs/DEMO_CHEAT_SHEET.md).
+- [Catálogo semántico Gold](docs/GOLD_CATALOG.md) y [esquemas completos](docs/GOLD_CATALOG.json).
+- [Jugadores, selecciones y partidos](docs/GOLD_ENTITIES.json).
+- [Arquitectura y límites](docs/ARCHITECTURE.md).
+- [Resultados y estado de autorización](docs/VERIFICATION.md).
+
+```sh
+.venv/bin/python -m pytest apps/api/tests -q
+npm --prefix apps/web run typecheck
+npm --prefix apps/web run build
+PLAYWRIGHT_BASE_URL=http://127.0.0.1:3001 npm --prefix apps/web run test:e2e -- tests/data-agent.spec.ts --project=desktop
+```
+
+La verificación de consultas contra Gold, las pruebas con modelos simulados y una inferencia OAuth real son pruebas diferentes. Consulta el informe para el estado comprobado de cada una.
+
+---
+
+# Prototipo anterior: museo y conversación acotada
 Primera conversación funcional sobre los tiros de la final, conectada a eventos
 reales de Gold. Next.js + TypeScript, FastAPI + Python y LangGraph.
 

@@ -14,12 +14,23 @@ AGENTS.md
 /Impeccable/
 
 # Documentación y scripts mantenidos solo en el entorno local
-/docs/
-/scripts/
+/docs/*
+!/docs/GOLD_CATALOG.json
+!/docs/GOLD_CATALOG.md
+!/docs/GOLD_ENTITIES.json
+!/docs/DEMO_SCENARIOS.json
+!/docs/ARCHITECTURE.md
+!/docs/DEMO_CHEAT_SHEET.md
+!/docs/VERIFICATION.md
+/scripts/*
+!/scripts/discover_gold.py
+!/scripts/generate_demo.py
 
 # Node.js / Next.js / TypeScript
 node_modules/
 .next/
+.next-agent/
+.next-agent-build/
 out/
 *.tsbuildinfo
 playwright-report/
