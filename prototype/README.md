@@ -30,7 +30,7 @@ Galería de pantallas del prototipo y sus visualizaciones.
 
 ![Chat: exploración del Mundial de Messi](06-chat-exploracion-mundial-messi.png)
 
-### 07. Tiros de Messi en el Mundial
+### 07. Todos los tiros de Messi en el Mundial
 
 ![Todos los tiros de Messi en el Mundial](07-tiros-de-messi-en-el-mundial.png)
 
