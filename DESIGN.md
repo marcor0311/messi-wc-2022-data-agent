@@ -143,7 +143,7 @@ components:
 
 Este documento describe el sistema implementado. «El juego en contexto» es una referencia de trabajo tomada de la interfaz, no una marca confirmada. [PRODUCT.md](PRODUCT.md) define alcance y capacidades; el historial de cambios pertenece a Git y a los PR.
 
-La ruta `/` presenta «La memoria albiceleste»: fotografía protagonista, fondo azul noche, titulares condensados y una galería con profundidad. `/analisis` conserva superficies claras, tipografía del sistema y canchas verdes. Cada superficie mantiene su identidad.
+La ruta `/` presenta «La memoria albiceleste»: fotografía protagonista, fondo azul noche, titulares condensados y una galería con profundidad.
 
 **Key Characteristics:**
 
@@ -165,7 +165,7 @@ El frontmatter reúne los valores de referencia; los estilos de cada ruta son la
 | Análisis | `accent`, `accent-hover`, `focus`, `danger` | Acciones, foco y recuperación de errores |
 | Análisis | `pitch`, `pitch-line`, `player-one`, `player-two` | Campo y marcadores de Messi y Mbappé |
 
-**The Route Scope Rule.** Aplicar los tokens `memory-*` solo al showcase; conservar el sistema analítico en `/analisis`.
+**The Route Scope Rule.** Aplicar los tokens `memory-*` solo al showcase.
 
 La selección de texto y las barras de scroll siguen la paleta de su superficie. El análisis usa el acento para el cursor de escritura. Mantener contraste mínimo de 4.5:1 en texto normal y 3:1 en texto grande.
 
@@ -191,7 +191,7 @@ La galería mejorada ocupa una vista (`100svh`, mínimo 740px). Las fotografías
 
 Una retícula compartida distribuye año, relato y resultado en tres columnas (`max-content minmax(0,1.4fr) minmax(0,1fr)`). Todas las leyendas, incluidas las inactivas, contribuyen a las mismas tres filas mediante `subgrid`. Año, título y ubicación se alinean por la parte superior visible; relato y competición comparten la fila inferior. Cambiar de capítulo modifica la visibilidad y el estado accesible, no la geometría ni el tamaño del texto.
 
-La portada y la galería incluyen marca, enlace de entrada, enlace de salto y un recorrido enfocable. Los fragmentos de URL, el historial, las flechas, Home/End y PageUp/PageDown complementan scroll y arrastre. El índice, la línea de tiempo, los botones anterior/siguiente y la invitación final al análisis fueron retirados. `/analisis` sigue disponible por su ruta.
+La portada y la galería incluyen marca, enlace de entrada, enlace de salto y un recorrido enfocable. Los fragmentos de URL, el historial, las flechas, Home/End y PageUp/PageDown complementan scroll y arrastre. El índice, la línea de tiempo, los botones anterior/siguiente y la invitación final al análisis fueron retirados.
 
 ### Lectura accesible
 

@@ -37,7 +37,7 @@ test('All eight registered views render real Messi Gold results',async({page,req
  await page.goto('/agent');
  await expect(page.getByText('833',{exact:true})).toBeVisible();
  await page.getByRole('button',{name:'02 Explorar los datos'}).click();
- for(const [dataset,view] of [['actions','pitch'],['actions','timeline'],['receipts','heatmap'],['connections','network'],['initial_lineups','lineup'],['player_match','bars'],['player_match','trend'],['shot_creations','table']]){
+ for(const [dataset,view] of [['actions','pitch'],['receipts','heatmap'],['connections','network'],['initial_lineups','lineup'],['player_match','bars'],['player_match','trend'],['shot_creations','table']]){
   await page.getByLabel('Dataset',{exact:true}).selectOption(dataset);
   await page.getByLabel('Visualización',{exact:true}).selectOption(view);
   if(await page.getByLabel('Partido',{exact:true}).count()) await page.getByLabel('Partido',{exact:true}).selectOption(view==='trend'?'':String(final.match_id));
@@ -89,7 +89,7 @@ test('Conversation renders dashboards of real Gold visuals, keeps context and re
   await gold({dataset:'initial_lineups',visualization:'lineup',filters:[inFinal],limit:2,title:'Los onces de la final'}),
   await gold({dataset:'connections',visualization:'network',filters:[inFinal,{column:'team_id',value:messi.team_id}],limit:300,title:'Red de pases de Argentina en la final'}),
   await gold({dataset:'receipts',visualization:'heatmap',filters:[me],title:'Dónde recibió Messi'}),
-  await gold({dataset:'actions',visualization:'timeline',filters:[inFinal,both,{column:'type_name',value:'Shot'}],title:'Tiros de Messi y Mbappé en la final'}),
+  await gold({dataset:'actions',visualization:'pitch',filters:[inFinal,both,{column:'type_name',value:'Shot'}],title:'Tiros de Messi y Mbappé en la final'}),
  ];
  expect(first[1].rows).toHaveLength(32);
  expect(second[0].rows).toHaveLength(2);

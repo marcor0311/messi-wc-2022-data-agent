@@ -18,8 +18,9 @@ def analytics():
 
 def test_all_entities_and_columns_discovered(analytics):
     entities=analytics.entities()
-    assert len(entities['matches'])==64 and len(entities['teams'])==32
-    assert len(entities['players'])>800
+    # Product scope: only Argentina's seven matches, their eight teams and their players.
+    assert len(entities['matches'])==7 and len(entities['teams'])==8
+    assert 150<len(entities['players'])<300
     assert len(analytics.datasets)==11
     assert analytics.datasets['actions']['rows']==234531
 
@@ -27,8 +28,8 @@ def test_totals_independently_from_raw_gold(analytics):
     load=analytics.catalog['load_id']
     folder=ROOT/'data/gold/statsbomb/wc2022'/('v1-'+load)
     players=[json.loads(s) for s in (folder/'player_match.jsonl').open()]
-    player=players[13]['player_id']
-    selected=[p for p in players if p['player_id']==player]
+    player=5503
+    selected=[p for p in players if p['player_id']==player and p['match_id'] in analytics.scope_matches]
     result=analytics.query(Query(dataset='player_match',filters=[{'column':'player_id','value':player}],metrics=['shots','npxg','pass_completion_pct']))['rows'][0]
     assert result['shots']==sum(p['metrics']['shots'] for p in selected)
     assert result['npxg']==pytest.approx(sum(p['metrics']['npxg'] for p in selected))
@@ -36,14 +37,14 @@ def test_totals_independently_from_raw_gold(analytics):
     assert result['pass_completion_pct']==pytest.approx(n/d*100)
 
 def test_novel_pressure_recovery_comparison(analytics):
-    teams=analytics.entities()['teams'][7:11]
+    teams=analytics.entities()['teams'][:4]
     r=analytics.query(Query(dataset='team_match',filters=[{'column':'team_id','op':'in','value':[t['team_id'] for t in teams]}],group_by=['team_id'],metrics=['successful_recoveries','pressure_pass_completion_pct'],visualization='bars'))
     assert len(r['rows'])==4 and not r['truncated']
     assert all(0<=row['pressure_pass_completion_pct']<=100 for row in r['rows'])
 
 @pytest.mark.parametrize('dataset,view,extra',[
     ('actions','pitch',{}),('receipts','heatmap',{}),('connections','network',{}),
-    ('initial_lineups','lineup',{}),('actions','timeline',{}),
+    ('initial_lineups','lineup',{}),
     ('player_match','bars',{'metrics':['npxg'],'group_by':['player_id']}),
     ('team_match','trend',{'metrics':['passes'],'group_by':['match_id']}),('shot_creations','table',{}),
 ])
@@ -67,11 +68,24 @@ def test_query_rejects_invalid_or_unsafe_requests(analytics,body):
     with pytest.raises(ValueError): analytics.query(Query(**body))
 
 def test_empty_results_missing_and_truncation(analytics):
-    r=analytics.query(Query(dataset='actions',filters=[{'column':'match_id','value':-1}]))
+    r=analytics.query(Query(dataset='actions',filters=[{'column':'type_name','value':'Not a type'}]))
     assert r['rows']==[] and r['matched_source_rows']==0
     r=analytics.query(Query(dataset='actions',columns=['location_x'],limit=1))
     assert r['truncated'] and len(r['rows'])==1
     assert r['rows'][0]['location_x'] is None
+
+def test_scope_is_argentina_matches_only(analytics):
+    import sqlite3
+    con=sqlite3.connect(analytics.path)
+    semi=con.execute("SELECT match_id FROM team_match WHERE stage_name='Semi-finals' AND team_id!=779 AND opponent_id!=779").fetchone()[0]
+    morocco=con.execute("SELECT team_id FROM team_match WHERE team_name='Morocco'").fetchone()[0]
+    for f in ([{'column':'match_id','value':semi}],[{'column':'team_id','value':morocco}],[{'column':'match_id','op':'in','value':[semi,analytics.scope_matches[0]]}]):
+        with pytest.raises(ValueError,match='Fuera de alcance'): analytics.query(Query(dataset='actions',visualization='pitch',filters=f))
+    # A team that also played Argentina only returns that match.
+    r=analytics.query(Query(dataset='actions',visualization='pitch',filters=[{'column':'team_id','value':771},{'column':'type_name','value':'Shot'}]))
+    assert r['rows'] and {x['match_id'] for x in r['rows']}<=set(analytics.scope_matches)
+    r=analytics.query(Query(dataset='segment_player_metrics',limit=500))
+    assert r['rows']
 
 def test_oauth_pkce_state_and_host_persistence(tmp_path):
     path=tmp_path/'credentials.json';a=Auth(path)
@@ -105,7 +119,7 @@ def test_tool_loop_selects_novel_query_and_preserves_context(analytics):
     with patch('app.agent.runtime.response_stream',fake_stream):
         result=DataAgent(analytics).answer({},'Now use carries',previous,'test-model')
     assert result['visualizations'][0]['query']['metrics']==['carry_box_entries']
-    assert len(result['visualizations'][0]['rows'])==32
+    assert len(result['visualizations'][0]['rows'])==8
     assert calls[0]['input'][0]['content']=='Compare team entries'
     assert any(x.get('type')=='function_call_output' for x in calls[1]['input'])
 
@@ -291,3 +305,19 @@ def test_results_reach_the_model_with_names_and_networks_lead_with_the_strongest
     assert named['names']['matches'][final['match_id']].endswith('Final, 2022-12-18')
     assert 'names' not in result
 
+
+
+def test_lineup_story_every_player_has_a_position(analytics):
+    for match_id in analytics.scope_matches:
+        story = analytics.lineup_story(match_id)
+        assert story['visualization'] == 'lineup_story' and len(story['rows']) == 2
+        for team in story['rows']:
+            assert team['steps'][0]['seconds'] == 0
+            for step in team['steps']:
+                assert len(step['players']) == 11
+                assert all(p['position_id'] is not None for p in step['players'])
+    final = analytics.lineup_story(max(analytics.scope_matches))
+    argentina = next(t for t in final['rows'] if t['team_id'] == 779)
+    acuna = next(s for s in argentina['steps'] if 19597 in s['entered'])
+    assert acuna['seconds'] // 60 == 63 and next(p for p in acuna['players'] if p['player_id'] == 19597)['position_id'] == 21
+    with pytest.raises(ValueError): analytics.lineup_story(1)

@@ -24,6 +24,38 @@ CALLBACK = os.environ.get('AGENT_CALLBACK', 'http://127.0.0.1:8000/auth/callback
 if not CALLBACK.startswith('http://127.0.0.1:') or not CALLBACK.endswith('/auth/callback'):
     raise ValueError('AGENT_CALLBACK must be an HTTP loopback /auth/callback URI')
 COOKIE = 'football_session'
+ROOT_ENV = ROOT / '.env'
+AUTH_STATE_KEY = 'AGENT_AUTH_STATE_B64'
+
+
+def _read_env_state(path):
+    if not path.exists(): return None
+    for line in path.read_text().splitlines():
+        key, sep, value = line.partition('=')
+        if sep and key.strip() == AUTH_STATE_KEY:
+            try: return json.loads(base64.urlsafe_b64decode(value.strip().encode()).decode())
+            except (ValueError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+                raise RuntimeError('AGENT_AUTH_STATE_B64 in root .env is invalid') from exc
+    return None
+
+
+def _write_env_state(path, state):
+    encoded = base64.urlsafe_b64encode(json.dumps(state, separators=(',', ':')).encode()).decode()
+    lines = path.read_text().splitlines() if path.exists() else []
+    replacement = AUTH_STATE_KEY + '=' + encoded
+    found = False
+    output = []
+    for line in lines:
+        if line.partition('=')[0].strip() == AUTH_STATE_KEY:
+            if not found: output.append(replacement)
+            found = True
+        else: output.append(line)
+    if not found: output.append(replacement)
+    temporary = path.with_name(path.name + '.tmp')
+    fd = os.open(temporary, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+    with os.fdopen(fd, 'w') as f: f.write('\n'.join(output) + '\n')
+    os.chmod(temporary, 0o600)
+    os.replace(temporary, path)
 
 
 def fingerprint(value):
@@ -31,14 +63,29 @@ def fingerprint(value):
 
 class Auth:
     def __init__(self, path=None):
-        self.path = Path(path or os.environ.get('AGENT_AUTH_FILE', ROOT / 'data/agent/credentials.json'))
+        self.file_path = Path(path) if path else None
+        self.path = self.file_path or ROOT_ENV
         self.lock = threading.RLock()
         self.path.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
-        self.state = json.loads(self.path.read_text()) if self.path.exists() else {
-            'host_id': 'urn:uuid:' + str(uuid4()), 'accounts': {}, 'sessions': {}, 'pending': {}}
+        if self.file_path:
+            self.state = json.loads(self.path.read_text()) if self.path.exists() else None
+        else:
+            self.state = _read_env_state(self.path)
+            legacy = ROOT / 'data/agent/credentials.json'
+            legacy_to_remove = None
+            if self.state is None and legacy.exists():
+                self.state = json.loads(legacy.read_text())
+                legacy_to_remove = legacy
+        if self.state is None:
+            self.state = {'host_id': 'urn:uuid:' + str(uuid4()), 'accounts': {}, 'sessions': {}, 'pending': {}}
         self.save()
+        if not self.file_path and legacy_to_remove:
+            legacy_to_remove.unlink()
 
     def save(self):
+        if not self.file_path:
+            _write_env_state(self.path, self.state)
+            return
         temporary = self.path.with_name(self.path.name + '.tmp')
         fd = os.open(temporary, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
         with os.fdopen(fd, 'w') as f: json.dump(self.state, f)

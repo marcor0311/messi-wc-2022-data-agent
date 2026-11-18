@@ -8,13 +8,11 @@ web
 
 ## Product Purpose
 
-Explorar la historia de Messi con Argentina y los datos de la final del Mundial 2022. El showcase fotográfico «La memoria albiceleste» ocupa `/`; la conversación con visualizaciones y evidencia vive en `/analisis`. La interfaz y sus contenidos están en español.
+Explorar la historia de Messi con Argentina y los datos de la final del Mundial 2022. El showcase fotográfico «La memoria albiceleste» ocupa `/`; la conversación con visualizaciones y evidencia vive en `/agent`. La interfaz y sus contenidos están en español.
 
 ## Operating Context
 
 La galería recorre 22 capítulos de 2005 a 2026 mediante fotografías, relatos breves y resultados. La portada precede al recorrido horizontal con profundidad. Scroll, arrastre, teclado y enlaces con fragmento permiten explorar la historia y recuperar una posición.
-
-En `/analisis`, la conversación está a la izquierda y el espacio visual a la derecha. Las consultas implementadas son «Muéstrame los tiros de Messi en la final», «Quita los penales» y «Compáralo con Mbappé». Cada turno conserva partido, filtros y resultado; recuperar un turno restaura ese contexto.
 
 ## Capabilities and Constraints
 
@@ -32,7 +30,7 @@ Los capítulos y sus resultados están en `apps/web/src/app/page.tsx`. Las fotos
 
 ## Product Principles
 
-- Conservar el contexto y los resultados anteriores durante nuevas consultas o errores.
+- Conservar el contexto y los resultados anteriores: mientras una nueva consulta carga, el panel muestra un esqueleto y los resultados previos siguen disponibles en la conversación; si la consulta falla, vuelve el resultado anterior.
 - Derivar cifras y visualizaciones de la misma selección de eventos.
 - Mantener cada capítulo legible cuando fallen la imagen o la mejora visual.
 - Pedir aclaración cuando una consulta exceda las capacidades implementadas.

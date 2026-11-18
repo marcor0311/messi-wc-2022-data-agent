@@ -1,6 +1,6 @@
 # Messi · Football Data Agent
 
-El laboratorio conversacional del Mundial 2022 de Messi está en `/agent`. Consulta Gold con herramientas validadas, compara jugadores y alineaciones, y renderiza ocho visualizaciones. La portada del museo y `/analisis` conservan sus recorridos previos.
+El laboratorio conversacional del Mundial 2022 de Messi está en `/agent`. Consulta Gold con herramientas validadas, compara jugadores y alineaciones, y renderiza ocho visualizaciones. La portada del museo conserva su recorrido previo.
 
 ## Preparar
 
@@ -30,6 +30,8 @@ npm --prefix apps/web run dev -- --hostname 127.0.0.1 --port 3000
 
 Abre http://127.0.0.1:3000/agent y pulsa **Continue with ChatGPT**. Completa autorización y consentimiento en OpenAI. El modelo se descubre de la cuenta autenticada; puede elegirse en la interfaz. Sin autenticar, el explorador determinista permite verificar datos y visualizaciones. Eso no constituye una conversación con un modelo.
 
+El estado local de OAuth (incluidos access/refresh tokens y sesiones) se guarda en `AGENT_AUTH_STATE_B64` dentro del `.env` de la raíz. La API lo crea y actualiza con permisos `0600`; no copies su valor a `.env.example` ni lo subas a Git. El estado existente se migró desde `data/agent/credentials.json` y el archivo anterior se elimina tras guardar el nuevo estado.
+
 Si 8000/3000 están ocupados, esta es la configuración alternativa usada para verificar la entrega:
 
 ```sh
@@ -38,7 +40,7 @@ AGENT_CALLBACK=http://127.0.0.1:8001/auth/callback AGENT_WEB_ORIGIN=http://127.0
 API_URL=http://127.0.0.1:8001 NEXT_DIST_DIR=.next-agent npm --prefix apps/web run dev -- --hostname 127.0.0.1 --port 3001
 ```
 
-Abre http://127.0.0.1:3001/agent. Usa `127.0.0.1`, como requiere el callback OAuth. Ejecuta un único proceso API. Las credenciales se guardan con permisos 0600 en `data/agent/credentials.json`; el historial autenticado en `data/agent/chats.sqlite3`. No se incluyen en Git. `AGENT_AUTH_FILE` y `AGENT_GOLD_DB` permiten cambiar sus rutas.
+Abre http://127.0.0.1:3001/agent. Usa `127.0.0.1`, como requiere el callback OAuth. Ejecuta un único proceso API. El historial autenticado se mantiene en almacenamiento local de la aplicación; `AGENT_GOLD_DB` permite cambiar la ruta de su base Gold.
 
 ## Documentación y verificación
 
@@ -110,8 +112,7 @@ una retícula que reserva espacio para los textos más largos: el año, título,
 subtítulo, ubicación y marcador mantienen su posición y tamaño al cambiar de
 capítulo. El recorrido admite scroll, arrastre, flechas del teclado, Home/End y
 PageUp/PageDown; los enlaces directos y el historial conservan la navegación.
-El panel de conversación está en [`/analisis`](http://127.0.0.1:3000/analisis),
-disponible mediante esa ruta. Las fotografías y
+Las fotografías y
 tipografías se sirven localmente; `apps/web/public/memoria/sources.json` y
 `apps/web/public/memoria/seleccion/selection.json` conservan la procedencia existente.
 Solo la foto de portada se precarga; las vecinas se cargan al acercarse. Con

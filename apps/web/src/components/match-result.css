@@ -1,0 +1,92 @@
+/* Match result card (agent view "match_result"). Desktop only. */
+.mr { --mr-ink: var(--ap-ink, #142e35); --mr-muted: var(--ap-muted, #4f6266); --mr-line: var(--ap-line, #dde3e0); --mr-strong: var(--ap-line-strong, #c4cfcc); --mr-soft: var(--ap-canvas, #f4f5f2);
+  color: var(--mr-ink); display: grid; gap: 28px; padding: 8px 0 4px; }
+.mr .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.mr-meta { margin: -12px 0 0; padding-top: 14px; border-top: 1px solid var(--mr-line); text-align: center; font-size: .8125rem; color: var(--mr-muted); }
+
+.mr-board { position: relative; z-index: 11; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 40px; max-width: 720px; width: 100%; margin: 0 auto; }
+.mr-team { display: flex; flex-direction: column; align-items: center; gap: 12px; font-size: 1.0625rem; font-weight: 600; text-align: center; }
+.mr-team:not([data-winner]) { color: var(--mr-muted); }
+.mr-crest { width: 64px; height: 64px; border-radius: 50%; box-shadow: 0 0 0 1px rgba(20, 46, 53, .12); display: block; background: var(--mr-soft); }
+.mr-score { display: grid; justify-items: center; gap: 6px; }
+.mr-score > strong { font-size: 3.25rem; line-height: 1; font-weight: 700; letter-spacing: -.03em; display: flex; gap: 14px; }
+.mr-score > strong span { color: var(--mr-strong); font-weight: 400; }
+
+/* Timeline: home marks above the axis, away marks below. Each lane steps 26px away from the axis. */
+.mr-timeline { position: relative; padding: 0 28px; isolation: isolate; z-index: 10; } /* above the legend and list that follow */
+.mr-legend, .mr-list { position: relative; z-index: 0; }
+.mr-axis { z-index: 1; }
+.mr-track { position: relative; }
+.mr-axis { position: relative; height: 34px; }
+.mr-axis-line { position: absolute; left: 0; right: 0; top: 8px; height: 3px; border-radius: 2px; background: var(--mr-strong); }
+.mr-tick { position: absolute; top: 4px; transform: translateX(-50%); display: grid; justify-items: center; gap: 4px; font-size: .6875rem; color: var(--mr-muted); white-space: nowrap; }
+.mr-tick i { width: 2px; height: 11px; background: var(--mr-muted); border-radius: 1px; }
+.mr-track .mr-mark { position: absolute; transform: translateX(-50%); width: 26px; height: 24px; padding: 0; border: 0; border-radius: 6px; background: transparent; display: grid; place-items: center; cursor: default; }
+.mr-track-home .mr-mark { bottom: calc(4px + var(--lane) * 26px); }
+.mr-track-away .mr-mark { top: calc(4px + var(--lane) * 26px); }
+.mr-mark:hover, .mr-mark[data-active] { background: var(--ap-accent-soft, #e4eeeb); }
+/* The hovered mark and its whole track rise above every other mark, the axis and the other track. */
+.mr-track:has(.mr-pop:hover, .mr-pop:focus-visible) { z-index: 20; }
+.mr-pop { position: relative; }
+.mr-pop:hover, .mr-pop:focus-visible { z-index: 20; }
+.mr-mark:focus-visible { outline: 2px solid var(--ap-focus, #167d97); outline-offset: 1px; }
+.mr-tip { position: absolute; z-index: 21; box-shadow: 0 6px 18px rgba(20, 46, 53, .25); left: 50%; transform: translateX(-50%); white-space: nowrap; pointer-events: none; opacity: 0; transition: opacity .12s;
+  background: var(--mr-ink); color: #fff; font-size: .75rem; padding: 7px 11px 8px; border-radius: 6px; display: grid; gap: 2px; text-align: left; }
+.mr-tip-head { display: flex; gap: 8px; color: rgba(255, 255, 255, .72); }
+.mr-tip-player { display: flex; gap: 8px; font-weight: 600; }
+.mr-tip-head strong { color: #fff; font-size: inherit; font-weight: 700; }
+.mr-tip-line { padding-left: 14px; justify-self: start; font-weight: 600; display: flex; gap: 6px; }
+.mr-tip-line i { font-style: normal; font-weight: 400; min-width: 34px; }
+.mr-tip-line .mr-in { color: #7fd9a3; }
+.mr-tip-line .mr-out { color: #f2a09a; }
+/* Substitutions: Entra/Sale rows flush left with the minute, labels in one column. */
+.mr-tip-line[data-tagged] { padding-left: 0; }
+.mr-tip[data-placement=above] { bottom: calc(100% + 6px); }
+.mr-tip[data-placement=below] { top: calc(100% + 6px); }
+.mr-pop:hover .mr-tip, .mr-pop:focus-visible .mr-tip { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .mr-tip { transition: none; } }
+
+/* Icons: every mark sits in the same 18×18 box, centred, so marks line up in columns. */
+.mr-glyph { width: 18px; height: 18px; display: grid; place-items: center; flex: none; position: relative; }
+.mr-list li > .mr-glyph { justify-self: center; }
+.mr-icon { width: 18px; height: 18px; display: block; }
+.mr-ball .mr-icon { width: 16px; height: 16px; }
+.mr-ball { position: relative; display: inline-grid; color: var(--mr-ink); }
+.mr-ball-own { color: #c0392b; }
+.mr-ball b { position: absolute; right: -2px; bottom: -2px; font-size: 7px; line-height: 1; font-weight: 800; background: var(--mr-ink); color: #fff; border-radius: 3px; padding: 1px 2px; }
+.mr-card { display: inline-block; width: 11px; height: 15px; border-radius: 2px; box-shadow: 0 0 0 1px rgba(0, 0, 0, .12); }
+.mr-card-yellow { background: #f5c518; }
+.mr-card-red { background: #d62f2f; }
+.mr-card-pair { position: relative; display: inline-block; width: 14px; height: 17px; }
+.mr-card-pair .mr-card { position: absolute; }
+.mr-card-pair .mr-card-yellow { left: 0; top: 0; }
+.mr-card-pair .mr-card-red { left: 3px; top: 2px; }
+
+.mr-legend { list-style: none; margin: -8px 0 0; padding: 0; display: flex; justify-content: center; flex-wrap: wrap; gap: 8px 22px; font-size: .75rem; color: var(--mr-muted); }
+.mr-legend li { display: inline-flex; align-items: center; gap: 7px; }
+
+/* Ordered list: home on the left half, away on the right half, like a broadcast feed. */
+.mr-list { list-style: none; margin: 0; padding: 16px 0 0; border-top: 1px solid var(--mr-line); display: grid; gap: 2px; }
+.mr-list li { display: grid; grid-template-columns: 52px 22px minmax(0, 1fr); align-items: center; gap: 8px; width: 50%; padding: 5px 10px; border-radius: 6px; font-size: .8125rem; }
+.mr-list li[data-side=away] { margin-left: 50%; }
+.mr-list li[data-active] { background: var(--ap-accent-soft, #e4eeeb); }
+.mr-list-min { font-weight: 700; color: var(--mr-muted); text-align: right; }
+.mr-list b { font-weight: 600; }
+.mr-list em { font-style: normal; color: var(--mr-muted); }
+/* Main name first; the assist or the player going off sits underneath in the muted tone. */
+.mr-list-who { display: grid; line-height: 1.35; }
+
+/* Penalty shootout lives under the score: totals on the outside, one dot per kick. */
+.mr-shootout { display: grid; justify-items: center; gap: 6px; }
+.mr-shootout-label { font-size: .6875rem; letter-spacing: .08em; text-transform: uppercase; font-weight: 600; color: var(--mr-muted); }
+.mr-shootout-row { display: flex; align-items: center; gap: 10px; }
+.mr-shootout-row > strong { font-size: 1.125rem; font-weight: 700; min-width: 12px; text-align: center; }
+.mr-shootout-row > i { width: 1px; height: 14px; background: var(--mr-strong); }
+.mr-shootout-row ol { list-style: none; margin: 0; padding: 0; display: flex; gap: 5px; }
+.mr-shootout-row ol { gap: 0; }
+.mr-kick { width: 17px; height: 20px; padding: 0; border: 0; border-radius: 5px; background: transparent; display: grid; place-items: center; cursor: default; }
+.mr-kick:hover { background: var(--ap-accent-soft, #e4eeeb); }
+.mr-kick:focus-visible { outline: 2px solid var(--ap-focus, #167d97); outline-offset: 1px; }
+.mr-kick-dot { width: 11px; height: 11px; border-radius: 50%; }
+.mr-kick-dot[data-scored=true] { background: #1f8a4c; }
+.mr-kick-dot[data-scored=false] { background: #fff; box-shadow: inset 0 0 0 2px #d62f2f; }
