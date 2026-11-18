@@ -30,9 +30,9 @@ Galería de pantallas del prototipo y sus visualizaciones.
 
 ![Chat: exploración del Mundial de Messi](06-chat-exploracion-mundial-messi.png)
 
-### 07. Grafo de conexiones del Mundial
+### 07. Tiros de Messi en el Mundial
 
-![Grafo de conexiones del Mundial](07-grafo-conexiones-mundial.png)
+![Todos los tiros de Messi en el Mundial](07-tiros-de-messi-en-el-mundial.png)
 
 ### 08. Estadísticas del partido Argentina–Francia
 
