@@ -1,12 +1,12 @@
 <div align="center">
 
-# Messi · Memoria / Lab
+# Leo Messi en el Mundial 2022
 
-### El Mundial de Messi, contado con imágenes y datos
+### El Mundial de Messi, explicado con datos y graficos
 
-Una experiencia de escritorio que une una galería narrativa con un agente conversacional para explorar los siete partidos de Argentina en Qatar 2022. Pregunta en lenguaje natural; el agente consulta datos de StatsBomb y los convierte en visualizaciones con contexto y límites claros.
+Una experiencia con un agente conversacional para explorar los 7 partidos de Argentina en Qatar 2022. Pregunta en lenguaje natural; el agente consulta datos de StatsBomb y los convierte en visualizaciones con contexto y límites claros.
 
-[Explorar el prototipo](#el-prototipo) · [Iniciar localmente](#iniciar-localmente) · [Documentación](#documentación)
+[Explorar el prototipo] — [Iniciar localmente] — [Documentación]
 
 </div>
 
@@ -16,7 +16,7 @@ Una experiencia de escritorio que une una galería narrativa con un agente conve
 
 ## Una historia que también se puede explorar
 
-La galería recorre momentos de la historia mundialista de Messi. El laboratorio conecta esa narrativa con preguntas sobre tiros, pases, alineaciones, resultados y evolución por partido.
+La galería recorre momentos de la historia mundialista de Messi. El laboratorio conecta esa narrativa con preguntas sobre tiros, pases, alineaciones, resultados y más.
 
 <p align="center">
   <img src="prototype/06-chat-exploracion-mundial-messi.png" alt="Conversación para explorar el Mundial de Messi" width="49%" />
@@ -24,7 +24,7 @@ La galería recorre momentos de la historia mundialista de Messi. El laboratorio
 </p>
 <p align="center">
   <img src="prototype/07-tiros-de-messi-en-el-mundial.png" alt="Todos los tiros de Messi en el Mundial" width="49%" />
-  <img src="prototype/16-comparacion-messi-mbappe-final-2022.png" alt="Comparación de Messi y Mbappé en la final" width="49%" />
+  <img src="prototype/14-evolucion-estadisticas-messi-por-mundial.png" alt="Evolución de las estadísticas de Messi por Mundial" width="49%" />
 </p>
 
 ## Qué puedes explorar
@@ -48,27 +48,27 @@ La galería completa reúne 16 pantallas narrativas y analíticas. Abre la [gale
 
 | Pantalla | Vista |
 | --- | --- |
-| 01 · El peso de la gloria | ![Portada: El peso de la gloria](prototype/01-portada-el-peso-de-la-gloria.png) |
-| 02 · Una camiseta, toda una vida | ![Mundial 2005](prototype/02-mundial-2005-una-camiseta-toda-una-vida.png) |
-| 03 · Es increíble, pero no se me da | ![Mundial 2016](prototype/03-mundial-2016-es-increible-pero-no-se-me-da.png) |
-| 04 · El mundo cabe en sus manos | ![Mundial 2022](prototype/04-mundial-2022-el-mundo-cabe-en-sus-manos.png) |
-| 05 · El último baile en casa | ![Mundial 2025](prototype/05-mundial-2025-el-ultimo-baile-en-casa.png) |
+| 01 — El peso de la gloria | ![Portada: El peso de la gloria](prototype/01-portada-el-peso-de-la-gloria.png) |
+| 02 — Una camiseta, toda una vida | ![Mundial 2005](prototype/02-mundial-2005-una-camiseta-toda-una-vida.png) |
+| 03 — Es increíble, pero no se me da | ![Mundial 2016](prototype/03-mundial-2016-es-increible-pero-no-se-me-da.png) |
+| 04 — El mundo cabe en sus manos | ![Mundial 2022](prototype/04-mundial-2022-el-mundo-cabe-en-sus-manos.png) |
+| 05 — El último baile en casa | ![Mundial 2025](prototype/05-mundial-2025-el-ultimo-baile-en-casa.png) |
 
 ### Conversación y visualizaciones
 
 | Pantalla | Vista |
 | --- | --- |
-| 06 · Explorar el Mundial de Messi | ![Chat de exploración](prototype/06-chat-exploracion-mundial-messi.png) |
-| 07 · Tiros de Messi en el Mundial | ![Todos los tiros de Messi en el Mundial](prototype/07-tiros-de-messi-en-el-mundial.png) |
-| 08 · Estadísticas Argentina–Francia | ![Estadísticas del partido](prototype/08-estadisticas-partido-argentina-francia.png) |
-| 09 · Argentina en 4-3-3 | ![Formación 4-3-3](prototype/09-formacion-argentina-4-3-3.png) |
-| 10 · Argentina en 3-5-2 | ![Formación 3-5-2](prototype/10-formacion-argentina-3-5-2.png) |
-| 11 · Pases que terminaron en remate | ![Pases que terminaron en remate](prototype/11-pases-que-terminaron-en-remate.png) |
-| 12 · Rematadores de pases de Messi | ![Rematadores de pases de Messi](prototype/12-rematadores-de-pases-de-messi.png) |
-| 13 · Cronología de la final | ![Cronología Argentina–Francia](prototype/13-cronologia-final-argentina-francia.png) |
-| 14 · Evolución de Messi por Mundial | ![Evolución de estadísticas](prototype/14-evolucion-estadisticas-messi-por-mundial.png) |
-| 15 · Indicadores de Messi en Mundiales | ![Resumen de indicadores](prototype/15-resumen-kpis-messi-en-mundiales.png) |
-| 16 · Messi y Mbappé en la final | ![Comparación Messi y Mbappé](prototype/16-comparacion-messi-mbappe-final-2022.png) |
+| 06 — Explorar el Mundial de Messi | ![Chat de exploración](prototype/06-chat-exploracion-mundial-messi.png) |
+| 07 — Todos los tiros de Messi en el Mundial | ![Todos los tiros de Messi en el Mundial](prototype/07-tiros-de-messi-en-el-mundial.png) |
+| 08 — Estadísticas Argentina–Francia | ![Estadísticas del partido](prototype/08-estadisticas-partido-argentina-francia.png) |
+| 09 — Argentina en 4-3-3 | ![Formación 4-3-3](prototype/09-formacion-argentina-4-3-3.png) |
+| 10 — Argentina en 3-5-2 | ![Formación 3-5-2](prototype/10-formacion-argentina-3-5-2.png) |
+| 11 — Pases que terminaron en remate | ![Pases que terminaron en remate](prototype/11-pases-que-terminaron-en-remate.png) |
+| 12 — Rematadores de pases de Messi | ![Rematadores de pases de Messi](prototype/12-rematadores-de-pases-de-messi.png) |
+| 13 — Cronología de la final | ![Cronología Argentina–Francia](prototype/13-cronologia-final-argentina-francia.png) |
+| 14 — Evolución de Messi por Mundial | ![Evolución de estadísticas](prototype/14-evolucion-estadisticas-messi-por-mundial.png) |
+| 15 — Indicadores de Messi en Mundiales | ![Resumen de indicadores](prototype/15-resumen-kpis-messi-en-mundiales.png) |
+| 16 — Messi y Mbappé en la final | ![Comparación Messi y Mbappé](prototype/16-comparacion-messi-mbappe-final-2022.png) |
 
 </details>
 
@@ -113,7 +113,7 @@ El estado OAuth local se guarda en `AGENT_AUTH_STATE_B64` dentro del `.env` de l
 ## Documentación
 
 - [Guía de demo](docs/DEMO_CHEAT_SHEET.md)
-- [Catálogo de datos Gold](docs/GOLD_CATALOG.md) · [esquema JSON](docs/GOLD_CATALOG.json)
+- [Catálogo de datos Gold](docs/GOLD_CATALOG.md) — [esquema JSON](docs/GOLD_CATALOG.json)
 - [Jugadores, selecciones y partidos](docs/GOLD_ENTITIES.json)
 - [Arquitectura, seguridad y límites](docs/ARCHITECTURE.md)
 - [Verificación](docs/VERIFICATION.md)
