@@ -1,6 +1,6 @@
 # Messi Football Data Agent
 
-The product centers on Lionel Messi at Qatar 2022. Other entities provide comparisons and match context. `/agent` is the new workspace; the museum and bounded legacy `/analisis` remain independent.
+The product centers on Lionel Messi at Qatar 2022. Other entities provide comparisons and match context. `/agent` is the new workspace; the museum remains independent.
 
 ## Data discovery and preparation
 
@@ -16,7 +16,7 @@ The Responses loop uses the authenticated account catalog and its selected model
 
 ## Authentication and local security
 
-Official SIWC dynamic public-client registration, stable UUID host, fresh state/nonce/PKCE, loopback callback, issued client ID reuse, signed JWKS ID-token validation (issuer, audience, expiry, nonce), direct-plan scope check, owner-only atomic token files, serialized refresh rotation, HttpOnly SameSite session cookie, and revocation-aware logout are implemented. Tokens are never returned to frontend JavaScript. Saved registrations are separate by client ID and verified subject. API access logging is disabled in the documented commands to keep authorization codes out of logs. No API key and no unofficial ChatGPT backend endpoint exists.
+Official SIWC dynamic public-client registration, stable UUID host, fresh state/nonce/PKCE, loopback callback, issued client ID reuse, signed JWKS ID-token validation (issuer, audience, expiry, nonce), direct-plan scope check, and serialized refresh rotation are implemented. OAuth state is saved atomically in the root `.env` under `AGENT_AUTH_STATE_B64`, with mode `0600`; existing local state migrates from `data/agent/credentials.json` on first startup. Tokens are never returned to frontend JavaScript. Saved registrations are separate by client ID and verified subject. API access logging is disabled in the documented commands to keep authorization codes out of logs. No API key and no unofficial ChatGPT backend endpoint exists.
 
 Local-only service: bind to `127.0.0.1`. One API worker owns refreshes and credential writes. `AGENT_CALLBACK` and `AGENT_WEB_ORIGIN` must match the selected loopback ports. Local HTTP cookies are intentionally not Secure; remote deployment requires a separate security design. Browser mutation origins are checked. Deterministic Gold exploration is public to the local process; authenticated chat/history are owner scoped. Legacy prototype endpoints retain their prior behavior.
 

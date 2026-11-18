@@ -2,7 +2,7 @@
 
 Load: `4f7a541c93d7271e6980966a0e5ba8614714567c1fea0b5391e7e6fede5e2ac9`
 
-- **actions**: 234,531 rows; 70 columns.
+- **actions**: 234,531 rows; 73 columns.
 - **connections**: 15,206 rows; 10 columns.
 - **initial_lineups**: 128 rows; 6 columns.
 - **lineup_changes**: 981 rows; 11 columns.

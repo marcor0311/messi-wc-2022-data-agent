@@ -56,3 +56,4 @@ dist/
 # Datos regenerables
 /data/*
 !/data/.gitkeep
+/DATA_CHECKLIST.md

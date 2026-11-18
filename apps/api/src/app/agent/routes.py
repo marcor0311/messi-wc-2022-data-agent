@@ -59,7 +59,7 @@ def status(request: Request):
 
 @router.get('/api/auth/accounts')
 def accounts():
-    return [{'account_id':k,'label':v['email']+' · '+v['client_id'][-8:]} for k,v in auth().state['accounts'].items()]
+    return [{'account_id':k,'label':v['email']+' ('+v['client_id'][-8:]+')'} for k,v in auth().state['accounts'].items()]
 
 @router.post('/api/auth/logout',dependencies=[Depends(safe_origin)])
 def logout(request: Request):
@@ -88,7 +88,7 @@ class Chat(BaseModel):
     question: str=Field(min_length=1,max_length=4000)
     conversation_id: str|None=Field(default=None,max_length=50)
     model: str|None=None
-    audience: Literal['simple','fan','analyst']='fan'
+    audience: Literal['simple','fan','analyst']='analyst'  # kept for old clients; every answer is written for analysts
 
 def db():
     con=sqlite3.connect(ROOT/'data/agent/chats.sqlite3')
@@ -110,7 +110,7 @@ def chat(body: Chat,user=Depends(identity),a=Depends(analytics)):
         previous=[]; cid=body.conversation_id or str(uuid4())
         if body.conversation_id: previous=history(cid,user)['turns']
         if len(previous)>=100: raise HTTPException(422,'Inicia una conversación nueva para continuar.')
-        result=DataAgent(a).answer(user[1],body.question,previous,selected,body.audience)
+        result=DataAgent(a).answer(user[1],body.question,previous,selected,'analyst')
         with db() as con:
             con.execute('INSERT OR REPLACE INTO turns VALUES (?,?,?,?)',(cid,user[0],time.time(),json.dumps([*previous,result])))
         return {'conversation_id':cid,'turn':result}

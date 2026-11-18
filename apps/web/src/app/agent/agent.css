@@ -27,7 +27,6 @@
 .agent-tip strong{font-size:14px;color:#fff}
 .agent-tip span{color:#cbdde0}
 .agent-pitch [role=button],.agent-pitch [role=img]{cursor:pointer;outline-offset:1px}
-.agent-detail{background:#eef3f1;border-left:3px solid #173c45;padding:12px 16px;font-size:13px;margin:8px 0}
 .agent-tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin:8px 0 18px}
 .agent-tile{border:1px solid var(--agent-line);border-radius:6px;padding:16px 18px;background:#f8faf9}
 .agent-tile dt{font-size:12px;color:var(--agent-muted)}
@@ -46,8 +45,7 @@
 .agent-trend [role=img]{outline-offset:-2px}
 .agent-strip{width:100%;display:block;margin:6px 0}
 .agent-strip text{fill:#506568}
-.agent-timeline{max-height:420px;overflow:auto;list-style:none;padding:0;margin:14px 0 0;border-top:1px solid var(--agent-line)}
-.agent-timeline li{display:grid;grid-template-columns:52px minmax(0,1fr) max-content;gap:12px;padding:10px 4px;border-bottom:1px solid var(--agent-line);font-size:13px}
-.agent-timeline em{font-style:normal;color:var(--agent-muted);font-size:12px}
 .football-agent th.agent-num,.football-agent td.agent-num{text-align:right;font-variant-numeric:tabular-nums}
 @media(max-width:1150px){.agent-suggestions{grid-template-columns:1fr 1fr}}
+.agent-tip.agent-tip-below{transform:translate(-50%,26px)}
+.agent-formation{margin:8px 0 0;font-size:2rem;line-height:1.1;font-weight:700;color:var(--ap-ink,#142e35);letter-spacing:.02em}

@@ -16,16 +16,33 @@ def flatten(row):
     return {**{k: v for k, v in row.items() if k != 'metrics'}, **row.get('metrics', {})}
 
 
+SHOT_DETAIL = ('end_z', 'body_part_name', 'technique_name')
+
+
+def shot_details(manifest):
+    """Shot height and technique from the exact Silver load this Gold was built from."""
+    base = manifest['source_load_ids']['base']
+    for folder in (ROOT / 'data/silver/statsbomb/wc2022').glob('v1-*'):
+        silver = json.loads((folder / 'manifest.json').read_text())
+        if silver['load_id'] != base:
+            continue
+        if digest(folder / 'shots.jsonl') != silver['files']['shots.jsonl']:
+            raise ValueError('Invalid checksum: silver shots.jsonl')
+        return {(r['match_id'], r['event_id']): {k: r.get(k) for k in SHOT_DETAIL} for r in map(json.loads, (folder / 'shots.jsonl').open())}
+    raise ValueError(f'Silver load {base} not found; shot height is unavailable.')
+
+
 def build(folder, destination):
     manifest = json.loads((folder / 'manifest.json').read_text())
     for name, checksum in manifest['files'].items():
         if Path(name).name != name or digest(folder / name) != checksum:
             raise ValueError(f'Invalid checksum: {name}')
+    shots = shot_details(manifest)
     destination.parent.mkdir(parents=True, exist_ok=True)
     temporary = destination.with_suffix('.building')
     temporary.unlink(missing_ok=True)
     con = sqlite3.connect(temporary)
-    catalog = {'cache_version': 2, 'load_id': manifest['load_id'], 'manifest': manifest, 'datasets': {},
+    catalog = {'cache_version': 3, 'load_id': manifest['load_id'], 'manifest': manifest, 'datasets': {},
                'metrics': json.loads((folder / 'metric_catalog.json').read_text()),
                'coordinates': {'x': [0, 120], 'y': [0, 80], 'orientation': 'StatsBomb attacking direction; y grows downward. Event locations, not tracking.'},
                'limitations': ['No continuous tracking, speed, distance covered or physical workload.',
@@ -37,6 +54,9 @@ def build(folder, destination):
                               'Shot goals exclude own goals; team goals_for is the match score.']}
     for path in sorted(folder.glob('*.jsonl')):
         rows = [flatten(json.loads(line)) for line in path.open()]
+        if path.stem == 'actions':
+            empty = dict.fromkeys(SHOT_DETAIL)
+            rows = [{**r, **(shots.get((r['match_id'], r['event_id']), empty) if r.get('type_name') == 'Shot' else empty)} for r in rows]
         keys = sorted(set().union(*(r.keys() for r in rows)))
         profiles = {}
         for key in keys:
@@ -83,7 +103,7 @@ def build(folder, destination):
     con.commit()
     con.close()
     temporary.replace(destination)
-    destination.with_suffix('.manifest.json').write_text(json.dumps({'sha256':digest(destination),'load_id':manifest['load_id'],'cache_version':2})+'\n')
+    destination.with_suffix('.manifest.json').write_text(json.dumps({'sha256':digest(destination),'load_id':manifest['load_id'],'cache_version':3})+'\n')
     out = ROOT / 'docs/GOLD_CATALOG.json'
     out.write_text(json.dumps(catalog, ensure_ascii=False, indent=2) + '\n')
     (ROOT / 'docs/GOLD_CATALOG.md').write_text('# Discovered Gold catalog\n\nLoad: `' + manifest['load_id'] + '`\n\n' +
