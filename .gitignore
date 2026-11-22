@@ -25,6 +25,7 @@ AGENTS.md
 /scripts/*
 !/scripts/discover_gold.py
 !/scripts/generate_demo.py
+!/scripts/argentina_match_summaries.py
 
 # Node.js / Next.js / TypeScript
 node_modules/

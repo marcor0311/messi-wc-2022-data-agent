@@ -77,7 +77,7 @@ La galería completa reúne 16 pantallas narrativas y analíticas. Abre la [gale
 ### Requisitos
 
 - Python 3.11 o posterior y Node.js 20.9 o posterior.
-- Artefactos Gold locales de StatsBomb World Cup 2022.
+- Artefactos locales validados Gold, Silver de eventos y Silver de alineaciones de StatsBomb World Cup 2022. Deben pertenecer a las cargas vinculadas por el manifiesto Gold; los datos no se distribuyen en Git.
 - Cuenta elegible para autorizar el uso del plan ChatGPT mediante OAuth. No se necesita API key.
 
 ### Preparar
@@ -89,8 +89,13 @@ uv venv .venv
 uv pip install --python .venv/bin/python -e 'apps/api[test]'
 npm --prefix apps/web ci
 .venv/bin/python scripts/discover_gold.py
+.venv/bin/python scripts/argentina_match_summaries.py
 .venv/bin/python scripts/generate_demo.py
 ```
+
+La preparación crea `data/agent/gold.sqlite3`, su manifiesto y `data/agent/argentina_matches.json`. El último archivo contiene marcadores, cronología, dorsales y posiciones; lo necesitan las herramientas de resultados y cambios de alineación. No borra historiales ni credenciales.
+
+Si conservas varias cargas, fija los snapshots compatibles: `discover_gold.py --gold <carpeta-gold>` y `argentina_match_summaries.py --silver <carpeta-silver-eventos> --roster <carpeta-silver-alineaciones>`. El generador de resúmenes admite `--output <archivo>`; su salida debe quedar junto a la base indicada por `AGENT_GOLD_DB`.
 
 ### Ejecutar
 
@@ -106,7 +111,7 @@ Inicia la interfaz en otra:
 npm --prefix apps/web run dev -- --hostname 127.0.0.1 --port 3000
 ```
 
-Abre [http://127.0.0.1:3000/agent](http://127.0.0.1:3000/agent) y selecciona **Continue with ChatGPT** para autorizar la cuenta. El agente descubre los modelos disponibles. Sin autorización puedes explorar los datos y las visualizaciones en modo determinista.
+Abre [http://127.0.0.1:3000/agent](http://127.0.0.1:3000/agent) y selecciona **Continue with ChatGPT** para autorizar la cuenta. El agente descubre los modelos disponibles. Sin autorización puedes consultar el catálogo de vistas en «Explorar datos». Las consultas deterministas siguen disponibles mediante `/api/agent/query`; la conversación requiere sesión.
 
 El estado OAuth local se guarda en `AGENT_AUTH_STATE_B64` dentro del `.env` de la raíz, con permisos `0600`. No copies ese valor a `.env.example` ni lo subas a Git.
 
@@ -121,3 +126,15 @@ El estado OAuth local se guarda en `AGENT_AUTH_STATE_B64` dentro del `.env` de l
 ## Datos y atribución
 
 Los datos de fútbol provienen de [StatsBomb Open Data](https://github.com/statsbomb/open-data). La interfaz se diseñó para escritorio y laptop.
+
+## Verificar el agente
+
+Con FastAPI y Next.js activos, ejecuta las suites del chat actual:
+
+```sh
+.venv/bin/python -m pytest apps/api/tests -q
+npm --prefix apps/web run typecheck
+PLAYWRIGHT_BASE_URL=http://127.0.0.1:3000 npm --prefix apps/web run test:e2e -- tests/data-agent.spec.ts tests/agent-propuesta.spec.ts tests/agent-shots.spec.ts --project=desktop --workers=1
+```
+
+Las pruebas de navegador usan resultados Gold reales; simulan la sesión, el catálogo de modelos y el texto para no consumir la cuenta. Las herramientas especiales se calculan con `.venv/bin/python` (o `AGENT_TEST_PYTHON`). Las pruebas de integración con datos se omiten si faltan los artefactos locales. La verificación con modelos reales se documenta por separado en `docs/VERIFICATION.md`.
