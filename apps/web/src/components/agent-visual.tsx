@@ -310,7 +310,7 @@ function ShotMap({result,catalog,assists}:Props&{assists?:Map<string,Assist>}){
   return <div className="agent-shots" onKeyDown={e=>{if(e.key==='Escape')setSelected(null);}}>
     <div className="agent-shot-chips" role="group" aria-label="Elegir tiro">
       <button type="button" className="agent-shot-chip" aria-pressed={!current} onClick={()=>setSelected(null)}>Todos</button>
-      {shown.map(({r,id})=><button type="button" key={id} className="agent-shot-chip" aria-pressed={current?.id===id} aria-label={name(r)} onClick={()=>choose(id)}>
+      {shown.map(({r,id})=><button type="button" key={id} className="agent-shot-chip" aria-pressed={current?.id===id} aria-label={`${shotLabel(r)}. ${name(r)}`} onClick={()=>choose(id)}>
         {shotKind(r)==='goal'?<svg viewBox="-2 -2 4 4" width="15" height="15" aria-hidden="true"><ShotMark kind="goal" x={0} y={0} r={1.8} color="#fff"/></svg>:ids.length>1?<i style={{background:colors.get(key(r))}}/>:null}{shotLabel(r)}</button>)}
     </div>
     <div className="agent-shot-body">
@@ -384,14 +384,15 @@ function EventMap({result,catalog}:Props){
   const drawn=[...rows].sort((a,b)=>radius(b)-radius(a)).sort((a,b)=>Number(a===current)-Number(b===current));
   const tip=(r:DataRow)=>{const d=describeEvent(r,catalog);return <><strong>{d.who}</strong><span>{d.what}</span>{d.xg?<span>{d.xg}</span>:null}<span>{d.when}</span><span>{d.match}</span></>;};
   const name=(r:DataRow)=>{const d=describeEvent(r,catalog);return [d.who,d.what,d.xg,d.when,d.match].filter(Boolean).join('. ');};
+  const eventLabel=(r:DataRow)=>`${format(r.minute)}′${oneMatch?'':' '+matchLabel(r.match_id,catalog.entities,perspectiveTeam(result,catalog.entities),true)}`;
   return <>{byType?<div className="agent-shot-chips" role="group" aria-label="Elegir acciones">
       <button type="button" className="agent-shot-chip" aria-pressed={only===null} onClick={()=>{setOnly(null);setPicked(null);}}>Todas <b>{located.length}</b></button>
       {types.map(t=><button type="button" key={t} className="agent-shot-chip" aria-pressed={only===t} onClick={()=>{setOnly(o=>o===t?null:t);setPicked(null);}}><i style={{background:typeColors.get(t)}}/>{typeName(t)} <b>{located.filter(r=>typeOf(r)===t).length}</b></button>)}
     </div>:null}
     {events.length>1?<div className="agent-shot-chips" role="group" aria-label="Elegir acción" onKeyDown={e=>{if(e.key==='Escape')setPicked(null);}}>
       <button type="button" className="agent-shot-chip" aria-pressed={!current} onClick={()=>setPicked(null)}>Todos</button>
-      {events.map((r,i)=><button type="button" key={String(r.event_id??i)} className="agent-shot-chip" aria-pressed={current===r} aria-label={name(r)} onClick={()=>pick(r)}>
-        <i style={{background:colorOf(r)}}/>{format(r.minute)}′{oneMatch?'':' '+matchLabel(r.match_id,catalog.entities,perspectiveTeam(result,catalog.entities),true)}</button>)}
+      {events.map((r,i)=><button type="button" key={String(r.event_id??i)} className="agent-shot-chip" aria-pressed={current===r} aria-label={`${eventLabel(r)}. ${name(r)}`} onClick={()=>pick(r)}>
+        <i style={{background:colorOf(r)}}/>{eventLabel(r)}</button>)}
     </div>:null}
     <div className="agent-legend"><span>Dirección de ataque →</span>
       {!byType&&ids.length>1&&ids.length<=24?<div className="agent-chips" role="group" aria-label="Mostrar u ocultar">{ids.map(id=><button type="button" key={id} className="agent-chip" aria-pressed={!hidden.includes(id)} onClick={()=>setHidden(h=>h.includes(id)?h.filter(x=>x!==id):[...h,id])}><i style={{background:colors.get(id)}}/>{seriesName(id)} <b>{located.filter(r=>key(r)===id).length}</b></button>)}</div>

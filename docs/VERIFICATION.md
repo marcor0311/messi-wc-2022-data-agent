@@ -2,7 +2,23 @@
 
 Product scope: Messi at the 2022 World Cup, with opponent/player/team and starting-XI comparisons as context. Desktop only.
 
-## Verified
+## Current verification — 2026-11-22
+
+The current agent remains the general Responses/tool-loop implementation, with no fixed question router. Preparation now includes the published `scripts/argentina_match_summaries.py`; results and tactical lineup changes no longer depend on an unpublished local script. Gold, Silver, serving data, credentials and chat history remain local artifacts.
+
+Validation of this change:
+
+- **70 API tests passed**, including two preparation regressions: rebuild the match companion from the exact Silver snapshots pinned by Gold and consume it through `match_result`/`lineup_story`; generate and replay all 27 demo queries with the current Pydantic contract.
+- **27 demo scenarios generated successfully**. Chronological shots now use an ordered pitch query rather than the retired `timeline` view. Regenerated entities reflect the current seven-match scope: 8 teams and 206 players. This is a documentation inventory; no source data was removed.
+- **22 browser tests passed** against the production build in desktop Chromium and WebKit. Coverage includes ten real Gold result families at 1440×800, 1440×1000 and 1920×1080, selection and tactical steps, model selection, follow-ups, history reload, keyboard entry, Markdown fallback, errors and draft retention, expired sessions, empty/truncated results, zoom/reflow and reduced motion.
+- Axe checks passed on the tested initial, shot-map and event-map states. They found and now guard a label-in-name regression: shot/action button accessible names include their visible minute/match label while retaining detailed descriptions. This is scoped automated coverage, not a claim of complete accessibility certification.
+- TypeScript and `NEXT_DIST_DIR=.next-agent-build npm --prefix apps/web run build -- --webpack` passed. Test screenshots use Playwright output paths instead of overwriting reference screenshots.
+
+Before these preparation/test fixes, unmodified remote `main` (`019d6a0`) was also exercised in the browser with a real saved account and actual inference: **11 questions passed**, using `gpt-6.2-sol` and `gpt-6.1-sol`. They covered 32 tournament shots, a context-preserving non-penalty follow-up with 27 shots, the final result and timeline, lineup changes, 19 created-shot chains, six-metric evolution, Messi–Mbappé comparison, a novel Argentina–Croatia recovery/under-pressure passing comparison, pass network, reception heatmap and both starting XIs. Every turn was restored after a page reload. Account-token refresh and model-catalog discovery succeeded; a new interactive OAuth registration and remote logout revocation were not repeated. The general runtime is unchanged by this PR; its only renderer change is the accessible button naming above.
+
+The browser regression suites simulate account status, model names and answer text to avoid consuming a real account. Public query payloads come from FastAPI; special-tool payloads execute the actual backend over the same prepared Gold. They do not certify new live model answers. API integration tests require the local artifacts and skip those checks when they are absent. The historical results below describe their original execution, not the current suite.
+
+## Historical verification — 2026-11-16
 
 - Gold discovery: 11 datasets, 234,531 match actions, 64 matches, 32 teams, 833 roster players. Both local Gold snapshots were inspected; all file checksums match between snapshots, while their definitions hashes differ. The selected `4f7a541c…` snapshot and its definitions hash are pinned in catalog/provenance.
 - Serving cache: source checksums verified before materialization; SQLite cache SHA-256/version verified before loading. Reusable pitch-density aggregates precomputed; equivalence with raw reception coordinates tested.

@@ -1,6 +1,7 @@
 """Generate Messi-centered demo questions by executing their actual Gold queries.
 Query verification is deterministic; live model routing is reported separately.
 """
+import argparse
 import json
 import sys
 from pathlib import Path
@@ -8,7 +9,7 @@ ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'apps/api/src'))
 from app.agent.analytics import Analytics,Query,VIEWS
 
-def generate():
+def generate(output_dir=ROOT/'docs'):
     a=Analytics();e=a.entities();messi=next(p for p in e['players'] if 'Messi' in p['player_name'])
     ranked=a.query(Query(dataset='player_match',group_by=['player_id'],metrics=['shots'],order_by='shots',limit=20))['rows']
     compare_id=next(r['player_id'] for r in ranked if r['player_id']!=messi['player_id'])
@@ -38,7 +39,7 @@ def generate():
     rival=next(t for t in e['teams'] if t['team_name'] in [opponent['team_name'],opponent['opponent_name']] and t['team_id']!=tid)
     add(f'Compara ese once con el de {rival["team_name"]} en la misma final.','initial_lineups','lineup',match+[{'column':'team_id','value':rival['team_id']}])
     add(f'Muestra los dos onces de la final de Argentina, para comparar el contexto táctico de {name}.','initial_lineups','lineup',match)
-    add(f'Ordena cronológicamente los tiros de {name} en la final.','actions','timeline',player+match+[{'column':'type_name','value':'Shot'}])
+    add(f'Ordena cronológicamente los tiros de {name} en la final.','actions','pitch',player+match+[{'column':'type_name','value':'Shot'}],order_by='event_index',descending=False)
     add(f'Muestra los pases de {name} en la primera parte de la final.','actions','pitch',player+match+[{'column':'type_name','value':'Pass'},{'column':'period','value':1}])
     add(f'¿Cómo cambió la creación de tiros de {name} por partido?','player_match','trend',player,group_by=['match_id'],metrics=['shots_created','xg_assisted'],order_by='match_id',descending=False)
     add(f'¿Qué pases de {name} estuvieron vinculados a tiros durante el torneo?','shot_creations',filters=[{'column':'creator_id','value':pid}],columns=['match_id','pass_event_id','shot_event_id','shooter_id','statsbomb_xg'])
@@ -53,12 +54,13 @@ def generate():
     add(f'Compara recuperaciones, presiones y regates de {name} por partido.','player_match','bars',player,group_by=['match_id'],metrics=['successful_recoveries','pressures','complete_dribbles'])
     add(f'¿Cómo evolucionaron los tiros de Argentina a lo largo del Mundial de {name}?','team_match','trend',team,group_by=['match_id'],metrics=['shots','xg'],order_by='match_id',descending=False)
     add(f'¿Cómo fue la precisión de pase de {name} en cada período de la final?','actions','bars',player+match,group_by=['period'],metrics=['pass_completion_pct','passes'],order_by='period',descending=False)
-    (ROOT/'docs/GOLD_ENTITIES.json').write_text(json.dumps(e,ensure_ascii=False,indent=2)+'\n')
+    output_dir.mkdir(parents=True, exist_ok=True)
+    (output_dir/'GOLD_ENTITIES.json').write_text(json.dumps(e,ensure_ascii=False,indent=2)+'\n')
     # This JSON is a regenerable test manifest, not production question routing.
-    (ROOT/'docs/DEMO_SCENARIOS.json').write_text(json.dumps(cases,ensure_ascii=False,indent=2)+'\n')
+    (output_dir/'DEMO_SCENARIOS.json').write_text(json.dumps(cases,ensure_ascii=False,indent=2)+'\n')
     lines=['# Demo: el Mundial de Messi','',f'Gold `{a.catalog["load_id"]}`. {len(e["matches"])} partidos, {len(e["teams"])} selecciones y {len(e["players"])} jugadores.',
            '',f'Protagonista: **{name}** (player_id {pid}); comparador descubierto por volumen de tiros: **{other}** ({compare_id}).',
-           '', '**Estado de verificación:** todas las consultas de esta guía se ejecutaron contra Gold. Esto verifica herramientas y datos; por sí solo no certifica que un modelo autenticado seleccione esas consultas. El flujo completo con cuenta real (OAuth oficial, modelo, herramientas, Gold y visualización) se verificó aparte con cuatro preguntas; el detalle está en [VERIFICATION.md](VERIFICATION.md).',
+           '', '**Estado de verificación:** todas las consultas de esta guía se ejecutaron contra Gold. Esto verifica herramientas y datos; por sí solo no certifica que un modelo autenticado seleccione esas consultas. La inferencia y la conversación con cuenta real se verifican por separado; sus fechas, modelos y límites están en [VERIFICATION.md](VERIFICATION.md).',
            '', '## Visualizaciones implementadas','', '| Vista | Qué muestra | Gold |','|---|---|---|']
     for k,v in VIEWS.items():lines.append(f'| {k} | {v["description"]} | {v["datasets"]} |')
     lines+=['','## Preguntas y consultas verificadas','']
@@ -75,8 +77,11 @@ def generate():
             '- Una red usa medias de ubicaciones de pases, no posiciones de seguimiento.',
             '- El modelo explica estadísticas verificadas, pero sus textos requieren revisión; no hay garantía de ausencia de errores del LLM.',
             '- El servicio está diseñado para uso local en loopback y un proceso de API. No es una instalación pública multiusuario.',
-            '- Sin autenticar, solo funciona el explorador determinista. No hay fallback de API keys ni de intenciones simuladas en /agent.']
-    (ROOT/'docs/DEMO_CHEAT_SHEET.md').write_text('\n'.join(lines)+'\n')
+            '- Sin autenticar, la pestaña Explorar datos muestra el catálogo; las consultas públicas están en /api/agent/query. No hay fallback de API keys ni de intenciones simuladas en /agent.']
+    (output_dir/'DEMO_CHEAT_SHEET.md').write_text('\n'.join(lines)+'\n')
     print(f'Executed {len(cases)} Messi-centered scenarios; generated cheat sheet and full entity inventory.')
 
-if __name__=='__main__': generate()
+if __name__=='__main__':
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--output-dir',type=Path,default=ROOT/'docs')
+    generate(parser.parse_args().output_dir)

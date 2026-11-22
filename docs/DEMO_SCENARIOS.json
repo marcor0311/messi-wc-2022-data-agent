@@ -35,7 +35,7 @@
     }
   },
   {
-    "question": "Compara los tiros y npxG de Lionel Andrés Messi Cuccittini y Kylian Mbappé Lottin en el torneo.",
+    "question": "Compara los tiros y npxG de Lionel Andrés Messi Cuccittini y Lautaro Javier Martínez en el torneo.",
     "query": {
       "dataset": "player_match",
       "filters": [
@@ -44,7 +44,7 @@
           "op": "in",
           "value": [
             5503,
-            3009
+            11456
           ]
         }
       ],
@@ -69,7 +69,7 @@
       "gold_load_id": "4f7a541c93d7271e6980966a0e5ba8614714567c1fea0b5391e7e6fede5e2ac9",
       "dataset": "player_match",
       "source_sha256": "827368f3e653536182d09a8dc50ebc739a740dfb8dfa43ed7380132d96c4923f",
-      "query_sha256": "40ef5ad37a011f672305e5f8edcb07a8b9033653fa12d6213336cfaeaf78b9a5"
+      "query_sha256": "20ca55348890193f78dd5a8212adaddc5fe6d089b84d03d8062b0f4005f8f49b"
     }
   },
   {
@@ -193,7 +193,7 @@
     }
   },
   {
-    "question": "Compara los tiros sin penal de Lionel Andrés Messi Cuccittini y Kylian Mbappé Lottin en la final.",
+    "question": "Compara los tiros sin penal de Lionel Andrés Messi Cuccittini y Lautaro Javier Martínez en la final.",
     "query": {
       "dataset": "actions",
       "filters": [
@@ -207,7 +207,7 @@
           "op": "in",
           "value": [
             5503,
-            3009
+            11456
           ]
         },
         {
@@ -243,7 +243,7 @@
       "gold_load_id": "4f7a541c93d7271e6980966a0e5ba8614714567c1fea0b5391e7e6fede5e2ac9",
       "dataset": "actions",
       "source_sha256": "c92c26b3808a0f6d4e8fe266c2fead2f0617a36e99761276f79b67d07e9c9652",
-      "query_sha256": "5c72a607d5c1e2ffe66b3738b69a017df6556e952d8c077dd3e994069b1912f9"
+      "query_sha256": "839b32eb743143993d3a5a05d6732d7f6add138131727d88dafab7477bf30a84"
     }
   },
   {
@@ -470,10 +470,10 @@
       "columns": [],
       "group_by": [],
       "metrics": [],
-      "visualization": "timeline",
+      "visualization": "pitch",
       "title": null,
-      "order_by": null,
-      "descending": true,
+      "order_by": "event_index",
+      "descending": false,
       "limit": 100
     },
     "verified_rows": 5,
@@ -483,7 +483,7 @@
       "gold_load_id": "4f7a541c93d7271e6980966a0e5ba8614714567c1fea0b5391e7e6fede5e2ac9",
       "dataset": "actions",
       "source_sha256": "c92c26b3808a0f6d4e8fe266c2fead2f0617a36e99761276f79b67d07e9c9652",
-      "query_sha256": "4a62ed3c44041b6b0bf1d5ed46ed59097e6ef7de73dfff54c3cee98303dee6b5"
+      "query_sha256": "cbf4942884b1d4ed8b1a36f0a3edb652f6c156f880091bf29b32abb4ad49dc32"
     }
   },
   {
@@ -603,7 +603,7 @@
     }
   },
   {
-    "question": "Compara la precisión bajo presión de Lionel Andrés Messi Cuccittini y Kylian Mbappé Lottin.",
+    "question": "Compara la precisión bajo presión de Lionel Andrés Messi Cuccittini y Lautaro Javier Martínez.",
     "query": {
       "dataset": "player_match",
       "filters": [
@@ -612,7 +612,7 @@
           "op": "in",
           "value": [
             5503,
-            3009
+            11456
           ]
         }
       ],
@@ -637,7 +637,7 @@
       "gold_load_id": "4f7a541c93d7271e6980966a0e5ba8614714567c1fea0b5391e7e6fede5e2ac9",
       "dataset": "player_match",
       "source_sha256": "827368f3e653536182d09a8dc50ebc739a740dfb8dfa43ed7380132d96c4923f",
-      "query_sha256": "b10b8d8b3330b505e8f746fcc305896de3949fa08712a03fd05fd47a2d16ce82"
+      "query_sha256": "4162a67fd15968667e1984edf51c7fa20d1a6e522f9a2c2912f74e2c3c339c1a"
     }
   },
   {

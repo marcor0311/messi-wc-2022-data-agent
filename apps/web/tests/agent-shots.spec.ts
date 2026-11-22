@@ -3,7 +3,6 @@ import { test, expect, type Page, type APIRequestContext } from '@playwright/tes
 /*
  * Shot map on /agent. Simulated: session and answer text. Real: every shot payload is a live Gold query.
  */
-const SHOTS = '../../docs/agent-propuesta/capturas/';
 const SIZES = [{ width: 1440, height: 800 }, { width: 1440, height: 1000 }, { width: 1920, height: 1080 }];
 type Row = Record<string, unknown>;
 
@@ -33,7 +32,7 @@ async function ask(page: Page, result: object) {
   await expect(page.locator('.agent-shotmap')).toBeVisible();
 }
 
-test('Mapa de tiros: mitad de cancha vertical, arco arriba y marcas por resultado', async ({ page, request }) => {
+test('Mapa de tiros: mitad de cancha vertical, arco arriba y marcas por resultado', async ({ page, request }, testInfo) => {
   const { tournament } = await shotPayloads(request);
   const rows: Row[] = tournament.rows;
   // Contract: the cache carries shot height and body part from the same Silver load as Gold.
@@ -76,12 +75,12 @@ test('Mapa de tiros: mitad de cancha vertical, arco arriba y marcas por resultad
     await page.setViewportSize(size);
     await page.locator('.agent-shot-chip').filter({ has: page.locator('svg') }).first().click();
     await page.mouse.move(0, 0); await page.waitForTimeout(400);
-    await page.screenshot({ path: `${SHOTS}tiros-messi-${size.width}x${size.height}.png` });
+    await page.screenshot({ path: testInfo.outputPath(`tiros-messi-${size.width}x${size.height}.png`) });
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), 'sin overflow horizontal').toBeTruthy();
   }
 });
 
-test('Mapa de tiros de la final: dos selecciones y ningún penal de la tanda', async ({ page, request }) => {
+test('Mapa de tiros de la final: dos selecciones y ningún penal de la tanda', async ({ page, request }, testInfo) => {
   const { final } = await shotPayloads(request);
   const rows: Row[] = final.rows;
   expect(rows.every(r => r.period !== 5)).toBeTruthy();
@@ -89,5 +88,5 @@ test('Mapa de tiros de la final: dos selecciones y ningún penal de la tanda', a
   await ask(page, final);
   await expect(page.getByLabel('Cancha: pitch').getByRole('button')).toHaveCount(rows.length);
   await expect(page.locator('.agent-shot-chip')).toHaveCount(rows.length + 1);
-  await page.screenshot({ path: `${SHOTS}tiros-final-1920x1080.png` });
+  await page.screenshot({ path: testInfo.outputPath('tiros-final-1920x1080.png') });
 });
