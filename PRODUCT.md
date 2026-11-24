@@ -18,9 +18,9 @@ La galería recorre 22 capítulos de 2005 a 2026 mediante fotografías, relatos 
 
 El alcance confirmado es solo escritorio y laptop. Validar a 1440×800, 1440×1000 y 1920×1080. Mantener lectura accesible, zoom, espaciado personalizado y movimiento reducido; los respaldos de redistribución no amplían el alcance a móvil. Presentar las propuestas visuales separadas de la página principal hasta que el usuario apruebe integrarlas.
 
-Next.js y TypeScript sirven la interfaz; FastAPI, Python y LangGraph resuelven el análisis. La conversación actual usa los datos locales validados y requiere la API. La conexión con un modelo de IA queda pendiente.
+Next.js y TypeScript sirven la interfaz; FastAPI y Python ejecutan el agente general mediante Responses y herramientas Gold validadas. La conversación de `/agent` requiere sesión OAuth y permite elegir el modelo por pregunta. LangGraph permanece en los endpoints del prototipo anterior y no dirige el chat actual.
 
-Las cifras, la cancha, el arco y el detalle de eventos deben partir de una selección común. Excluir las tandas de penales de las métricas de partido. Mostrar origen y destino de los tiros; representar en el arco solo las alturas conocidas, sin estimarlas. Creación, recepciones, conexiones y alineaciones quedan para entregas posteriores.
+Las cifras, la cancha, el arco y el detalle de eventos deben partir de una selección común. Excluir las tandas de penales de las métricas de partido. Mostrar origen y destino de los tiros; representar en el arco solo las alturas conocidas, sin estimarlas. Creación de tiros, recepciones, conexiones, alineaciones y sus cambios ya forman parte del agente actual; el alcance analítico cubre los siete partidos de Argentina en Qatar 2022.
 
 ## Evidence on Hand
 
@@ -43,4 +43,4 @@ El análisis mantiene una presentación sobria centrada en la cancha, con compar
 
 ## Open Decisions
 
-La audiencia contempla analistas y aficionados, pero su prioridad sigue abierta. La dirección del showcase está aprobada; la identidad general fuera de estas dos superficies y la integración con un modelo de IA siguen pendientes.
+La conversación actual escribe para analistas y usa el modelo elegido de la cuenta. La dirección del showcase está aprobada; la identidad general fuera de estas dos superficies sigue abierta.
