@@ -1,8 +1,12 @@
-"""Responses tool loop with terminal-stream verification and Gold-only evidence."""
+"""LangGraph tool loop over the Responses API with terminal-stream verification and Gold-only evidence."""
 import json
+import operator
 import unicodedata
+from typing import Annotated, TypedDict
 import httpx
 from fastapi import HTTPException
+from langchain_core.runnables import RunnableConfig
+from langgraph.graph import END, START, StateGraph
 from app.agent.analytics import Analytics, Query, VIEWS
 
 
@@ -44,23 +48,25 @@ def response_stream(account, payload):
 
 RULES = '''You are a football data agent focused on Lionel Messi at the 2022 World Cup. Messi is the protagonist; other players and teams provide context or comparisons. People ask in natural language; you turn each question into validated Gold queries, pick the visualization that answers it best and explain what it shows.
 
-SCOPE. Only Argentina's seven matches at the 2022 World Cup exist here; every tool is limited to them. If the user asks about a match Argentina did not play (for example France vs Morocco), or a team or player only in such matches, do not query: say briefly that it is outside the scope and offer something about Argentina or Messi instead. A tool error starting with 'Fuera de alcance' means the same.\n\nDATA RULES. Every factual football claim and number MUST come from query_gold results in this conversation, never from memory. Resolve entity IDs with find_entities, never assume them. Discover metric definitions with describe_data. If the user omits a player on a fresh question, use Messi unless the question clearly asks for another scope. Preserve filters and entities across follow-ups unless the user changes them; ask when ambiguous. Do not hardcode questions or entities. Coordinates: StatsBomb x 0..120, y 0..80 downward, attack toward x=120. Shootouts are separate; match metrics exclude them. Never sum percentages. For filtered actions only sparse additive metrics exist; use count to count events. player_match and team_match contain precomputed metrics. No per-90 or tracking analysis. A tool validation error is recoverable: repair the arguments. If there are no records, say so. Mention truncation, nulls and limitations when they affect the answer. Each query_gold result includes a names lookup for the IDs in its rows: read names from it, and rank or compare by the actual values in the rows before you state who leads.
+SCOPE. Only Argentina's seven matches at the 2022 World Cup exist here; every tool is limited to them. If the user asks about a match Argentina did not play (for example France vs Morocco), or a team or player only in such matches, do not query: say briefly that it is outside the scope and offer something about Argentina or Messi instead. A tool error starting with 'Fuera de alcance' means the same.\n\nDATA RULES. Every factual football claim and number MUST come from query_gold results in this conversation, never from memory. Entity IDs, metric definitions and data limitations are listed below under ENTITIES and REFERENCE: take IDs from there, never from memory. Call find_entities only for a name that is not in ENTITIES or matches several entries; call describe_data only when something you need is missing from REFERENCE. If the user omits a player on a fresh question, use Messi unless the question clearly asks for another scope. Preserve filters and entities across follow-ups unless the user changes them; ask when ambiguous. Do not hardcode questions or entities. Coordinates: StatsBomb x 0..120, y 0..80 downward, attack toward x=120. Shootouts are separate; match metrics exclude them. Never sum percentages. For filtered actions only sparse additive metrics exist; use count to count events. player_match and team_match contain precomputed metrics. No per-90 or tracking analysis. A tool validation error is recoverable: repair the arguments. If there are no records, say so. Mention truncation, nulls and limitations when they affect the answer. Each query_gold result includes a names lookup for the IDs in its rows: read names from it, and rank or compare by the actual values in the rows before you state who leads.
 
 CHOOSING THE VISUALIZATION. The visualization is the main answer. Every question that asks for data gets at least one fresh tool call in this turn, even when earlier results in the conversation already contain the number: previous results are not shown again, so answering from memory leaves the user without a chart. Pick it by what the user wants to see:
 - where on the pitch something happened (shots, passes, carries, dribbles, receptions, pressures): pitch. Shots are drawn sized by xG with goals filled. Never answer a question about events with only a table.
 - in which zones a player was most active: heatmap.
 - a total or a few headline numbers for one player or team: table with metrics (shown as stat cards).
-- comparing players, teams, matches or periods: bars, with group_by on what is compared. Several metrics are fine; each gets its own panel.
+- comparing players, teams, matches or periods: bars, with group_by on what is compared. Several metrics are fine; each gets its own panel. Compare like with like: when the players or teams have data for different matches (for example Mbappé only appears in the final against Argentina), filter every side to the matches they share and say so, never one side's whole tournament against the other's single match.
 - how something changed match by match: trend, group_by match_id, ascending. Several metrics are fine. MESSI DASHBOARD: whenever the user asks how Messi did match by match or across the tournament in general (his stats, his evolution, his performance or the danger he created, without naming specific metrics), use exactly these six metrics in this order: goals, assists, shots, xg, shots_created, complete_dribbles. Never fewer, never others, never xg_assisted (dribble attempts and success rate come back automatically). If the user names specific metrics, use those instead. Four tournament totals (non-penalty xG, xG assisted, completed passes, dribble success) are shown under those charts automatically, so do not add a separate headline-numbers query for that answer.
-- who combined with whom: network. For one player's partners, filter connections by that player (player_id is the passer, recipient_id the receiver) instead of loading the whole team.
+- who combined with whom: network. For one player's partners, filter connections by that player as passer (player_id) instead of loading the whole team. The network of passes he received (recipient_id) is added automatically next to it, so never request the recipient_id network yourself.
 - starting XI: lineup. One query can return both teams of a match; each is drawn on its own pitch.
-- how a line-up or formation changed during a match (substitutions, tactical shifts, who moved to which position, where Messi played in each phase): call lineup_story, never query_gold with a table. Resolve the match_id with find_entities kind=matches search=Argentina plus the rival.
+- how a line-up or formation changed during a match (substitutions, tactical shifts, who moved to which position, where Messi played in each phase): call lineup_story, never query_gold with a table. Take the match_id from the ENTITIES match list.
 - the order of events within a match (what happened and when): match_result, whose timeline shows goals, cards and substitutions.
-- the result or score of a match (who won, how it ended, goals, cards and substitutions of a match): call match_result, never query_gold. Only Argentina's seven 2022 World Cup matches are available; for any other match, say that only Argentina's matches can be shown. Resolve the match_id with find_entities kind=matches search=Argentina plus the rival.
+- the result or score of a match (who won, how it ended, goals, cards and substitutions of a match): call match_result, never query_gold. Only Argentina's seven 2022 World Cup matches are available; for any other match, say that only Argentina's matches can be shown. Take the match_id from the ENTITIES match list.
 - a table without metrics only when the user asks for a list, or nothing else fits.
 For pitch, network and lineup use no metrics and no group_by. For heatmap use no metrics, no group_by, no columns. columns is only valid with table.
 Every visualization of an answer is shown stacked in one dashboard, charts first and headline stat cards below them. When it helps, build a small dashboard with two or three complementary query_gold calls, for example headline numbers plus the map, or a comparison plus the match-by-match trend. Never more than four visualizations.
 Give every query_gold call a short human title in the user's language, such as "Tiros de Messi en la final". No IDs or column names in titles.
+
+PARALLEL TOOLS. Tool calls requested in the same step run together. Once you know the IDs, request every query of the answer in a single step (for example the stat cards, the map and the network together) instead of one query per step.
 
 WRITING THE ANSWER. Reply in the user's language. Lead with the headline finding, then one or two insights read from the returned rows. Two to five short sentences. Plain text only: no Markdown, no headings, no tables, no lists of rows. Never repeat the rows in the text: the visualization and its data table already show them. Name players and teams, never IDs. Use natural names for metrics, for example "goles esperados (xG)" instead of column names.'''
 
@@ -71,8 +77,53 @@ AUDIENCES = {
 }
 
 
+# Model calls per turn: the base covers entity lookups, one chart and the answer; each chart the
+# model actually produces earns more room, so multi-chart dashboards fit and stalled loops still stop.
+BASE_STEPS=10
+STEPS_PER_CHART=2
+MAX_STEPS=20
+
+
+def network_key(result):
+    # Two network queries over the same filters draw the same picture, whatever the filter order.
+    return json.dumps(sorted((f['column'],f.get('op','eq'),json.dumps(f.get('value'))) for f in result['query'].get('filters') or []))
+
+
+def without_repeated_cards(visuals):
+    """Drop a stat card whose every number is already a total drawn by another chart of the same answer."""
+    def totals(v):
+        found={len(v.get('rows') or []),v.get('matched_source_rows')}
+        for m in (v.get('query') or {}).get('metrics') or []:
+            found.add(sum(r.get(m) or 0 for r in v['rows'] if isinstance(r,dict)))
+        return {round(t,6) for t in found if isinstance(t,(int,float))}
+    def repeated(card,others):
+        metrics=(card.get('query') or {}).get('metrics') or []
+        if card.get('visualization')!='table' or not metrics or len(card.get('rows') or [])!=1 or not others: return False
+        drawn=set().union(*(totals(v) for v in others))
+        return all(isinstance(card['rows'][0].get(m),(int,float)) and round(card['rows'][0][m],6) in drawn for m in metrics)
+    return [v for i,v in enumerate(visuals) if not repeated(v,[o for j,o in enumerate(visuals) if j!=i and o.get('visualization')!='table'])]
+CHART_TOOLS=('query_gold','lineup_story','match_result')
+
+
+class Turn(TypedDict):
+    """LangGraph state of one chat turn. Lists with operator.add accumulate across steps.
+    Credentials are not state: the account travels in the run config so a checkpointer would never persist it."""
+    model: str
+    instructions: str
+    inputs: Annotated[list, operator.add]
+    visuals: Annotated[list, operator.add]
+    trace: Annotated[list, operator.add]
+    calls: list
+    answer: str | None
+    steps: Annotated[int, operator.add]
+    charts: Annotated[int, operator.add]
+
+
 class DataAgent:
-    def __init__(self, analytics: Analytics): self.analytics=analytics
+    def __init__(self, analytics: Analytics):
+        self.analytics=analytics
+        self._instructions={}
+        self.graph=self.build_graph()
 
     def tools(self):
         return [
@@ -123,8 +174,47 @@ class DataAgent:
                 'query':{**events['query'],'visualization':'creation_chains','title':title},
                 'limitations':['Cada jugada une el pase clave con el tiro que generó; el tramo intermedio (recepción y conducción del rematador) se dibuja recto, no es su recorrido real.']}
 
+    def coverage(self):
+        # Matches in which each team and player has data: the dataset holds only Argentina's matches.
+        if not hasattr(self,'_coverage'):
+            e=self.analytics.entities(); teams={}
+            for m in e['matches']:
+                for t in (m['team_id'],m['opponent_id']): teams.setdefault(t,set()).add(m['match_id'])
+            self._coverage={'team_id':teams,'player_id':{p['player_id']:teams.get(p['team_id'],set()) for p in e['players']}}
+        return self._coverage
+
+    def check_comparison(self, query: Query):
+        """Comparing players or teams whose data covers different matches would set a whole tournament against one match."""
+        for column in ('player_id','team_id'):
+            ids={v for f in query.filters if f.column==column and f.op=='in' and isinstance(f.value,list) for v in f.value}
+            if column not in query.group_by or len(ids)<2: continue
+            matches=set(self.analytics.scope_matches)
+            for f in query.filters:
+                if f.column=='match_id' and f.op in ('eq','in'): matches=set(f.value if isinstance(f.value,list) else [f.value])
+            covered={i:self.coverage()[column].get(i,set())&matches for i in ids}
+            if len({frozenset(c) for c in covered.values()})>1:
+                shared=sorted(set.intersection(*covered.values()))
+                who='jugadores' if column=='player_id' else 'equipos'
+                if not shared: raise ValueError(f'Comparación desigual: estos {who} no comparten ningún partido en los datos. Muéstralos por separado.')
+                raise ValueError(f'Comparación desigual: los {who} no tienen datos en los mismos partidos ({", ".join(f"{i}: {len(c)} partidos" for i,c in covered.items())}). '
+                                 f'Filtra match_id a los partidos que comparten {shared} y explica que la comparación se limita a ellos.')
+
+    def received_network(self, result):
+        # One player's partners always come as two networks: the passes he gave and the passes he received.
+        query=result['query']
+        if result['visualization']!='network' or not result['rows']: return None
+        passer=[f for f in query['filters'] if f['column']=='player_id' and f.get('op','eq')=='eq']
+        if len(passer)!=1 or any(f['column']=='recipient_id' for f in query['filters']): return None
+        player=passer[0]['value']
+        name=next((p['display_name'] for p in self.analytics.entities()['players'] if p['player_id']==player),'el jugador')
+        filters=[f for f in query['filters'] if f['column']!='player_id']+[{'column':'recipient_id','op':'eq','value':player}]
+        received=self.analytics.query(Query(dataset=query['dataset'],visualization='network',filters=filters,limit=query['limit'],title=f'Pases que recibió {name}'[:120]))
+        return received if received['rows'] else None
+
     def execute(self, name, arguments):
-        if name=='query_gold': return self.analytics.query(Query.model_validate(arguments))
+        if name=='query_gold':
+            query=Query.model_validate(arguments); self.check_comparison(query)
+            return self.analytics.query(query)
         if name=='lineup_story':
             match_id=arguments.get('match_id')
             if not isinstance(match_id,int): raise ValueError('match_id debe ser un entero')
@@ -145,39 +235,87 @@ class DataAgent:
             return {'rows':rows[:100],'truncated':len(rows)>100}
         raise ValueError('Herramienta desconocida')
 
+    def call_model(self, turn: Turn, config: RunnableConfig):
+        # response_stream is looked up at call time so tests can replace the inference transport.
+        response=response_stream(config['configurable']['account'],{'model':turn['model'],'instructions':turn['instructions'],'input':turn['inputs'],
+                                                  'tools':self.tools(),'parallel_tool_calls':True})
+        outputs=response.get('output',[])
+        calls=[o for o in outputs if o.get('type')=='function_call']
+        answer=None if calls else '\n'.join(c['text'] for o in outputs if o.get('type')=='message' for c in o.get('content',[]) if c.get('type')=='output_text')
+        if answer=='': raise HTTPException(502,'El modelo no devolvió una respuesta legible.')
+        return {'inputs':outputs,'calls':calls,'answer':answer,'steps':1}
+
+    def run_tools(self, turn: Turn):
+        inputs=[]; visuals=[]; trace=[]; charts=0
+        for call in turn['calls']:
+            try:
+                args=json.loads(call['arguments']); result=self.execute(call['name'],args)
+                if call['name'] in ('match_result','lineup_story'):
+                    visuals.append(result)
+                elif call['name']=='query_gold':
+                    companion=self.companion_map(result)
+                    if companion:
+                        visuals.append(companion)
+                        result={**result,'also_shown_to_user':'A pitch map of these same events (for shot creations: each key pass and the shot it led to) is displayed above this result.'}
+                    received=self.received_network(result)
+                    seen=[network_key(v) for v in [*turn['visuals'],*visuals] if v.get('visualization')=='network']
+                    if result['visualization']!='network' or network_key(result) not in seen: visuals.append(result)
+                    if received and network_key(received) not in seen:
+                        visuals.append(received)
+                        result={**result,'also_shown_to_user':'The network of passes this player received is displayed next to this one; its strongest links: '
+                                +json.dumps(self.named(received)['rows'][:5],ensure_ascii=False)[:1500]}
+                    result=self.named(result)
+                trace.append({'tool':call['name'],'arguments':args,'ok':True})
+                charts+=call['name'] in CHART_TOOLS
+            except (ValueError,KeyError,TypeError) as exc:
+                # A tool error goes back to the model, which repairs its arguments on the next step.
+                result={'error':str(exc)[:1500]}; trace.append({'tool':call['name'],'ok':False,'error':str(exc)[:1500]})
+            inputs.append({'type':'function_call_output','call_id':call['call_id'],'output':json.dumps(result,ensure_ascii=False)})
+        return {'inputs':inputs,'visuals':visuals,'trace':trace,'calls':[],'charts':charts}
+
+    @staticmethod
+    def budget(charts):
+        return min(MAX_STEPS,BASE_STEPS+STEPS_PER_CHART*charts)
+
+    @staticmethod
+    def after_model(turn: Turn):
+        if turn['answer'] is not None or turn['steps']>=DataAgent.budget(turn['charts']): return END
+        return 'tools'
+
+    def build_graph(self):
+        # model ⇄ tools until the model answers in text or the step budget runs out.
+        graph=StateGraph(Turn)
+        graph.add_node('model',self.call_model)
+        graph.add_node('tools',self.run_tools)
+        graph.add_edge(START,'model')
+        graph.add_conditional_edges('model',self.after_model,{'tools':'tools',END:END})
+        graph.add_edge('tools','model')
+        return graph.compile()
+
+    def entity_list(self):
+        e=self.analytics.entities(); teams={t['team_id']:t['team_name'] for t in e['teams']}
+        matches='\n'.join(f"{m['match_id']}: {m['match_date']} {m['stage_name']}, {m['team_name']} ({m['team_id']}) vs {m['opponent_name']} ({m['opponent_id']})" for m in e['matches'])
+        players='\n'.join(f"{name} ({tid}): "+'; '.join(f"{p['player_id']} {p['display_name']}" for p in e['players'] if p['team_id']==tid) for tid,name in teams.items())
+        return 'MATCHES\n'+matches+'\nPLAYERS BY TEAM (team_id)\n'+players
+
+    def instructions(self, audience):
+        if audience not in self._instructions:
+            reference={'metrics':self.analytics.metrics,'limitations':self.analytics.catalog['limitations']}
+            self._instructions[audience]=(RULES+'\n\nAUDIENCE. '+AUDIENCES[audience]+'\n\nENTITIES (all of Argentina\'s 2022 World Cup)\n'+self.entity_list()
+                +'\n\nREFERENCE\n'+json.dumps(reference,ensure_ascii=False)
+                +'\n\nSchema and views follow:\n'+json.dumps({'datasets':self.analytics.describe(),'views':VIEWS},ensure_ascii=False))
+        return self._instructions[audience]
+
     def answer(self, account, message, history, model, audience='fan'):
-        catalog=self.analytics.describe()
-        instructions=RULES+'\n\nAUDIENCE. '+AUDIENCES[audience]+'\n\nSchema and views follow:\n'+json.dumps({'datasets':catalog,'views':VIEWS},ensure_ascii=False)
+        instructions=self.instructions(audience)
         inputs=[]
         for turn in history[-12:]:
             inputs += [{'role':'user','content':turn['question']},{'role':'assistant','content':turn['answer']}]
             # Include exact previous query/result evidence for follow-up resolution.
             inputs.append({'role':'user','content':'Previous verified tool results: '+json.dumps(turn.get('visualizations',[]),ensure_ascii=False)[:45000]})
         inputs.append({'role':'user','content':message})
-        visuals=[]; trace=[]
-        for step in range(10):
-            response=response_stream(account,{'model':model,'instructions':instructions,'input':inputs,'tools':self.tools(),'parallel_tool_calls':False})
-            outputs=response.get('output',[])
-            inputs.extend(outputs)
-            calls=[o for o in outputs if o.get('type')=='function_call']
-            if not calls:
-                answer='\n'.join(c['text'] for o in outputs if o.get('type')=='message' for c in o.get('content',[]) if c.get('type')=='output_text')
-                if not answer: raise HTTPException(502,'El modelo no devolvió una respuesta legible.')
-                return {'question':message,'answer':answer,'visualizations':visuals,'trace':trace,'model':model}
-            for call in calls:
-                try:
-                    args=json.loads(call['arguments']); result=self.execute(call['name'],args)
-                    if call['name'] in ('match_result','lineup_story'):
-                        visuals.append(result)
-                    elif call['name']=='query_gold':
-                        companion=self.companion_map(result)
-                        if companion:
-                            visuals.append(companion)
-                            result={**result,'also_shown_to_user':'A pitch map of these same events (for shot creations: each key pass and the shot it led to) is displayed above this result.'}
-                        visuals.append(result)
-                        result=self.named(result)
-                    trace.append({'tool':call['name'],'arguments':args,'ok':True})
-                except (ValueError,KeyError,TypeError) as exc:
-                    result={'error':str(exc)[:1500]}; trace.append({'tool':call['name'],'ok':False,'error':str(exc)[:1500]})
-                inputs.append({'type':'function_call_output','call_id':call['call_id'],'output':json.dumps(result,ensure_ascii=False)})
-        raise HTTPException(422,'La consulta superó el límite de pasos; concreta la pregunta.')
+        final=self.graph.invoke({'model':model,'instructions':instructions,'inputs':inputs,
+                                 'visuals':[],'trace':[],'calls':[],'answer':None,'steps':0,'charts':0},
+                                {'recursion_limit':2*MAX_STEPS+2,'configurable':{'account':account}})
+        if final['answer'] is None: raise HTTPException(422,'La consulta superó el límite de pasos; concreta la pregunta.')
+        return {'question':message,'answer':final['answer'],'visualizations':without_repeated_cards(final['visuals']),'trace':final['trace'],'model':model}
