@@ -359,3 +359,25 @@ def test_langgraph_loop_repairs_tool_errors_and_bounds_steps(analytics):
     with patch('app.agent.runtime.response_stream',lambda a,p:{'output':[{'type':'message','content':[]}]}), pytest.raises(HTTPException) as exc:
         DataAgent(analytics).answer({},'vacío',[],'test-model')
     assert exc.value.status_code==502
+
+def test_parallel_tools_run_in_one_step_and_credentials_stay_out_of_state(analytics):
+    from app.agent.runtime import Turn
+    messi=next(p for p in analytics.entities()['players'] if 'Messi' in p['player_name'])
+    final=next(m for m in analytics.entities()['matches'] if m['stage_name']=='Final')
+    both=[{'type':'function_call','name':'query_gold','call_id':'a','arguments':json.dumps({'dataset':'player_match','filters':[{'column':'player_id','value':messi['player_id']}],'metrics':['goals'],'visualization':'table'})},
+          {'type':'function_call','name':'match_result','call_id':'b','arguments':json.dumps({'match_id':final['match_id']})}]
+    calls=[]
+    def fake(account,payload):
+        calls.append((account,payload))
+        return {'output':both} if len(calls)==1 else {'output':[{'type':'message','content':[{'type':'output_text','text':'ok'}]}]}
+    agent=DataAgent(analytics)
+    with patch('app.agent.runtime.response_stream',fake): turn=agent.answer({'access_token':'secret'},'q',[],'m')
+    # Both tools ran in a single tools step, so the model was called only twice.
+    assert len(calls)==2 and [t['tool'] for t in turn['trace']]==['query_gold','match_result']
+    assert all(p['parallel_tool_calls'] for _,p in calls) and all(a=={'access_token':'secret'} for a,_ in calls)
+    assert sum(x.get('type')=='function_call_output' for x in calls[1][1]['input'])==2
+    assert 'account' not in Turn.__annotations__
+    # Entity IDs and metric reference travel with the instructions, built once per audience.
+    instructions=calls[0][1]['instructions']
+    assert f"{messi['player_id']} Lionel Messi" in instructions and f"{final['match_id']}: " in instructions and 'REFERENCE' in instructions
+    assert agent.instructions('analyst') is agent.instructions('analyst')
