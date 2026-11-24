@@ -1,8 +1,11 @@
-"""Responses tool loop with terminal-stream verification and Gold-only evidence."""
+"""LangGraph tool loop over the Responses API with terminal-stream verification and Gold-only evidence."""
 import json
+import operator
 import unicodedata
+from typing import Annotated, TypedDict
 import httpx
 from fastapi import HTTPException
+from langgraph.graph import END, START, StateGraph
 from app.agent.analytics import Analytics, Query, VIEWS
 
 
@@ -71,8 +74,32 @@ AUDIENCES = {
 }
 
 
+# Model calls per turn: the base covers entity lookups, one chart and the answer; each chart the
+# model actually produces earns more room, so multi-chart dashboards fit and stalled loops still stop.
+BASE_STEPS=10
+STEPS_PER_CHART=2
+MAX_STEPS=20
+CHART_TOOLS=('query_gold','lineup_story','match_result')
+
+
+class Turn(TypedDict):
+    """LangGraph state of one chat turn. Lists with operator.add accumulate across steps."""
+    account: dict
+    model: str
+    instructions: str
+    inputs: Annotated[list, operator.add]
+    visuals: Annotated[list, operator.add]
+    trace: Annotated[list, operator.add]
+    calls: list
+    answer: str | None
+    steps: Annotated[int, operator.add]
+    charts: Annotated[int, operator.add]
+
+
 class DataAgent:
-    def __init__(self, analytics: Analytics): self.analytics=analytics
+    def __init__(self, analytics: Analytics):
+        self.analytics=analytics
+        self.graph=self.build_graph()
 
     def tools(self):
         return [
@@ -145,6 +172,57 @@ class DataAgent:
             return {'rows':rows[:100],'truncated':len(rows)>100}
         raise ValueError('Herramienta desconocida')
 
+    def call_model(self, turn: Turn):
+        # response_stream is looked up at call time so tests can replace the inference transport.
+        response=response_stream(turn['account'],{'model':turn['model'],'instructions':turn['instructions'],'input':turn['inputs'],
+                                                  'tools':self.tools(),'parallel_tool_calls':False})
+        outputs=response.get('output',[])
+        calls=[o for o in outputs if o.get('type')=='function_call']
+        answer=None if calls else '\n'.join(c['text'] for o in outputs if o.get('type')=='message' for c in o.get('content',[]) if c.get('type')=='output_text')
+        if answer=='': raise HTTPException(502,'El modelo no devolvió una respuesta legible.')
+        return {'inputs':outputs,'calls':calls,'answer':answer,'steps':1}
+
+    def run_tools(self, turn: Turn):
+        inputs=[]; visuals=[]; trace=[]; charts=0
+        for call in turn['calls']:
+            try:
+                args=json.loads(call['arguments']); result=self.execute(call['name'],args)
+                if call['name'] in ('match_result','lineup_story'):
+                    visuals.append(result)
+                elif call['name']=='query_gold':
+                    companion=self.companion_map(result)
+                    if companion:
+                        visuals.append(companion)
+                        result={**result,'also_shown_to_user':'A pitch map of these same events (for shot creations: each key pass and the shot it led to) is displayed above this result.'}
+                    visuals.append(result)
+                    result=self.named(result)
+                trace.append({'tool':call['name'],'arguments':args,'ok':True})
+                charts+=call['name'] in CHART_TOOLS
+            except (ValueError,KeyError,TypeError) as exc:
+                # A tool error goes back to the model, which repairs its arguments on the next step.
+                result={'error':str(exc)[:1500]}; trace.append({'tool':call['name'],'ok':False,'error':str(exc)[:1500]})
+            inputs.append({'type':'function_call_output','call_id':call['call_id'],'output':json.dumps(result,ensure_ascii=False)})
+        return {'inputs':inputs,'visuals':visuals,'trace':trace,'calls':[],'charts':charts}
+
+    @staticmethod
+    def budget(charts):
+        return min(MAX_STEPS,BASE_STEPS+STEPS_PER_CHART*charts)
+
+    @staticmethod
+    def after_model(turn: Turn):
+        if turn['answer'] is not None or turn['steps']>=DataAgent.budget(turn['charts']): return END
+        return 'tools'
+
+    def build_graph(self):
+        # model ⇄ tools until the model answers in text or the step budget runs out.
+        graph=StateGraph(Turn)
+        graph.add_node('model',self.call_model)
+        graph.add_node('tools',self.run_tools)
+        graph.add_edge(START,'model')
+        graph.add_conditional_edges('model',self.after_model,{'tools':'tools',END:END})
+        graph.add_edge('tools','model')
+        return graph.compile()
+
     def answer(self, account, message, history, model, audience='fan'):
         catalog=self.analytics.describe()
         instructions=RULES+'\n\nAUDIENCE. '+AUDIENCES[audience]+'\n\nSchema and views follow:\n'+json.dumps({'datasets':catalog,'views':VIEWS},ensure_ascii=False)
@@ -154,30 +232,8 @@ class DataAgent:
             # Include exact previous query/result evidence for follow-up resolution.
             inputs.append({'role':'user','content':'Previous verified tool results: '+json.dumps(turn.get('visualizations',[]),ensure_ascii=False)[:45000]})
         inputs.append({'role':'user','content':message})
-        visuals=[]; trace=[]
-        for step in range(10):
-            response=response_stream(account,{'model':model,'instructions':instructions,'input':inputs,'tools':self.tools(),'parallel_tool_calls':False})
-            outputs=response.get('output',[])
-            inputs.extend(outputs)
-            calls=[o for o in outputs if o.get('type')=='function_call']
-            if not calls:
-                answer='\n'.join(c['text'] for o in outputs if o.get('type')=='message' for c in o.get('content',[]) if c.get('type')=='output_text')
-                if not answer: raise HTTPException(502,'El modelo no devolvió una respuesta legible.')
-                return {'question':message,'answer':answer,'visualizations':visuals,'trace':trace,'model':model}
-            for call in calls:
-                try:
-                    args=json.loads(call['arguments']); result=self.execute(call['name'],args)
-                    if call['name'] in ('match_result','lineup_story'):
-                        visuals.append(result)
-                    elif call['name']=='query_gold':
-                        companion=self.companion_map(result)
-                        if companion:
-                            visuals.append(companion)
-                            result={**result,'also_shown_to_user':'A pitch map of these same events (for shot creations: each key pass and the shot it led to) is displayed above this result.'}
-                        visuals.append(result)
-                        result=self.named(result)
-                    trace.append({'tool':call['name'],'arguments':args,'ok':True})
-                except (ValueError,KeyError,TypeError) as exc:
-                    result={'error':str(exc)[:1500]}; trace.append({'tool':call['name'],'ok':False,'error':str(exc)[:1500]})
-                inputs.append({'type':'function_call_output','call_id':call['call_id'],'output':json.dumps(result,ensure_ascii=False)})
-        raise HTTPException(422,'La consulta superó el límite de pasos; concreta la pregunta.')
+        final=self.graph.invoke({'account':account,'model':model,'instructions':instructions,'inputs':inputs,
+                                 'visuals':[],'trace':[],'calls':[],'answer':None,'steps':0,'charts':0},
+                                {'recursion_limit':2*MAX_STEPS+2})
+        if final['answer'] is None: raise HTTPException(422,'La consulta superó el límite de pasos; concreta la pregunta.')
+        return {'question':message,'answer':final['answer'],'visualizations':final['visuals'],'trace':final['trace'],'model':model}

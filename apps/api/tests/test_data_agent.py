@@ -8,7 +8,7 @@ import pytest
 from fastapi import HTTPException
 from app.agent.analytics import Analytics, Query
 from app.agent.auth import Auth, fingerprint
-from app.agent.runtime import DataAgent, response_stream
+from app.agent.runtime import DataAgent, BASE_STEPS, MAX_STEPS, STEPS_PER_CHART, response_stream
 from app.db.gold import ROOT
 
 @pytest.fixture(scope='module')
@@ -321,3 +321,41 @@ def test_lineup_story_every_player_has_a_position(analytics):
     acuna = next(s for s in argentina['steps'] if 19597 in s['entered'])
     assert acuna['seconds'] // 60 == 63 and next(p for p in acuna['players'] if p['player_id'] == 19597)['position_id'] == 21
     with pytest.raises(ValueError): analytics.lineup_story(1)
+
+def test_langgraph_loop_repairs_tool_errors_and_bounds_steps(analytics):
+    calls=[]
+    def repairing(account,payload):
+        calls.append(payload)
+        if len(calls)==1:return {'output':[{'type':'function_call','name':'query_gold','call_id':'bad','arguments':json.dumps({'dataset':'not_a_dataset'})}]}
+        if len(calls)==2:return {'output':[{'type':'function_call','name':'find_entities','call_id':'ok','arguments':json.dumps({'kind':'teams','search':'Argentina'})}]}
+        return {'output':[{'type':'message','content':[{'type':'output_text','text':'Reparado.'}]}]}
+    with patch('app.agent.runtime.response_stream',repairing):
+        turn=DataAgent(analytics).answer({},'equipos',[],'test-model')
+    assert turn['answer']=='Reparado.' and len(calls)==3
+    assert [t['ok'] for t in turn['trace']]==[False,True]
+    assert 'error' in json.loads(next(x for x in calls[1]['input'] if x.get('call_id')=='bad' and x.get('type')=='function_call_output')['output'])
+    # The graph keeps every earlier item of the turn in the model input.
+    assert sum(x.get('type')=='function_call_output' for x in calls[2]['input'])==2
+
+    looping=[]
+    def endless(account,payload):
+        looping.append(payload)
+        return {'output':[{'type':'function_call','name':'find_entities','call_id':f'c{len(looping)}','arguments':json.dumps({'kind':'teams','search':''})}]}
+    with patch('app.agent.runtime.response_stream',endless), pytest.raises(HTTPException) as exc:
+        DataAgent(analytics).answer({},'sin fin',[],'test-model')
+    # Lookups alone never earn more room: the base budget stops the loop.
+    assert exc.value.status_code==422 and len(looping)==BASE_STEPS
+
+    # Each chart produced extends the budget, up to the hard cap.
+    charting=[]
+    def charts(account,payload):
+        charting.append(payload)
+        return {'output':[{'type':'function_call','name':'query_gold','call_id':f'q{len(charting)}','arguments':json.dumps({'dataset':'team_match','metrics':['shots'],'group_by':['team_id'],'visualization':'bars','limit':8})}]}
+    with patch('app.agent.runtime.response_stream',charts), pytest.raises(HTTPException) as exc:
+        DataAgent(analytics).answer({},'muchos gráficos',[],'test-model')
+    assert exc.value.status_code==422 and len(charting)==MAX_STEPS
+    assert [DataAgent.budget(n) for n in (0,1,4,99)]==[BASE_STEPS,BASE_STEPS+STEPS_PER_CHART,BASE_STEPS+4*STEPS_PER_CHART,MAX_STEPS]
+
+    with patch('app.agent.runtime.response_stream',lambda a,p:{'output':[{'type':'message','content':[]}]}), pytest.raises(HTTPException) as exc:
+        DataAgent(analytics).answer({},'vacío',[],'test-model')
+    assert exc.value.status_code==502
