@@ -27,6 +27,11 @@ def auth():
 @lru_cache
 def analytics(): return Analytics()
 
+@lru_cache
+def data_agent():
+    # One compiled graph and one set of instructions per process.
+    return DataAgent(analytics())
+
 def identity(request: Request): return auth().account(request.cookies.get(COOKIE))
 
 def safe_origin(request: Request):
@@ -110,7 +115,7 @@ def chat(body: Chat,user=Depends(identity),a=Depends(analytics)):
         previous=[]; cid=body.conversation_id or str(uuid4())
         if body.conversation_id: previous=history(cid,user)['turns']
         if len(previous)>=100: raise HTTPException(422,'Inicia una conversación nueva para continuar.')
-        result=DataAgent(a).answer(user[1],body.question,previous,selected,'analyst')
+        result=data_agent().answer(user[1],body.question,previous,selected,'analyst')
         with db() as con:
             con.execute('INSERT OR REPLACE INTO turns VALUES (?,?,?,?)',(cid,user[0],time.time(),json.dumps([*previous,result])))
         return {'conversation_id':cid,'turn':result}

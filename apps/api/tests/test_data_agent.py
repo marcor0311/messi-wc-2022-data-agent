@@ -359,3 +359,84 @@ def test_langgraph_loop_repairs_tool_errors_and_bounds_steps(analytics):
     with patch('app.agent.runtime.response_stream',lambda a,p:{'output':[{'type':'message','content':[]}]}), pytest.raises(HTTPException) as exc:
         DataAgent(analytics).answer({},'vacío',[],'test-model')
     assert exc.value.status_code==502
+
+def test_parallel_tools_run_in_one_step_and_credentials_stay_out_of_state(analytics):
+    from app.agent.runtime import Turn
+    messi=next(p for p in analytics.entities()['players'] if 'Messi' in p['player_name'])
+    final=next(m for m in analytics.entities()['matches'] if m['stage_name']=='Final')
+    both=[{'type':'function_call','name':'query_gold','call_id':'a','arguments':json.dumps({'dataset':'player_match','filters':[{'column':'player_id','value':messi['player_id']}],'metrics':['goals'],'visualization':'table'})},
+          {'type':'function_call','name':'match_result','call_id':'b','arguments':json.dumps({'match_id':final['match_id']})}]
+    calls=[]
+    def fake(account,payload):
+        calls.append((account,payload))
+        return {'output':both} if len(calls)==1 else {'output':[{'type':'message','content':[{'type':'output_text','text':'ok'}]}]}
+    agent=DataAgent(analytics)
+    with patch('app.agent.runtime.response_stream',fake): turn=agent.answer({'access_token':'secret'},'q',[],'m')
+    # Both tools ran in a single tools step, so the model was called only twice.
+    assert len(calls)==2 and [t['tool'] for t in turn['trace']]==['query_gold','match_result']
+    assert all(p['parallel_tool_calls'] for _,p in calls) and all(a=={'access_token':'secret'} for a,_ in calls)
+    assert sum(x.get('type')=='function_call_output' for x in calls[1][1]['input'])==2
+    assert 'account' not in Turn.__annotations__
+    # Entity IDs and metric reference travel with the instructions, built once per audience.
+    instructions=calls[0][1]['instructions']
+    assert f"{messi['player_id']} Lionel Messi" in instructions and f"{final['match_id']}: " in instructions and 'REFERENCE' in instructions
+    assert agent.instructions('analyst') is agent.instructions('analyst')
+
+def test_uneven_comparisons_are_rejected_with_a_repair_hint(analytics):
+    e=analytics.entities(); agent=DataAgent(analytics)
+    pid=lambda name:next(p['player_id'] for p in e['players'] if name in p['player_name'])
+    final=next(m['match_id'] for m in e['matches'] if m['stage_name']=='Final')
+    pair=lambda *ids:{'column':'player_id','op':'in','value':list(ids)}
+    base={'dataset':'player_match','visualization':'bars','group_by':['player_id'],'metrics':['shots','goals']}
+    # Messi has seven matches here, Mbappé only the final: the whole tournament is not a fair comparison.
+    with pytest.raises(ValueError,match=str(final)):
+        agent.execute('query_gold',{**base,'filters':[pair(pid('Messi'),pid('Mbapp'))]})
+    assert len(agent.execute('query_gold',{**base,'filters':[pair(pid('Messi'),pid('Mbapp')),{'column':'match_id','value':final}]})['rows'])==2
+    # Teammates share Argentina's coverage, so tournament totals stay comparable.
+    assert len(agent.execute('query_gold',{**base,'filters':[pair(pid('Messi'),pid('Julián Álvarez'))]})['rows'])==2
+    teams={'dataset':'team_match','visualization':'bars','group_by':['team_id'],'metrics':['shots'],'filters':[{'column':'team_id','op':'in','value':[779,771]}]}
+    with pytest.raises(ValueError,match='Comparación desigual'): agent.execute('query_gold',teams)
+
+def scripted_turn(analytics,*queries):
+    calls=[]
+    def fake(account,payload):
+        calls.append(payload)
+        if len(calls)==1: return {'output':[{'type':'function_call','name':'query_gold','call_id':f'q{i}','arguments':json.dumps(q)} for i,q in enumerate(queries)]}
+        return {'output':[{'type':'message','content':[{'type':'output_text','text':'ok'}]}]}
+    with patch('app.agent.runtime.response_stream',fake): return DataAgent(analytics).answer({},'q',[],'m'),calls
+
+def test_one_players_partners_always_show_given_and_received_networks(analytics):
+    e=analytics.entities()
+    messi=next(p['player_id'] for p in e['players'] if 'Messi' in p['player_name'])
+    final=next(m['match_id'] for m in e['matches'] if m['stage_name']=='Final')
+    given={'dataset':'connections','visualization':'network','filters':[{'column':'match_id','value':final},{'column':'player_id','value':messi}]}
+    received={'dataset':'connections','visualization':'network','filters':[{'column':'recipient_id','value':messi},{'column':'match_id','value':final}]}
+    turn,calls=scripted_turn(analytics,given)
+    nets=[v for v in turn['visualizations'] if v['visualization']=='network']
+    assert len(nets)==2 and {f['column'] for f in nets[1]['query']['filters']}=={'match_id','recipient_id'}
+    assert all(r['recipient_id']==messi for r in nets[1]['rows'])
+    assert 'also_shown_to_user' in next(x for x in calls[1]['input'] if x.get('type')=='function_call_output')['output']
+    # Asking for both directions explicitly never draws the received network twice.
+    turn,_=scripted_turn(analytics,given,received)
+    assert len([v for v in turn['visualizations'] if v['visualization']=='network'])==2
+    # A whole-team network is not one player's partners: no companion.
+    turn,_=scripted_turn(analytics,{'dataset':'connections','visualization':'network','filters':[{'column':'match_id','value':final},{'column':'team_id','value':779}]})
+    assert len(turn['visualizations'])==1
+
+def test_stat_cards_that_only_repeat_a_drawn_total_are_dropped(analytics):
+    e=analytics.entities()
+    messi=next(p['player_id'] for p in e['players'] if 'Messi' in p['player_name'])
+    final=next(m['match_id'] for m in e['matches'] if m['stage_name']=='Final')
+    created={'dataset':'shot_creations','visualization':'bars','filters':[{'column':'creator_id','value':messi}],'group_by':['shooter_id'],'metrics':['count']}
+    total={'dataset':'player_match','visualization':'table','filters':[{'column':'player_id','value':messi}],'metrics':['shots_created']}
+    turn,_=scripted_turn(analytics,total,created)
+    # 19 created shots are already the bars and the plays on the pitch: the lone card adds nothing.
+    assert [v['visualization'] for v in turn['visualizations']]==['creation_chains','bars']
+    # A card with numbers no chart shows (xG next to a shot map) stays.
+    card={'dataset':'player_match','visualization':'table','filters':[{'column':'player_id','value':messi},{'column':'match_id','value':final}],'metrics':['shots','xg']}
+    shots={'dataset':'actions','visualization':'pitch','filters':[{'column':'player_id','value':messi},{'column':'match_id','value':final},{'column':'type_name','value':'Shot'}]}
+    turn,_=scripted_turn(analytics,card,shots)
+    assert [v['visualization'] for v in turn['visualizations']]==['table','pitch']
+    # A card alone is the answer.
+    turn,_=scripted_turn(analytics,total)
+    assert [v['visualization'] for v in turn['visualizations']]==['table']
