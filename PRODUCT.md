@@ -18,13 +18,13 @@ La galería recorre 22 capítulos de 2005 a 2026 mediante fotografías, relatos 
 
 El alcance confirmado es solo escritorio y laptop. Validar a 1440×800, 1440×1000 y 1920×1080. Mantener lectura accesible, zoom, espaciado personalizado y movimiento reducido; los respaldos de redistribución no amplían el alcance a móvil. Presentar las propuestas visuales separadas de la página principal hasta que el usuario apruebe integrarlas.
 
-Next.js y TypeScript sirven la interfaz; FastAPI y Python ejecutan el agente general mediante Responses y herramientas Gold validadas. La conversación de `/agent` requiere sesión OAuth y permite elegir el modelo por pregunta. LangGraph permanece en los endpoints del prototipo anterior y no dirige el chat actual.
+Next.js y TypeScript sirven la interfaz; FastAPI y Python ejecutan el agente general mediante Responses y herramientas Gold validadas. La conversación de `/agent` requiere sesión OAuth y permite elegir el modelo por pregunta. Cada turno del chat corre como un `StateGraph` de LangGraph (`apps/api/src/app/agent/runtime.py`): el nodo `model` llama a Responses y el nodo `tools` ejecuta las herramientas Gold pedidas en ese paso, hasta que el modelo responde. Es el único agente del producto.
 
 Las cifras, la cancha, el arco y el detalle de eventos deben partir de una selección común. Excluir las tandas de penales de las métricas de partido. Mostrar origen y destino de los tiros; representar en el arco solo las alturas conocidas, sin estimarlas. Creación de tiros, recepciones, conexiones, alineaciones y sus cambios ya forman parte del agente actual; el alcance analítico cubre los siete partidos de Argentina en Qatar 2022.
 
 ## Evidence on Hand
 
-Los artefactos Gold de StatsBomb están en `data/gold/statsbomb/wc2022/`, con manifiestos y evidencia por evento. La conversación lee estos artefactos inmutables sin requerir PostgreSQL activo; las migraciones conservan el modelo de base de datos.
+Los artefactos Gold de StatsBomb están en `data/gold/statsbomb/wc2022/`, con manifiestos y evidencia por evento. La conversación lee estos artefactos inmutables a través de una base SQLite de solo lectura que prepara `scripts/discover_gold.py`.
 
 Los capítulos y sus resultados están en `apps/web/src/app/page.tsx`. Las fotos se alojan en `apps/web/public/memoria/`; `sources.json` y `seleccion/selection.json` registran su procedencia. Una fotografía elegida puede ilustrar un capítulo sin pertenecer a ese partido: el texto alternativo debe describir lo visible sin atribuirle una fecha no verificada.
 
