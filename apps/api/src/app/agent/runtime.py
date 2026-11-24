@@ -56,7 +56,7 @@ CHOOSING THE VISUALIZATION. The visualization is the main answer. Every question
 - a total or a few headline numbers for one player or team: table with metrics (shown as stat cards).
 - comparing players, teams, matches or periods: bars, with group_by on what is compared. Several metrics are fine; each gets its own panel. Compare like with like: when the players or teams have data for different matches (for example Mbappé only appears in the final against Argentina), filter every side to the matches they share and say so, never one side's whole tournament against the other's single match.
 - how something changed match by match: trend, group_by match_id, ascending. Several metrics are fine. MESSI DASHBOARD: whenever the user asks how Messi did match by match or across the tournament in general (his stats, his evolution, his performance or the danger he created, without naming specific metrics), use exactly these six metrics in this order: goals, assists, shots, xg, shots_created, complete_dribbles. Never fewer, never others, never xg_assisted (dribble attempts and success rate come back automatically). If the user names specific metrics, use those instead. Four tournament totals (non-penalty xG, xG assisted, completed passes, dribble success) are shown under those charts automatically, so do not add a separate headline-numbers query for that answer.
-- who combined with whom: network. For one player's partners, filter connections by that player (player_id is the passer, recipient_id the receiver) instead of loading the whole team.
+- who combined with whom: network. For one player's partners, filter connections by that player as passer (player_id) instead of loading the whole team. The network of passes he received (recipient_id) is added automatically next to it, so never request the recipient_id network yourself.
 - starting XI: lineup. One query can return both teams of a match; each is drawn on its own pitch.
 - how a line-up or formation changed during a match (substitutions, tactical shifts, who moved to which position, where Messi played in each phase): call lineup_story, never query_gold with a table. Take the match_id from the ENTITIES match list.
 - the order of events within a match (what happened and when): match_result, whose timeline shows goals, cards and substitutions.
@@ -82,6 +82,26 @@ AUDIENCES = {
 BASE_STEPS=10
 STEPS_PER_CHART=2
 MAX_STEPS=20
+
+
+def network_key(result):
+    # Two network queries over the same filters draw the same picture, whatever the filter order.
+    return json.dumps(sorted((f['column'],f.get('op','eq'),json.dumps(f.get('value'))) for f in result['query'].get('filters') or []))
+
+
+def without_repeated_cards(visuals):
+    """Drop a stat card whose every number is already a total drawn by another chart of the same answer."""
+    def totals(v):
+        found={len(v.get('rows') or []),v.get('matched_source_rows')}
+        for m in (v.get('query') or {}).get('metrics') or []:
+            found.add(sum(r.get(m) or 0 for r in v['rows'] if isinstance(r,dict)))
+        return {round(t,6) for t in found if isinstance(t,(int,float))}
+    def repeated(card,others):
+        metrics=(card.get('query') or {}).get('metrics') or []
+        if card.get('visualization')!='table' or not metrics or len(card.get('rows') or [])!=1 or not others: return False
+        drawn=set().union(*(totals(v) for v in others))
+        return all(isinstance(card['rows'][0].get(m),(int,float)) and round(card['rows'][0][m],6) in drawn for m in metrics)
+    return [v for i,v in enumerate(visuals) if not repeated(v,[o for j,o in enumerate(visuals) if j!=i and o.get('visualization')!='table'])]
 CHART_TOOLS=('query_gold','lineup_story','match_result')
 
 
@@ -154,8 +174,47 @@ class DataAgent:
                 'query':{**events['query'],'visualization':'creation_chains','title':title},
                 'limitations':['Cada jugada une el pase clave con el tiro que generó; el tramo intermedio (recepción y conducción del rematador) se dibuja recto, no es su recorrido real.']}
 
+    def coverage(self):
+        # Matches in which each team and player has data: the dataset holds only Argentina's matches.
+        if not hasattr(self,'_coverage'):
+            e=self.analytics.entities(); teams={}
+            for m in e['matches']:
+                for t in (m['team_id'],m['opponent_id']): teams.setdefault(t,set()).add(m['match_id'])
+            self._coverage={'team_id':teams,'player_id':{p['player_id']:teams.get(p['team_id'],set()) for p in e['players']}}
+        return self._coverage
+
+    def check_comparison(self, query: Query):
+        """Comparing players or teams whose data covers different matches would set a whole tournament against one match."""
+        for column in ('player_id','team_id'):
+            ids={v for f in query.filters if f.column==column and f.op=='in' and isinstance(f.value,list) for v in f.value}
+            if column not in query.group_by or len(ids)<2: continue
+            matches=set(self.analytics.scope_matches)
+            for f in query.filters:
+                if f.column=='match_id' and f.op in ('eq','in'): matches=set(f.value if isinstance(f.value,list) else [f.value])
+            covered={i:self.coverage()[column].get(i,set())&matches for i in ids}
+            if len({frozenset(c) for c in covered.values()})>1:
+                shared=sorted(set.intersection(*covered.values()))
+                who='jugadores' if column=='player_id' else 'equipos'
+                if not shared: raise ValueError(f'Comparación desigual: estos {who} no comparten ningún partido en los datos. Muéstralos por separado.')
+                raise ValueError(f'Comparación desigual: los {who} no tienen datos en los mismos partidos ({", ".join(f"{i}: {len(c)} partidos" for i,c in covered.items())}). '
+                                 f'Filtra match_id a los partidos que comparten {shared} y explica que la comparación se limita a ellos.')
+
+    def received_network(self, result):
+        # One player's partners always come as two networks: the passes he gave and the passes he received.
+        query=result['query']
+        if result['visualization']!='network' or not result['rows']: return None
+        passer=[f for f in query['filters'] if f['column']=='player_id' and f.get('op','eq')=='eq']
+        if len(passer)!=1 or any(f['column']=='recipient_id' for f in query['filters']): return None
+        player=passer[0]['value']
+        name=next((p['display_name'] for p in self.analytics.entities()['players'] if p['player_id']==player),'el jugador')
+        filters=[f for f in query['filters'] if f['column']!='player_id']+[{'column':'recipient_id','op':'eq','value':player}]
+        received=self.analytics.query(Query(dataset=query['dataset'],visualization='network',filters=filters,limit=query['limit'],title=f'Pases que recibió {name}'[:120]))
+        return received if received['rows'] else None
+
     def execute(self, name, arguments):
-        if name=='query_gold': return self.analytics.query(Query.model_validate(arguments))
+        if name=='query_gold':
+            query=Query.model_validate(arguments); self.check_comparison(query)
+            return self.analytics.query(query)
         if name=='lineup_story':
             match_id=arguments.get('match_id')
             if not isinstance(match_id,int): raise ValueError('match_id debe ser un entero')
@@ -198,7 +257,13 @@ class DataAgent:
                     if companion:
                         visuals.append(companion)
                         result={**result,'also_shown_to_user':'A pitch map of these same events (for shot creations: each key pass and the shot it led to) is displayed above this result.'}
-                    visuals.append(result)
+                    received=self.received_network(result)
+                    seen=[network_key(v) for v in [*turn['visuals'],*visuals] if v.get('visualization')=='network']
+                    if result['visualization']!='network' or network_key(result) not in seen: visuals.append(result)
+                    if received and network_key(received) not in seen:
+                        visuals.append(received)
+                        result={**result,'also_shown_to_user':'The network of passes this player received is displayed next to this one; its strongest links: '
+                                +json.dumps(self.named(received)['rows'][:5],ensure_ascii=False)[:1500]}
                     result=self.named(result)
                 trace.append({'tool':call['name'],'arguments':args,'ok':True})
                 charts+=call['name'] in CHART_TOOLS
@@ -253,4 +318,4 @@ class DataAgent:
                                  'visuals':[],'trace':[],'calls':[],'answer':None,'steps':0,'charts':0},
                                 {'recursion_limit':2*MAX_STEPS+2,'configurable':{'account':account}})
         if final['answer'] is None: raise HTTPException(422,'La consulta superó el límite de pasos; concreta la pregunta.')
-        return {'question':message,'answer':final['answer'],'visualizations':final['visuals'],'trace':final['trace'],'model':model}
+        return {'question':message,'answer':final['answer'],'visualizations':without_repeated_cards(final['visuals']),'trace':final['trace'],'model':model}
