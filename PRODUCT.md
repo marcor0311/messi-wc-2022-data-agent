@@ -24,7 +24,7 @@ Las cifras, la cancha, el arco y el detalle de eventos deben partir de una selec
 
 ## Evidence on Hand
 
-Los artefactos Gold de StatsBomb están en `data/gold/statsbomb/wc2022/`, con manifiestos y evidencia por evento. La conversación lee estos artefactos inmutables sin requerir PostgreSQL activo; las migraciones conservan el modelo de base de datos.
+Los artefactos Gold de StatsBomb están en `data/gold/statsbomb/wc2022/`, con manifiestos y evidencia por evento. La conversación lee estos artefactos inmutables a través de una base SQLite de solo lectura que prepara `scripts/discover_gold.py`.
 
 Los capítulos y sus resultados están en `apps/web/src/app/page.tsx`. Las fotos se alojan en `apps/web/public/memoria/`; `sources.json` y `seleccion/selection.json` registran su procedencia. Una fotografía elegida puede ilustrar un capítulo sin pertenecer a ese partido: el texto alternativo debe describir lo visible sin atribuirle una fecha no verificada.
 
